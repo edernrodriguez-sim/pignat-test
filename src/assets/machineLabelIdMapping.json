@@ -1,0 +1,81 @@
+{
+    "machineParts" : [
+        {
+            "label":"bac_de_retention",
+            "id":"492a3dc0-e9bf-4d1a-90fb-0ef71015136f"
+        },
+        {
+            "label":"bidon_10L_V12",
+            "id":"ea48a75d-a58d-48ad-ae89-ad461d491dc8"
+        },
+        {
+            "label":"bidon_10L_V15",
+            "id":"06ff8e30-ffd9-46fd-a8bd-cdf024fa090e"
+        },
+        {
+            "label":"bidon_20L",
+            "id":"411d7eba-beac-43f4-bd9d-4945115c34ce"
+        },
+        {
+            "label":"ecran",
+            "id":"6a64cb89-a02e-4354-b3b3-caeff4d11306"
+        },
+        {
+            "label":"bouchon",
+            "id":"51bb99a4-3a97-47ea-b514-4db7ca7e6aa4"
+        },
+        
+        {
+            "label": "V2",
+            "id": "232cb568-4fea-4033-94c7-ce89327f480c"
+        },
+        {
+            "label": "V3",
+            "id": "36cb123f-7ef8-423e-bade-f0e973be57a2"
+        },
+        {
+            "label": "V4",
+            "id": "1ee4fc76-c883-4af4-a5c7-663c882be139"
+        },
+        {
+            "label": "V5",
+            "id": "4c7e2f39-c3d7-4a6c-99df-286c653f96e2"
+        },
+        {
+            "label": "V6",
+            "id": "ac356636-90e5-4603-89a6-3c3c2706e337"
+        },
+        {
+            "label": "V7",
+            "id": "fbc66020-ba9f-46b6-9a94-1ce72ad71e66"
+        },
+        {
+            "label": "V8",
+            "id": "a22e351b-a25e-4d3e-a5bd-9b1eadc6d3cb"
+        },
+        {
+            "label": "V9",
+            "id": "2d919ead-5766-4e0d-a3f1-dbc987d63d4e"
+        },
+        {
+            "label": "V11",
+            "id": "017b1594-1149-44f3-a478-ea97e1cd162f"
+        },
+        {
+            "label": "V12",
+            "id": "23ed8a02-f178-49f3-a090-796ff3be41c9"
+        },
+        {
+            "label": "V14",
+            "id": "96efc3d6-5c05-45b0-a398-07c5862ffe54"
+        },
+        {
+            "label": "V15",
+            "id": "efabdb72-57da-469b-889c-7517c982db5a"
+        },
+        {
+            "label": "V16",
+            "id": "5dc3121e-6264-45b5-ba2b-29b20470ef7d"
+        }
+    ]
+}

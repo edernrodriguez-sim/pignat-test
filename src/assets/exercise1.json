@@ -1,0 +1,201 @@
+{
+    "exercises": [
+        {
+            "description": "Mise en place d'un cycle continu",
+            "steps": [                {
+                    "hint": "Cliquez sur bac de rétention.",
+                    "itemsLabelToGlow": [
+                        "bac_de_retention"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "bac_de_retention",
+                            "expectedValue": "click"
+                        }
+                    ],
+                    "action":"move"
+                },
+                {
+                    "hint": "Cliquez sur le bidon sous la vanne V15.",
+                    "itemsLabelToGlow": [
+                        "bidon_10L_V15"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "bidon_10L_V15",
+                            "expectedValue": "click"
+                        }
+                    ],
+                    "action":"move"
+                },
+                {
+                    "hint": "Cliquez sur le bidon sous la vanne V12.",
+                    "itemsLabelToGlow": [
+                        "bidon_10L_V12"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "bidon_10L_V12",
+                            "expectedValue": "click"
+                        }
+                    ],
+                    "action":"move"
+                },
+                {
+                    "hint": "Cliquez sur le bidon de 20L.",
+                    "itemsLabelToGlow": [
+                        "bidon_20L"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "bidon_20L",
+                            "expectedValue": "click"
+                        }
+                    ],
+                    "action":"move"
+                },
+                {
+                    "hint": "Cliquez sur la vanne V16.",
+                    "itemsLabelToGlow": [
+                        "V16"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "V16",
+                            "expectedValue": "true"
+                        }
+                    ]
+                },
+
+                
+                {
+                    "hint": "Cliquez sur l'écran pour Régler le débit à 150L/h.",
+                    "itemsLabelToGlow": [
+                        "ecran"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "waterlevel",
+                            "expectedValue": "150",
+                            "isIHM":true
+                        }
+                    ]
+                },
+                {
+                    "hint": "Cliquez sur la vanne V3.",
+                    "itemsLabelToGlow": [
+                        "V3"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "V3",
+                            "expectedValue": "true",
+                            "isIHM":false
+                        }
+                    ]
+                },
+		{
+                    "hint": "Cliquez sur le bouchon.",
+                    "itemsLabelToGlow": [
+                        "bouchon"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "bouchon",
+                            "expectedValue": "click",
+                            "isIHM":false
+                        }
+                    ],
+                    "action":"move"
+                },
+		{
+                    "hint": "Cliquez sur la vanne écran et mettez TTC5 en MANU.",
+                    "itemsLabelToGlow": [
+                        "ecran"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "refluxType",
+                            "expectedValue": "MANU",
+                            "isIHM":true
+                        }
+                    ]
+                },
+                {
+                    "hint": "Cliquez sur l'écran et mettez le taux de reflux à 100%.",
+                    "itemsLabelToGlow": [
+                        "ecran"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "refluxRate",
+                            "expectedValue": "100",
+                            "isIHM":true
+                        }
+                    ]
+                },
+                {
+                    "hint": "Cliquez sur l'écran et activez le bouilleur.",
+                    "itemsLabelToGlow": [
+                        "ecran"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "isBouilleurOn",
+                            "expectedValue": 1,
+                            "isIHM":true
+                        }
+                    ]
+                },
+                {
+                    "hint": "Cliquez sur l'écran et mettez le taux de bouilleur à 50%.",
+                    "itemsLabelToGlow": [
+                        "ecran"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "bouilleurRate",
+                            "expectedValue": "50",
+                            "isIHM":true
+                        }
+                    ],
+                    "action": "animation",
+                    "animationNames":[
+                        "bells_other",
+                        "heat_boiler_other"
+                    ]
+                },
+                {
+                    "hint": "Cliquez sur l'écran et mettez le dpic à 13.",
+                    "itemsLabelToGlow": [
+                        "ecran"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "dpic",
+                            "expectedValue": 13,
+                            "isIHM":true
+                        }
+                    ]
+                },
+{
+                    "hint": "Cliquez sur la vanne V14.",
+                    "itemsLabelToGlow": [
+                        "V14"
+                    ],
+                    "stepValidationPoints": [
+                        {
+                            "label": "V14",
+                            "expectedValue": "true",
+                            "isIHM":false
+                        }
+                    ],
+                    "action":"animation",
+                    "animationNames": [
+                        "echantillon_v14_other"
+                    ]
+                }
+            ]
+        }
+    ]
+}

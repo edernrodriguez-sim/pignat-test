@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Test des valves V2 V3 V4",
+        "rule":"onlyOneTrue",
+        "params":["V2","V3","V4"],
+        "errorMessage": "Une seule valve doit être ouverte à la fois."
+
+    },
+    {
+        "name": "Température du bouilleur",
+        "rule":"and",
+        "rules" :
+        [
+            {
+                "name": "Température supérieur à 20°c",
+                "rule":"greaterThan",
+                "params":"BoilerTemp",
+                "value": 20
+            },{
+                "name": "Température inférieur à 80°c",
+                "rule":"lessThan",
+                "params":"BoilerTemp",
+                "value": 80
+            }
+        ],
+        "errorMessage": "La température doit être comprise entre 20°c et 80°c."
+
+    }
+]

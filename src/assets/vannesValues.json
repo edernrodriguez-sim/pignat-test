@@ -1,0 +1,106 @@
+[
+    {
+        "label": "V2",
+        "id": "232cb568-4fea-4033-94c7-ce89327f480c",
+        "openAnimId":"2089b454-c72a-4d8b-acfc-8716553613da",
+        "closeAnimId":"f04997e6-57aa-4e3c-b864-696319b7011d",
+        "glowAnimId": "dfb5ae64-eaf4-4bf3-9cab-99e71a4b63dc",
+        "stopGlowAnimId": "604e4b3b-e4df-4fac-90dc-57fcb6cceb6c"
+    },
+    {
+        "label": "V3",
+        "id": "36cb123f-7ef8-423e-bade-f0e973be57a2",
+        "openAnimId":"a2664f3b-c99a-46cd-b4d6-9ce77d5f6cbd",
+        "closeAnimId":"30f876c7-cc03-4242-95c2-d83997adb6bb",
+        "glowAnimId": "dcb9984f-9cf6-461e-a971-85b1c8f24dab",
+        "stopGlowAnimId": "170ffac8-918a-4b99-b853-c3cde93fa4ec"
+    },
+    {
+        "label": "V4",
+        "id": "1ee4fc76-c883-4af4-a5c7-663c882be139",
+        "openAnimId":"6786201f-a452-43f8-951a-be102de62210",
+        "closeAnimId":"10ec4acc-9df7-4a88-8ff6-0c39288e0c7e",
+        "glowAnimId": "b3dce7ee-bed3-4d04-ab0f-17b1ccd9c51c",
+        "stopGlowAnimId": "3ff6a217-1297-4d5e-9748-76cf0f0c8e3f"
+    },
+    {
+        "label": "V5",
+        "id": "4c7e2f39-c3d7-4a6c-99df-286c653f96e2",
+        "openAnimId":"170b5d93-98ac-42f2-be5e-bb000cf48c4e",
+        "closeAnimId":"dd28ab02-0350-4068-9e07-99fd545d0a19",
+        "glowAnimId": "4d816c66-88eb-4dff-bdbb-a185c88304c5",
+        "stopGlowAnimId": "a51eece8-d91c-49bb-b244-1f37bb3b03b4"
+    },
+    {
+        "label": "V6",
+        "id": "ac356636-90e5-4603-89a6-3c3c2706e337",
+        "openAnimId":"83cf5cd6-63dc-4e0a-b522-55f6d093aaac",
+        "closeAnimId":"b9361028-1324-4a93-9e99-538ca05545d6",
+        "glowAnimId": "841c34fa-c499-4af0-8afd-d6bf0410cec0",
+        "stopGlowAnimId": "e9fea1d0-df62-48ec-b9b7-0cedaa2f372f"
+    },
+    {
+        "label": "V7",
+        "id": "fbc66020-ba9f-46b6-9a94-1ce72ad71e66",
+        "openAnimId":"02e6ea8e-5d46-47a8-82ed-3ff69861af02",
+        "closeAnimId":"130f3244-acb9-4457-add6-a12ad19a4f48",
+        "glowAnimId": "780e05d2-c9e7-4e97-92df-93e0d4b0196b",
+        "stopGlowAnimId": "3dbe724e-ecec-42fe-95dd-64960f0abfed"
+    },
+    {
+        "label": "V8",
+        "id": "a22e351b-a25e-4d3e-a5bd-9b1eadc6d3cb",
+        "openAnimId":"d62102a3-9a75-46f1-ae67-a8e70f6509a6",
+        "closeAnimId":"282c631a-baf4-49fc-819b-b66d86fdac2f",
+        "glowAnimId": "610f9e67-2308-4a8d-8734-25ca9fe68a5b",
+        "stopGlowAnimId": "54d986cc-ff9c-4ba3-9ce1-fc9e7f7842b3"
+    },
+    {
+        "label": "V9",
+        "id": "2d919ead-5766-4e0d-a3f1-dbc987d63d4e",
+        "openAnimId":"376c8468-67d2-41d4-a8f2-07c395d65e5a",
+        "closeAnimId":"a39b48ab-6be3-421c-a45d-768f344f9d79",
+        "glowAnimId": "ab6bec5e-4efc-40a1-a000-b5537b4c90fe",
+        "stopGlowAnimId": "e620c41b-c52e-4768-ad12-a23abadc2c4e"
+    },
+    {
+        "label": "V11",
+        "id": "017b1594-1149-44f3-a478-ea97e1cd162f",
+        "openAnimId":"a5fa0a7a-7588-4215-8457-4415d824afc4",
+        "closeAnimId":"ba8e9de3-670c-47da-b576-39cb9dac9f7e",
+        "glowAnimId": "0a3a6320-e4e5-4ece-bedd-6b2184ed5151",
+        "stopGlowAnimId": "5d880075-0c13-4bb0-a59b-e7cafe2df012"
+    },
+    {
+        "label": "V12",
+        "id": "23ed8a02-f178-49f3-a090-796ff3be41c9",
+        "openAnimId":"c54b634a-0375-43d6-89a6-e799af1d308d",
+        "closeAnimId":"a2e5f8b1-c191-4e5d-9fd6-6e0635664e11",
+        "glowAnimId": "87cf686d-d979-4a88-ba35-99895546db00",
+        "stopGlowAnimId": "7c871a4f-0781-4b93-a1ba-78c1a8c97585"
+    },
+    {
+        "label": "V14",
+        "id": "96efc3d6-5c05-45b0-a398-07c5862ffe54",
+        "openAnimId":"a82aa290-ee90-487e-a921-e4597aadfb96",
+        "closeAnimId":"fc80d23c-0b6a-4de4-82cc-9cc69934697b",
+        "glowAnimId": "451e35a8-bdc6-4ee5-81b1-f0ff3d00cb16",
+        "stopGlowAnimId": "284158fe-b9c2-434d-9cb1-d83b5b0656b9"
+    },
+    {
+        "label": "V15",
+        "id": "efabdb72-57da-469b-889c-7517c982db5a",
+        "openAnimId":"0d756bb1-2280-4cd9-9dc0-599759a0205a",
+        "closeAnimId":"a7c4ab57-8777-4905-b48a-136d321d438a",
+        "glowAnimId": "da88aa50-d570-4277-b379-98aa87468208",
+        "stopGlowAnimId": "88ed8313-9bc2-4480-8d47-877df5285a0c"
+    },
+    {
+        "label": "V16",
+        "id": "5dc3121e-6264-45b5-ba2b-29b20470ef7d",
+        "openAnimId":"2708134b-9fc3-4354-aca2-2900f5c8443b",
+        "closeAnimId":"b2cef0ae-a71b-4eb6-ae4e-d65eb080cfaa",
+        "glowAnimId": "d391182d-a733-4c22-ba61-582929296ce0",
+        "stopGlowAnimId": "fc801a84-6f5f-49a4-9f37-633ea67fc98f"
+    }
+]

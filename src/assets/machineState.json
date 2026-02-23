@@ -1,0 +1,168 @@
+[
+    {
+        "Key":"Mode",
+        "Label":"Mode",
+        "Value":"Discontinu",
+        "Type":"mode"
+    },
+    {
+        "Key":"BoilerTemp",
+        "Label":"Température liquide",
+        "Value":75,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT2",
+        "Label":"Temp TT2",
+        "Value":75,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT3",
+        "Label":"Temp TT3",
+        "Value":75,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT4",
+        "Label":"Temp TT4",
+        "Value":75,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT5",
+        "Label":"Temp TT5",
+        "Value":75,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"FIC2Rate",
+        "Label":"Débit FIC2",
+        "Value":105,
+        "UnitType": "L/h",
+        "Type":"unit"
+    },
+    {
+        "Key":"Head",
+        "Label": "Head",
+        "Value":75,
+        "UnitType": "%",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"Boiler",
+        "Label": "Boiler",
+        "Value":50.3,
+        "UnitType": "%",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"Feed",
+        "Label": "Feed",
+        "Value":2,
+        "UnitType": "%",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"PreHeating",
+        "Label": "Pre Heating",
+        "Value":10,
+        "UnitType": "%",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"Water",
+        "Label": "Water",
+        "Value":1,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"V2",
+        "Label":"V2",
+        "Value":"false",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V3",
+        "Label":"V3",
+        "Value":"true",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V4",
+        "Label":"V4",
+        "Value":"true",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V5",
+        "Label":"V5",
+        "Value":"true",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V6",
+        "Label":"V6",
+        "Value":"false",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V7",
+        "Label":"V7",
+        "Value":"false",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V8",
+        "Label":"V8",
+        "Value":"true",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V9",
+        "Label":"V9",
+        "Value":"false",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V11",
+        "Label":"V11",
+        "Value":"false",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V12",
+        "Label":"V12",
+        "Value":"false",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V14",
+        "Label":"V14",
+        "Value":"false",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V15",
+        "Label":"V15",
+        "Value":"false",
+        "Type":"vanne"
+    },
+    {
+        "Key":"V16",
+        "Label":"V16",
+        "Value":"false",
+        "Type":"vanne"
+    }
+]
