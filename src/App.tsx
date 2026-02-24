@@ -12,7 +12,7 @@ import {
     DefaultCameraController,
     // useEntities
 } from "@3dverse/livelink-react";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState, type SetStateAction } from "react";
 import { type Entity, type Quat, type Vec3 } from "@3dverse/livelink";
 import { LoadingOverlay } from "@3dverse/livelink-react-ui";
 import "./styles/App.css";
@@ -29,10 +29,11 @@ import { ProjectConstants } from "./projectConstants";
 import { Exercise } from "./models/exercices/exercice";
 import { Step } from "./models/exercices/step";
 import { MachineParameter } from "./models/machineParameter";
-import type { MachineAnimation } from "./models/MachineAnimation";
+import type { MachineAnimation } from "./models/machineAnimation";
 import { MachineMapping } from "./machineMapping";
 import { ExerciseManager } from "./models/exercices/exerciseManager";
 import BasicTextModal from "./modals/basicTextModal";
+import type { IHMDto } from "./models/IHMDto";
 // Scene et token publics
 const scene_id = "05b63dcd-ce5c-4e8f-b363-89a38118462c";
 const token = "public_wfVLwtMF9Rg0rp_k";
@@ -55,7 +56,7 @@ let exerciseManager : ExerciseManager;
 let isHintModalVisible: boolean;
 let machineLabelIdMapping: MachineMapping;
 let isDebugMode: boolean;
-export default function App({isDebugModeInput}) {
+export default function App({isDebugModeInput} : {readonly isDebugModeInput: boolean}) {
     isDebugMode = isDebugModeInput;
     if (!isDebugMode)
         isProjectReadOnly = false;
@@ -64,9 +65,9 @@ export default function App({isDebugModeInput}) {
     exerciseManager = new ExerciseManager();
     // Mapping des exercices
     exercise = exercises.exercises.map(
-        (e: any) => new Exercise(
+        (e) => new Exercise(
             e.description,
-            e.steps.map((s:Step) => Object.assign(new Step(), s))
+            e.steps.map((s) => Object.assign(new Step(), s))
         )
     )[0];
 
@@ -85,23 +86,44 @@ function SceneViewer() {
     const [machineParams, setMachineParams] = useState(keysFromJson);
     const [isExerciseOnGoing, setIsExerciseOnGoing] = useState(false);
     const [isIHMModalVisible, setIsIHMModalVisible] = useState(false);
-    const [waterLevel, setWaterLevel] = useState(0);
     const [statusP1, setStatusP1] = useState(false);
-    const [p1Value, setp1Value] = useState(0);
-    const [TT2Value, setTT2Value] = useState(0);
-    const [TT3Value, setTT3Value] = useState(0);
-    const [TT4Value, setTT4Value] = useState(0);
-    const [TT5Value, setTT5Value] = useState(0);
-    const [lsl1Value, setLsl1Value] = useState(false);
+    // const [p1Value, setp1Value] = useState(0);
+    // const [TT2Value, setTT2Value] = useState(0);
+    // const [TT3Value, setTT3Value] = useState(0);
+    // const [TT4Value, setTT4Value] = useState(0);
+    // const [TT5Value, setTT5Value] = useState(0);
+    // const [lsl1Value, setLsl1Value] = useState(false);
     const [refluxType, setrefluxType] = useState("");
-    const [refluxRate, setrefluxRate] = useState(0);
     const [isBouilleurOn, setIsBouilleurOn] = useState(true);
-    const [bouilleurRate, setBouilleurRate] = useState(0);
-    const [highlighted, setHighlighted] = useState("");
-    const [prechauffeValue, setPrechauffeValue] = useState(0);
+    // const [bouilleurRate, setBouilleurRate] = useState(0);
+    // const [highlighted, setHighlighted] = useState("");
+    // const [prechauffeValue, setPrechauffeValue] = useState(0);
     const [dpic, setDpic] = useState(0);
+    const [ihmDto, setIhmDto] = useState<IHMDto>({
+        waterLevel: 0,
+        isP1On: false,
+        p1Value: 0,
+        isLSL1ok: false,
+        refluxType: "",
+        refluxRate: 0,
+        isBouilleurOn: false,
+        bouilleurRate: 0,
+        highlighted: "",
+        TT2Value: 0,
+        TT3Value: 0,
+        TT4Value: 0,
+        TT5Value: 0,
+        prechauffeValue: 0,
+        dpic: 0,
+        input: datasForIHM,
+        onClose: closeIHMModal,
+        onValueChange: onIHMInputChange
+    });
     let lastLabelClicked = "";
-    
+
+    const updateIhmDto = (key: keyof IHMDto, value: number | string | boolean) => {
+        setIhmDto(prev => ({ ...prev, [key]: value }));
+    };
     //#region Recup Anims
     // Récupération des animations ici car elles ne sont pas lisible avant
     // Ajout des vannes
@@ -135,9 +157,9 @@ const { entity: screen_glow } = useEntity({
 const { entity: bac_de_retention } = useEntity({
     euid: "d6d376eb-3686-4483-926e-82c901e04f21",
 });
-const { entity: bac_de_retention_glow } = useEntity({
-    euid: "be244dc8-0da4-4036-94ba-b1d875c24134",
-});
+// const { entity: bac_de_retention_glow } = useEntity({
+//     euid: "be244dc8-0da4-4036-94ba-b1d875c24134",
+// });
 const { entity: bac_de_retention_out } = useEntity({
     euid: "418eeee8-7509-46c3-b356-7fa34fdcac90",
 });
@@ -186,9 +208,9 @@ const { entity: v16_in } = useEntity({
 });
 
 // V2
-const { entity: v2_out } = useEntity({
-    euid: "f04997e6-57aa-4e3c-b864-696319b7011d",
-});
+// const { entity: v2_out } = useEntity({
+//     euid: "f04997e6-57aa-4e3c-b864-696319b7011d",
+// });
 const { entity: v2_in } = useEntity({
     euid: "2089b454-c72a-4d8b-acfc-8716553613da",
 });
@@ -244,9 +266,9 @@ const { entity: v15_in } = useEntity({
 
 
 
-const { entity: v18Anim_script } = useEntity({
-    euid: "86e63a74-e492-4ca0-b264-71f003c64d53",
-});
+// const { entity: v18Anim_script } = useEntity({
+//     euid: "86e63a74-e492-4ca0-b264-71f003c64d53",
+// });
 const { entity: tubes } = useEntity({
     euid: "e4adcce0-b38e-413a-8097-2bf4b079b374",
 });
@@ -578,7 +600,7 @@ function onVanneClicked(){
     launchVanneAnimIfNeeded(machineParam,AnimationIdvanneIdMapping[pickedEntity!.entity.id]);
 }
 
-function onMachineStateHover(key, status){
+function onMachineStateHover(key: string, status: boolean){
     if (status)
         AnimationHelper.launchAnim(allMachineAnimations[AnimationHelper.getAnimationName(key,AnimationTypes.glow)].animationController);
     else
@@ -645,16 +667,17 @@ function resetMachineToStart(){
     AnimationHelper.closeAnim(screen_glow);
     AnimationHelper.launchAnim(v16_out);
     AnimationHelper.launchAnim(v8_out)
-    setLsl1Value(false);
-    setTT2Value(0);
-    setTT3Value(0);
-    setTT4Value(0);
-    setTT5Value(0);
-    setBouilleurRate(0);
-    setrefluxRate(0);
-    setWaterLevel(0);
+    updateIhmDto('isLSL1ok',false)
+    updateIhmDto("TT2Value",0)
+    updateIhmDto("TT3Value",0)
+    updateIhmDto("TT4Value",0)
+    updateIhmDto("TT5Value",0)
+    updateIhmDto("bouilleurRate",0)
+    updateIhmDto("refluxRate",0)
+    updateIhmDto("waterLevel",0)
+    updateIhmDto("prechauffeValue",0)
+    
     setDpic(0);
-    setPrechauffeValue(0);
     setStatusP1(false);
     setIsBouilleurOn(false);
 }
@@ -706,10 +729,11 @@ async function moveCameraToIHMAndChangeWaterLevel(){
 
 async function showIHMAndSetWaterLevel(){
     setIsIHMModalVisible(true);
-    setTimeout(() => setHighlighted("water"),1000);
-    setTimeout(() => setWaterLevel(1),1500);
-    setTimeout(() => setWaterLevel(15),2000);
-    setTimeout(() => setWaterLevel(150),2500);
+    
+    setTimeout(() => updateIhmDto("highlighted","water"),1000);
+    setTimeout(() => updateIhmDto("waterLevel",1),1500);
+    setTimeout(() => updateIhmDto("waterLevel",15),2000);
+    setTimeout(() => updateIhmDto("waterLevel",150),2500);
     setTimeout(() => setIsIHMModalVisible(false),4000);
     setTimeout(() => moveToV2(),5000);
 }
@@ -729,12 +753,13 @@ async function moveCameraToIHMAndChangeP1(){
 }
 async function showIHMAndSetP1(){
     setIsIHMModalVisible(true);
-    setTimeout(() => setHighlighted("statutP1"),1000);
+    setTimeout(() => updateIhmDto("waterLevel",150),2500);
+    setTimeout(() => updateIhmDto("highlighted","statutP1"),1000);
     setTimeout(() => setStatusP1(true),2000);
-    setTimeout(() => setHighlighted("feed"),3500);
-    setTimeout(() => setp1Value(5),4500);
-    setTimeout(() => setp1Value(50),5200);
-    setTimeout(() => setHighlighted("lsl1"),6700);
+    setTimeout(() => updateIhmDto("highlighted","feed"),3500);
+    setTimeout(() => updateIhmDto("p1Value",5),4500);
+    setTimeout(() => updateIhmDto("p1Value",50),5200);
+    setTimeout(() => updateIhmDto("highlighted","lsl1"),6700);
     setTimeout(() => setIsIHMModalVisible(false),8500);
     setTimeout(() => launchFillBoilerAnimAndShowLsl1(),9000);
 }
@@ -743,29 +768,29 @@ async function launchFillBoilerAnimAndShowLsl1(){
     setTimeout(() =>  cameraControllerRef.current?.setLookAt(-0.15,1,0.5,-0.15,1,0,true));
     setTimeout(() => AnimationHelper.launchAnim(fill_bouilleur),2000);
     setTimeout(() => setIsIHMModalVisible(true),6000);
-    setTimeout(() => setHighlighted("lsl1"),6700);
-    setTimeout(() => setLsl1Value(true),7500);
+    setTimeout(() => updateIhmDto("highlighted","lsl1"),6700);
+    setTimeout(() => updateIhmDto("isLSL1ok",true),7500);
     setTimeout(() => setRefluxValues(),9000);
 
 }
 
 async function setRefluxValues(){
-    setTimeout(() => setHighlighted("refluxType"),1000);
+    // setTimeout(() => setHighlighted("refluxType"),1000);
     setTimeout(() => setrefluxType("MANU"),2500);
-    setTimeout(() => setrefluxRate(1),4000);
-    setTimeout(() => setrefluxRate(10),4500);
-    setTimeout(() => setrefluxRate(100),5500);
+    // setTimeout(() => setrefluxRate(1),4000);
+    // setTimeout(() => setrefluxRate(10),4500);
+    // setTimeout(() => setrefluxRate(100),5500);
     setTimeout(() => setP1StatusAndBoiler(),7500);
 }
 
 async function setP1StatusAndBoiler(){
-    setTimeout(() => setHighlighted("statutP1"),1000);
+    // setTimeout(() => setHighlighted("statutP1"),1000);
     setTimeout(() => setStatusP1(false),2500);
-    setTimeout(() => setHighlighted("bouilleurStatus"),4000);
+    // setTimeout(() => setHighlighted("bouilleurStatus"),4000);
     setTimeout(() => setIsBouilleurOn(true),6000);
-    setTimeout(() => setHighlighted("bouilleurRate"),7500);
-    setTimeout(() => setBouilleurRate(5),8500);
-    setTimeout(() => setBouilleurRate(50),9000);
+    // setTimeout(() => setHighlighted("bouilleurRate"),7500);
+    // setTimeout(() => setBouilleurRate(5),8500);
+    // setTimeout(() => setBouilleurRate(50),9000);
     setTimeout(() => setIsIHMModalVisible(false),10500);
     setTimeout(() => AnimationHelper.launchAnim(heat_boiler),11000);
     setTimeout(() => launchBellAnimAndMoveCamera(),13000);
@@ -778,26 +803,26 @@ async function launchBellAnimAndMoveCamera(){
 }
 async function showIHMAndUpdateTT(){
     setTimeout(() => setIsIHMModalVisible(true),1000);
-    setTimeout(() => setHighlighted("TT"),1500);
-    setTimeout(() => setTT2Value(50),3000);
-    setTimeout(() => setTT3Value(50),3000);
-    setTimeout(() => setTT4Value(50),3000);
-    setTimeout(() => setTT5Value(50),3000);
+    // setTimeout(() => setHighlighted("TT"),1500);
+    // setTimeout(() => setTT2Value(50),3000);
+    // setTimeout(() => setTT3Value(50),3000);
+    // setTimeout(() => setTT4Value(50),3000);
+    // setTimeout(() => setTT5Value(50),3000);
 
-    setTimeout(() => setTT2Value(80),3500);
-    setTimeout(() => setTT3Value(75),3500);
-    setTimeout(() => setTT4Value(70),3500);
-    setTimeout(() => setTT5Value(65),3500);
+    // setTimeout(() => setTT2Value(80),3500);
+    // setTimeout(() => setTT3Value(75),3500);
+    // setTimeout(() => setTT4Value(70),3500);
+    // setTimeout(() => setTT5Value(65),3500);
 
-    setTimeout(() => setTT2Value(85),4000);
-    setTimeout(() => setTT3Value(80),4000);
-    setTimeout(() => setTT4Value(75),4000);
-    setTimeout(() => setTT5Value(70),4000);
+    // setTimeout(() => setTT2Value(85),4000);
+    // setTimeout(() => setTT3Value(80),4000);
+    // setTimeout(() => setTT4Value(75),4000);
+    // setTimeout(() => setTT5Value(70),4000);
     
-    setTimeout(() => setTT2Value(95),4500);
-    setTimeout(() => setTT3Value(92),4500);
-    setTimeout(() => setTT4Value(89),4500);
-    setTimeout(() => setTT5Value(85),4500);
+    // setTimeout(() => setTT2Value(95),4500);
+    // setTimeout(() => setTT3Value(92),4500);
+    // setTimeout(() => setTT4Value(89),4500);
+    // setTimeout(() => setTT5Value(85),4500);
     setTimeout(() => setIsIHMModalVisible(false),6500);
     setTimeout(() => moveToV8(), 7500);
 }
@@ -810,14 +835,14 @@ async function moveToV8(){
 
 async function showIHMAndSetP1_2(){
     setIsIHMModalVisible(true);
-    setTimeout(() => setHighlighted("prechauffe"),1000);
-    setTimeout(() => setPrechauffeValue(9),2000);
-    setTimeout(() => setPrechauffeValue(95),3000);
+    // setTimeout(() => setHighlighted("prechauffe"),1000);
+    // setTimeout(() => setPrechauffeValue(9),2000);
+    // setTimeout(() => setPrechauffeValue(95),3000);
     setTimeout(() => SetDpic(),4000);
 }
 
 async function SetDpic(){
-    setTimeout(() => setHighlighted("dpic"),1000);
+    // setTimeout(() => setHighlighted("dpic"),1000);
     setTimeout(() => setDpic(1),2000);
     setTimeout(() => setDpic(13),2500);
     setTimeout(() => setIsIHMModalVisible(false),3500);
@@ -907,20 +932,20 @@ function isStepValidated() : boolean {
     return isValidated;
 }
 
-function isValidatedFromIHM(label,expectedValue) : boolean{
+function isValidatedFromIHM(label: string,expectedValue: string | boolean | number) : boolean{
     switch(label){
         case "waterlevel":
-            return waterLevel == expectedValue;
+            return ihmDto.waterLevel == expectedValue;
         case "isP1On":
             return statusP1 == expectedValue;
         case "refluxType":
             return refluxType == expectedValue;
         case "refluxRate":
-            return refluxRate == expectedValue;
+            return ihmDto.refluxRate == expectedValue;
         case "isBouilleurOn":
             return isBouilleurOn == expectedValue;
         case "bouilleurRate":
-            return bouilleurRate == expectedValue;
+            return ihmDto.bouilleurRate == expectedValue;
         case "dpic":
             return dpic == expectedValue;
     }
@@ -954,40 +979,40 @@ function onStepValidated(){
 
 
 
-function onIHMInputChange(label, value){
+function onIHMInputChange(label: string, value: SetStateAction<number> | SetStateAction<boolean> | SetStateAction<string>){
     console.log(label);
     console.log(value);
-    switch(label){
-        case "bouilleurRate":
-            setBouilleurRate(value);
-            break;
-        case "p1Value":
-            setp1Value(value);
-            break;
-        case "isP1On":
-            setStatusP1(value);
-            break;
-        case "prechauffeValue":
-            setPrechauffeValue(value);
-            break;
-        case "waterLevel":
-            setWaterLevel(value);
-            break;
-        case "dpic":
-            setDpic(value);
-            break;
-        case "reflux":
-            setrefluxType(value);
-            break;
-        case "isBouilleurOn":
-            setIsBouilleurOn(value);
-            break;
-        case "refluxRate":
-            setrefluxRate(value);
-            break;
+    // switch(label){
+    //     case "bouilleurRate":
+    //         setBouilleurRate(value as SetStateAction<number>);
+    //         break;
+    //     case "p1Value":
+    //         setp1Value(value as SetStateAction<number>);
+    //         break;
+    //     case "isP1On":
+    //         setStatusP1(value as SetStateAction<boolean>);
+    //         break;
+    //     case "prechauffeValue":
+    //         setPrechauffeValue(value as SetStateAction<number>);
+    //         break;
+    //     case "waterLevel":
+    //         setWaterLevel(value as SetStateAction<number>);
+    //         break;
+    //     case "dpic":
+    //         setDpic(value as SetStateAction<number>);
+    //         break;
+    //     case "reflux":
+    //         setrefluxType(value as SetStateAction<string>);
+    //         break;
+    //     case "isBouilleurOn":
+    //         setIsBouilleurOn(value as SetStateAction<boolean>);
+    //         break;
+    //     case "refluxRate":
+    //         setrefluxRate(value as SetStateAction<number>);
+    //         break;
 
             
-    }
+    // }
     if (isExerciseOnGoing)
     {
 
@@ -1113,24 +1138,8 @@ function onIHMInputChange(label, value){
                     :
                     (
                         <div className={`absolute top-[25vh] left-[70vh]`}>
-                            <IHM input={datasForIHM}
-                            onClose={closeIHMModal}
-                            waterLevel={waterLevel}
-                            isP1On={statusP1}
-                            p1Value={p1Value}
-                            refluxType={refluxType}
-                            refluxRate={refluxRate}
-                            isLSL1ok={lsl1Value}
-                            bouilleurRate={bouilleurRate}
-                            isBouilleurOn={isBouilleurOn}
-                            highlighted={highlighted}
-                            TT2Value={TT2Value}
-                            TT3Value={TT3Value}
-                            TT4Value={TT4Value}
-                            TT5Value={TT5Value}
-                            prechauffeValue={prechauffeValue}
-                            dpic={dpic}
-                            onValueChange={onIHMInputChange}
+                            <IHM
+                            dto={ihmDto}
                             />
                         </div>
                     )
@@ -1165,10 +1174,10 @@ function onIHMInputChange(label, value){
     //#endregion
 }
 
-function replaceCamera(cameraController : DefaultCameraController | null){
+// function replaceCamera(cameraController : DefaultCameraController | null){
     
-    cameraController?.setLookAt(0,1.3,2.5,0,1.3,0,true);
-}
+//     cameraController?.setLookAt(0,1.3,2.5,0,1.3,0,true);
+// }
 /**
  * Ajout des animations d'une vanne dans le tableau d'animation. Les vannes ont 3 animations, ouverture, fermeture, clignotement
  * @param vanneEntityBaseName Nom de la vanne (ex "V2")
@@ -1227,7 +1236,10 @@ function setMachineStateDatas(){
                 launchVanneAnimIfNeeded(k,k.key);
             }
             else
-                launchAnimIfNeeded(k);
+            {
+                console.log("launchAnimIfNeeded(k)")
+            }
+                // launchAnimIfNeeded(k);
         });
     }
     testRules();
@@ -1266,10 +1278,9 @@ function launchValveErrors(value: boolean){
 function revealErrors(){
     alert("REVEAL ERROSRS");
 }
-function launchAnimIfNeeded(param : MachineParameter)
-{
-
-}
+// function launchAnimIfNeeded(param : MachineParameter)
+// {
+// }
 function launchVanneAnimIfNeeded(param : MachineParameter, vanneLabel: string){
         if (param.value === "true")
             AnimationHelper.launchAnim(allMachineAnimations[AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.open)].animationController);
