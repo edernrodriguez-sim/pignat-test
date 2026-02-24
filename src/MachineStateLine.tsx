@@ -1,16 +1,19 @@
+import type { MachineStateLineDto } from "./models/machineStateLineDto";
 
-function MachineStateLine({param, onHover }){
+function MachineStateLine({ machineStateLineDto } : { machineStateLineDto :MachineStateLineDto }){
 
-    const handleHover = (label, isHovering) => {
-        onHover(label,isHovering);
+    const handleHover = (label: string, isHovering: boolean) => {
+        machineStateLineDto.onHover(label,isHovering);
     };
 
     const hoverProps = (label: string) => ({
         onMouseEnter: () => handleHover(label, true),
         onMouseLeave: () => handleHover(label, false),
     })
+
+    const param = machineStateLineDto.param;
     const renderParam = () => {
-        switch(param.type) {
+        switch(machineStateLineDto.param.type) {
             // Affichage d'un élément coché ou non
             case "bool":
             case "vanne":

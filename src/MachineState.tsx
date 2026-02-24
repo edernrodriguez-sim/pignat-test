@@ -1,16 +1,17 @@
 import MachineStateLine from "./MachineStateLine";
+import type { MachineStateDto } from "./models/machineStateDto";
 
-export function MachineState({value, onHover, isReadOnly, toggleReadOnly}){
+export function MachineState({machineStateDto} : { machineStateDto: MachineStateDto}){
 
     const onReadOnlyBtnClick = () => {
-        toggleReadOnly();
+        machineStateDto.toggleReadOnly();
     }
     return (
         <>
         <div id="machineStateTitle"  onClick={onReadOnlyBtnClick}  className="titleDiv">
             <b>État de la machine</b>
             {
-                isReadOnly ? 
+                machineStateDto.isReadOnly ? 
                 (<button id="readOnlyBtnOn" className="readOnlyBtn">Lecture seule</button>)
                 :
                 (<button id="readOnlyBtnOff" className="readOnlyBtn">Modifiable</button>)
@@ -19,11 +20,12 @@ export function MachineState({value, onHover, isReadOnly, toggleReadOnly}){
         </div>
         <div  className="contentDiv">
         {
-            value.map((param) => (
+            machineStateDto.value.map((param) => (
                 <MachineStateLine
-                param={param}
-                onHover={onHover}
-                key={param.key}>
+                machineStateLineDto={{param:param, onHover:machineStateDto.onHover}}
+                key={param.key}
+                >
+
                 </MachineStateLine>
             ))
         }

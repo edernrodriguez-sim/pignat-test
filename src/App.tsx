@@ -34,6 +34,7 @@ import { MachineMapping } from "./machineMapping";
 import { ExerciseManager } from "./models/exercices/exerciseManager";
 import BasicTextModal from "./modals/basicTextModal";
 import type { IHMDto } from "./models/IHMDto";
+import type { MachineStateDto } from "./models/machineStateDto";
 // Scene et token publics
 const scene_id = "05b63dcd-ce5c-4e8f-b363-89a38118462c";
 const token = "public_wfVLwtMF9Rg0rp_k";
@@ -118,6 +119,13 @@ function SceneViewer() {
         input: datasForIHM,
         onClose: closeIHMModal,
         onValueChange: onIHMInputChange
+    });
+
+    const [machineStateDto] = useState<MachineStateDto>({
+        isReadOnly: isProjectReadOnly,
+        toggleReadOnly: toggleIsReadOnly,
+        value: machineParams,
+        onHover: onMachineStateHover
     });
     let lastLabelClicked = "";
 
@@ -1040,10 +1048,7 @@ function onIHMInputChange(label: string, value: SetStateAction<number> | SetStat
                     isDebugMode && (
                     <div className={`absolute top-[2vh] left-[2vh]`}>
                         <MachineState
-                            value={machineParams} 
-                            onHover={onMachineStateHover} 
-                            isReadOnly={isProjectReadOnly} 
-                            toggleReadOnly={toggleIsReadOnly}
+                            machineStateDto={machineStateDto}
                         />
                     </div>
                     )
@@ -1097,7 +1102,7 @@ function onIHMInputChange(label: string, value: SetStateAction<number> | SetStat
                     isHintModalVisible ? 
                     (
                     <div className={`absolute bottom-[40vh] right-[92vh]`}>
-                        <BasicTextModal text={exerciseManager.getCurrentStepHint()} onBasicModalClose={hideStepHint} />
+                        <BasicTextModal basicTextModalDto={{text:exerciseManager.getCurrentStepHint(), onBasicModalClose: hideStepHint}} />
                     </div>
                     )
                     : ("")

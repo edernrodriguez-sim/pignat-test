@@ -1,11 +1,13 @@
-function BasicTextModal({text, onBasicModalClose}){
+import type { BasicTextModalDto } from "./basicTextModalDto";
+
+function BasicTextModal({basicTextModalDto} : { readonly basicTextModalDto: BasicTextModalDto}){
     const onOkClick = () => {
-        onBasicModalClose();
+        basicTextModalDto.onBasicModalClose();
     }
 
     return (
     <div id="basic-text-modal">
-        <p>{text}</p>
+        <p>{basicTextModalDto.text}</p>
         <button className="basicBtn" onClick={onOkClick}>Ok</button>
     </div>
     )
