@@ -5,6 +5,7 @@ import { Canvas, Livelink, useClients,  Viewport } from '@3dverse/livelink-react
 import { LoadingOverlay } from '@3dverse/livelink-react-ui';
 // import { useMqttListener } from './useMqttListener';
 import { ProjectConstants } from './projectConstants';
+import Logo from './assets/Logo.jpg'
 
 function Home() {
     const token = "public_wfVLwtMF9Rg0rp_k";
@@ -42,7 +43,7 @@ function Home() {
     // Sinon, afficher les boutons
     return (
         <div id="home">
-            <img src="./src/assets/Logo.jpg" />
+            <img src={Logo} />
             <div>
                 <button onClick={() => setAppMode(ProjectConstants.APP_MODE_MAINTENANCE)}>
                     Mode Support
