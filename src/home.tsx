@@ -45,9 +45,9 @@ function Home() {
         <div id="home">
             <img src={Logo} />
             <div>
-                <button onClick={() => setAppMode(ProjectConstants.APP_MODE_MAINTENANCE)}>
+                {/*<button onClick={() => setAppMode(ProjectConstants.APP_MODE_MAINTENANCE)}>
                     Mode Support
-                </button>
+                </button>*/}
                 {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
                     Mode Exercice
                 </button> */}
