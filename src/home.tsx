@@ -42,14 +42,14 @@ function Home() {
     // Sinon, afficher les boutons
     return (
         <div id="home">
-            <img src="/src/assets/Logo.jpg" />
+            <img src="./src/assets/Logo.jpg" />
             <div>
                 <button onClick={() => setAppMode(ProjectConstants.APP_MODE_MAINTENANCE)}>
                     Mode Support
                 </button>
-                <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
+                {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
                     Mode Exercice
-                </button>
+                </button> */}
                 
                 <button onClick={() => setAppMode(ProjectConstants.APP_MODE_ANIMCONTINUE)}>
                     Animation Continue
