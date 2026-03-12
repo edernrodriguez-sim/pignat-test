@@ -12,6 +12,7 @@ export interface IHMDto {
     isBouilleurOn: boolean;
     bouilleurRate: number;
     highlighted: string;
+    TT1Value: number;
     TT2Value: number;
     TT3Value: number;
     TT4Value: number;

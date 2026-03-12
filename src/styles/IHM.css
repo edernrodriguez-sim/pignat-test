@@ -31,6 +31,10 @@
     }
 }
 
+.d-flex {
+    display: flex;
+}
+
 .ihm-line {
     padding: 1vh;
     text-align: left;
@@ -54,4 +58,9 @@
 
 .highlighted {
     background-color: rgb(255, 255, 158);
+}
+
+.ihmPicture {
+    min-height: 20vw;
+    min-width: 20vw;
 }

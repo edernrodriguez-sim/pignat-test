@@ -72,6 +72,37 @@
         "showInIHM": true
     },
     {
+        "Key":"FSL1",
+        "Label": "FSL1",
+        "Value":1,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"H1",
+        "Label": "H1",
+        "Value":false,
+        "Type":"vanne",
+        "showInIHM": false
+    }, 
+    {
+        "Key":"TTC6",
+        "Label": "TTC6",
+        "Value":30,
+        "UnitType": "°C",
+        "Type":"unit",
+        "showInIHM": true
+    }, 
+    {
+        "Key":"FIC2",
+        "Label": "FIC2",
+        "Value":20,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    }, 
+    {
         "Key":"PreHeating",
         "Label": "Pre Heating",
         "Value":10,

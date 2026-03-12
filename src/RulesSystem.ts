@@ -2,14 +2,14 @@ import type { MachineParameter } from "./models/machineParameter";
 
     // Systeme de règle permettant de faire des schémas de vérification
     export type Rule =
-    | { name: string, rule: "isTrue"; params: string, errorMessage: string }
-    | { name: string, rule: "isFalse"; params: string, errorMessage: string }
-    | { name: string, rule: "equals"; params: string; value: string, errorMessage: string }
-    | { name: string, rule: "greaterThan"; params: string; value: number, errorMessage: string }
-    | { name: string, rule: "lessThan"; params: string; value: number, errorMessage: string }
-    | { name: string, rule: "onlyOneTrue"; params: string[], errorMessage: string }
-    | { name: string, rule: "and"; rules: Rule[], errorMessage: string }
-    | { name: string, rule: "or"; rules: Rule[], errorMessage: string };
+    | { name: string, rule: "isTrue"; params: string, errorMessage: string, conditions: Rule[] | undefined }
+    | { name: string, rule: "isFalse"; params: string, errorMessage: string, conditions: Rule[] |undefined }
+    | { name: string, rule: "equals"; params: string; value: string, errorMessage: string, conditions: Rule[] | undefined }
+    | { name: string, rule: "greaterThan"; params: string; value: number, errorMessage: string, conditions: Rule[] | undefined }
+    | { name: string, rule: "lessThan"; params: string; value: number, errorMessage: string, conditions: Rule[] | undefined }
+    | { name: string, rule: "onlyOneTrue"; params: string[], errorMessage: string, conditions: Rule[] | undefined }
+    | { name: string, rule: "and"; rules: Rule[], errorMessage: string, conditions: Rule[] | undefined }
+    | { name: string, rule: "or"; rules: Rule[], errorMessage: string, conditions: Rule[] | undefined };
 
     export type RuleResult =
     | { name: string, result: string, errorMessage: string }
@@ -17,6 +17,7 @@ import type { MachineParameter } from "./models/machineParameter";
 export class RulesSystem {
 
     testRule(rule: Rule, params: MachineParameter[]): boolean {
+
     switch (rule.rule) {
         // Vérification si la valeur du paramètre est égale à vrai
         case "isTrue": {
@@ -54,7 +55,7 @@ export class RulesSystem {
     // Récupération d'une valeur en fonction de sa clé
     // params : Liste des paramètres à filtrer
     // key : Clé de l'élément à récupérer
-    getValueString(params: MachineParameter[], key: string): string | number | undefined {
+    getValueString(params: MachineParameter[], key: string): string | number | boolean | undefined {
         return params.find(p => p.key === key)?.value;
     }
 

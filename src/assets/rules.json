@@ -25,5 +25,50 @@
         ],
         "errorMessage": "La température doit être comprise entre 20°c et 80°c."
 
+    },
+    {
+        "name": "Débit pompe préchauffage",
+        "rule":"greaterThan",
+        "params":"FSL1",
+        "value": 1,
+        "errorMessage": "La débit de la pompe de préchauffage doit être supérieur à 1 L/h. Vérifier que V1 n'est pas ouverte."
+
+    },
+    {
+        "name": "Vanne V8",
+        "rule":"isFalse",
+        "params":"V8",
+        "value": false,
+        "errorMessage": "La vanne V8 est fermée. Veuillez l'ouvrir avant de lancer un cycle."
+
+    },
+    {
+        "name": "Vanne V9",
+        "rule":"isTrue",
+        "params":"V9",
+        "value": true,
+        "errorMessage": "La vanne V9 est ouverte. Veuillez la fermer avant de lancer un cycle."
+
+    },
+    {
+        "name": "Allumage résistance",
+        "rule":"isTrue",
+        "params":"H1",
+        "value": false,
+        "errorMessage": "La résistance est éteinte."
+    },
+    {
+        "name": "Température résistance",
+        "rule":"isLessThan",
+        "params":"TTC6",
+        "value": 30,
+        "errorMessage": "La température de la résistance est trop basse."
+    },
+    {
+        "name": "Débit pompe eau",
+        "rule":"isLessThan",
+        "params":"FIC2",
+        "value": 20,
+        "errorMessage": "Lé débit d'eau est trop bas."
     }
 ]

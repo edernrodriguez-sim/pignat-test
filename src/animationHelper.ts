@@ -12,7 +12,16 @@ export class AnimationHelper {
         
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
+            controller.playbackSpeed = 1;
             controller.playState = 1;
+        }
+    }
+
+     public static pauseAnim(animToLaunch: Entity | undefined | null){
+        
+        if (animToLaunch !== undefined && animToLaunch !== null){
+            const controller = animToLaunch.animation_sequence_controller!;
+            controller.playbackSpeed = 0;
         }
     }
 

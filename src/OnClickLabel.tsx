@@ -31,6 +31,7 @@ export default function OnClickLabel() {
         <Livelink
             sceneId={scene_id}
             token={token}
+             isTransient={true}
             LoadingPanel={LoadingOverlay}
         >
             <AppLayout />

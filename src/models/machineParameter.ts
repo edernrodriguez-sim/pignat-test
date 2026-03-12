@@ -1,13 +1,13 @@
 export class MachineParameter {
     key:string;
     label:string;
-    value:string | number;
+    value:string | number | boolean;
     unitType: string | undefined;
     type:string;
     showInIHM: boolean = false;
   constructor(key : string,
     label: string,
-    value : string | number,
+    value : string | number | boolean,
     type : string,
     unitType: string | undefined,
     showInIHM: boolean | undefined) {

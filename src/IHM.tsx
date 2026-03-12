@@ -39,6 +39,10 @@ export function IHM({ dto } : {dto: IHMDto}){
                     <h1>IHM</h1>
                 </div>
                 <div>
+                    {/* <div>
+                        <img className="ihmPicture" src="/src/assets/Synoptique Dalle.jpg" />
+                        <span>Test 0</span>
+                    </div> */}
                     <div id="ihm-modal-content">
                         <div>
                             <div className="ihm-line">
