@@ -52,7 +52,7 @@ export function IHM({ dto } : {dto: IHMDto}){
                                 <span> %</span>
                             </div>
                             <div className={`ihm-line ${dto.highlighted === "bouilleurRate" ? 'highlighted':''}`}>
-                                <span>Boiler : </span>
+                                <span>Bouilleur : </span>
                                 <input type="number" placeholder="0" value={dto.bouilleurRate} className="color-red"
                                 onChange={(e) => {handleInputChange("bouilleurRate",Number(e.target.value));}} />
                                 <span> %</span>
@@ -69,11 +69,18 @@ export function IHM({ dto } : {dto: IHMDto}){
                                 onChange={(e) => handleInputChange("isP1On",Number(e.target.checked))} />
                                 { dto.isP1On ? <span> ON</span> : <span> OFF</span>}
                             </div>
+                            
+                            <div className={`ihm-line ${dto.highlighted === "statutH1" ? 'highlighted':''}`}>
+                                <span>Statut H1 : </span>
+                                <input type="checkbox" checked={dto.isH1On}   className="color-red"
+                                onChange={(e) => handleInputChange("isH1On",Number(e.target.checked))} />
+                                { dto.isH1On ? <span> ON</span> : <span> OFF</span>}
+                            </div>
                             <div className={`ihm-line ${dto.highlighted === "prechauffe" ? 'highlighted':''}`}>
-                                <span>Pre Heating : </span>
+                                <span>TIC 06 : </span>
                                 <input type="number" placeholder="0" value={dto.prechauffeValue} className="color-red"
                                 onChange={(e) => handleInputChange("prechauffeValue",Number(e.target.value))} />
-                                <span> %</span>
+                                <span> °c</span>
                             </div>
                             <div className={`ihm-line ${dto.highlighted === "water" ? 'highlighted':''}`}>
                                 <span>Water : </span>
@@ -120,16 +127,19 @@ export function IHM({ dto } : {dto: IHMDto}){
                             </div>
                         <div className={`ihm-line ${dto.highlighted === "TT" ? 'highlighted':''}`}>
                             <div>
-                                <span>TT2 : {dto.TT2Value}</span>
-                            </div>
-                            <div>
-                                <span>TT3 : {dto.TT3Value}</span>
+                                <span>TT5 : {dto.TT5Value}</span>
                             </div>
                             <div>
                                 <span>TT4 : {dto.TT4Value}</span>
                             </div>
                             <div>
-                                <span>TT5 : {dto.TT5Value}</span>
+                                <span>TT3 : {dto.TT3Value}</span>
+                            </div>
+                            <div>
+                                <span>TT2 : {dto.TT2Value}</span>
+                            </div>
+                            <div>
+                                <span>TT1 : {dto.TT1Value}</span>
                             </div>
 
                         </div>

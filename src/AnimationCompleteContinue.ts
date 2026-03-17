@@ -13,7 +13,7 @@ export function LaunchAnimationCompleteContinue({ input } : { input : AnimDiscon
     input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
     // // 2°) Launching bac placement animation
     setTimeout(() => launchBacInAnimation(),2500);
-    //launchFillPrechauffeur();
+    //moveCameraToBottomPrechauff();
 
 async function launchBacInAnimation(){
     AnimationHelper.launchAnim(input.animationEntities.bac_de_retention_in);
@@ -70,17 +70,7 @@ async function moveToFirstWaterPositionAndLaunchAnim(){
 
 async function moveToSecondWaterPosition(){
     input.cameraControllerRef.current?.setLookAt(0.1,0.4,-0.7,0.2,0.5,0,true);
-    setTimeout(() => moveToV2(),7000);
-}
-
-async function moveToV2(){
-    input.cameraControllerRef.current?.setLookAt(-0.4,1.8,0.6,-0.4,1.8,0,true);
-    setTimeout(() => openV2(),1500);
-}
-
-async function openV2(){
-    AnimationHelper.launchAnim(input.animationEntities.v2_in);
-    setTimeout(() => moveCameraToIHMAndChangeP1(),2000);
+    setTimeout(() => moveCameraToIHMAndChangeP1(),7000);
 }
 async function moveCameraToIHMAndChangeP1(){
     input.cameraControllerRef.current?.setLookAt(0.65,1.5,1,0.65,1.5,0,true);
@@ -133,23 +123,43 @@ async function launchFillPrechauffeur(){
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.prechauffeur_fill),1000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.prechauffeur_horizontal_entry_fill),2000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.prechauffeur_parallel_fill),2500);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.46,1.95,0.3,-0.4,1.95,0,true),3500);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.prechauffeur_fill_horizon_top),3000);
-    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.46,1.95,0.3,-0.4,1.95,0,true),4500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.postPrechauffeurTube1_fill),6500);
-    setTimeout(() => AnimationHelper.pauseAnim(input.animationEntities.postPrechauffeurTube1_fill),6600);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.postPrechauffeurTube1_V2),7600);
-    setTimeout(() => launchFillBoilerAnimAndShowLsl1(),8700);
+    setTimeout(() => moveToV4AndOpen(),9000);
+}
+
+async function moveToV4AndOpen(){
+    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(-0.4,1.4,0.6,-0.4,1.4,0,true),500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v4_in),1500);
+    setTimeout(() => launchFillBoilerAnimAndShowLsl1(),2500);
 }
 
 async function launchFillBoilerAnimAndShowLsl1(){
-    setTimeout(() => input.setIsIHMModalVisible(true),1000);
-    setTimeout(() => input.updateIhmDto("highlighted","lsl1"),1700);
-    setTimeout(() => input.updateIhmDto("isLSL1ok",true),2500);
-    setTimeout(() => input.setIsIHMModalVisible(false),3500);
     
-    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.15,1,0.6,-0.15,1,0,true),3500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bouilleur_continu),4500);
-    setTimeout(() => setRefluxValues(), 6000);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.15,1,0.6,-0.15,1,0,true),500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bouilleur_continu),1500);
+    
+    
+    setTimeout(() => input.setIsIHMModalVisible(true),5000);
+    setTimeout(() => input.updateIhmDto("highlighted","lsl1"),5700);
+    setTimeout(() => input.updateIhmDto("isLSL1ok",true),6400);
+    setTimeout(() => input.setIsIHMModalVisible(false),7400);
+    setTimeout(() => closeV4OpenV2(), 8400);
+}
+
+async function closeV4OpenV2(){
+    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(-0.4,1.4,0.6,-0.4,1.4,0,true),500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v4_out),1500);
+    setTimeout(() => moveToV2(),2500);
+}
+async function moveToV2(){
+    input.cameraControllerRef.current?.setLookAt(-0.4,1.8,0.6,-0.4,1.8,0,true);
+    setTimeout(() => openV2(),1500);
+}
+
+async function openV2(){
+    AnimationHelper.launchAnim(input.animationEntities.v2_in);
+    setTimeout(() => setRefluxValues(),2000);
 }
 
 async function setRefluxValues(){
@@ -167,36 +177,57 @@ async function setRefluxValues(){
 async function moveCameraToBobine(){
     setTimeout(() => AnimationHelper.closeAnim(input.animationEntities.soutirage_cycle), 100);
     input.cameraControllerRef.current?.setLookAt(-0.1,2.2,0.5,-0.1,2.2,0,true);
-    setTimeout(() => setP1StatusAndBoiler(), 2000);
+    setTimeout(() => moveToV8(), 2000);
 }
+
+
+async function moveToV8(){
+    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(-0.1,0.5,0.5,-0.1,0.5,0,true),500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v8_in),1500);
+    setTimeout(() => setP1StatusAndBoiler(),3000);
+}
+
+
+
 async function setP1StatusAndBoiler(){
     input.setIsIHMModalVisible(true)
-    setTimeout(() => input.updateIhmDto("highlighted","statutP1"),1000);
-    setTimeout(() => input.updateIhmDto("isP1On",false),2500);
-    setTimeout(() => input.updateIhmDto("highlighted","bouilleurStatus"),4000);
-    setTimeout(() => input.updateIhmDto("isBouilleurOn",true),6000);
-    setTimeout(() => input.updateIhmDto("highlighted","bouilleurRate"),7500);
-    setTimeout(() => input.updateIhmDto("bouilleurRate",5),8500);
-    setTimeout(() => input.updateIhmDto("bouilleurRate",50),9000);
+    setTimeout(() => input.updateIhmDto("highlighted","bouilleurStatus"),500);
+    setTimeout(() => input.updateIhmDto("isBouilleurOn",true),2000);
+    setTimeout(() => input.updateIhmDto("highlighted","bouilleurRate"),3500);
+    setTimeout(() => input.updateIhmDto("bouilleurRate",5),4500);
+    setTimeout(() => input.updateIhmDto("bouilleurRate",50),5000);
     
-    setTimeout(() => input.setIsIHMModalVisible(false),10500);
-    setTimeout(() => showBullageBouilleur(),10500);
+    setTimeout(() => input.setIsIHMModalVisible(false),7000);
+    setTimeout(() => showBullageBouilleur(),7500);
 }
 async function showBullageBouilleur(){
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.heat_boiler),1000);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.bouilleur_bullage),1000);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.show_bulles_bouilleur),2500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.heat_boiler),500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.bouilleur_bullage),500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.show_bulles_bouilleur),1000);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(0.05,1.1,0.5,-0.15,1,0,true),2000);
     AnimationHelper.launchAnim(input.animationEntities.vapeur_on)
-    setTimeout(() => input.cameraControllerRef.current?.setLookAt(0.05,1.1,0.5,-0.15,1,0,true),4500);
-    setTimeout(() => moveToDropsAndLaunchAnim(),8000);
+    setTimeout(() => moveToDropsAndLaunchAnim(),5000);
 }
+
 
 async function moveToDropsAndLaunchAnim(){
     input.cameraControllerRef.current?.setLookAt(-0.2,2.25,0.4,-0.1,2.25,0,true);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.soutirage_off), 100);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.goutte_drop_cycle_on),2000);
-    setTimeout(() => moveToBellPosition1AndLaunchAnim(),5000);
+    setTimeout(() => showIHMAndSetP1_2(),5000);
 }
+
+async function showIHMAndSetP1_2(){
+    input.setIsIHMModalVisible(true);
+    setTimeout(() => input.updateIhmDto("highlighted","statutH1") ,1000);
+    setTimeout(() => input.updateIhmDto("isH1On",true) ,2000);
+    setTimeout(() => input.updateIhmDto("highlighted","prechauffe") ,1000);
+    setTimeout(() => input.updateIhmDto("prechauffeValue",7) ,2000);
+    setTimeout(() => input.updateIhmDto("prechauffeValue",78) ,2500);
+    setTimeout(() =>  input.setIsIHMModalVisible(false) ,3500);
+    setTimeout(() => moveToBellPosition1AndLaunchAnim(),4500);
+}
+
 async function moveToBellPosition1AndLaunchAnim(){
     input.cameraControllerRef.current?.setLookAt(-0.1,1.25,0.5,-0.1,1.25,0,true);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.show_bells_bulles_one_by_one),1000);
@@ -206,27 +237,32 @@ async function moveToBellPosition1AndLaunchAnim(){
 async function showIHMAndUpdateTT(){
     setTimeout(() => input.setIsIHMModalVisible(true),1000);
     setTimeout(() => input.updateIhmDto("highlighted","TT") ,1500);
-    setTimeout(() => input.updateIhmDto("TT1Value",84) ,3000);
-    setTimeout(() => input.updateIhmDto("TT2Value",50) ,3000);
-    setTimeout(() => input.updateIhmDto("TT3Value",50) ,3000);
-    setTimeout(() => input.updateIhmDto("TT4Value",50) ,3000);
-    setTimeout(() => input.updateIhmDto("TT5Value",50) ,3000);
+    setTimeout(() => input.updateIhmDto("TT1Value",73.2) ,3000);
+    setTimeout(() => input.updateIhmDto("TT2Value",61) ,3000);
+    setTimeout(() => input.updateIhmDto("TT3Value",58.4) ,3000);
+    setTimeout(() => input.updateIhmDto("TT4Value",55.3) ,3000);
+    setTimeout(() => input.updateIhmDto("TT5Value",52) ,3000);
     
+    setTimeout(() => input.updateIhmDto("TT1Value",76.7) ,3500);
     setTimeout(() => input.updateIhmDto("TT2Value",75.3) ,3500);
     setTimeout(() => input.updateIhmDto("TT3Value",71) ,3500);
     setTimeout(() => input.updateIhmDto("TT4Value",67.1) ,3500);
     setTimeout(() => input.updateIhmDto("TT5Value",61.4) ,3500);
     
+    setTimeout(() => input.updateIhmDto("TT1Value",80.5) ,5000);
     setTimeout(() => input.updateIhmDto("TT2Value",78.6) ,4000);
     setTimeout(() => input.updateIhmDto("TT3Value",75.1) ,4000);
     setTimeout(() => input.updateIhmDto("TT4Value",71.2) ,4000);
     setTimeout(() => input.updateIhmDto("TT5Value",70) ,4000);
 
+    setTimeout(() => input.updateIhmDto("TT1Value",82.1) ,5000);
     setTimeout(() => input.updateIhmDto("TT2Value",80.6) ,4500);
     setTimeout(() => input.updateIhmDto("TT3Value",77) ,4500);
     setTimeout(() => input.updateIhmDto("TT4Value",76.2) ,4500);
     setTimeout(() => input.updateIhmDto("TT5Value",74.6) ,4500);
 
+    
+    setTimeout(() => input.updateIhmDto("TT1Value",84.2) ,5000);
     setTimeout(() => input.updateIhmDto("TT2Value",81.3) ,5000);
     setTimeout(() => input.updateIhmDto("TT3Value",78) ,5000);
     setTimeout(() => input.updateIhmDto("TT4Value",77.4) ,5000);
@@ -257,41 +293,14 @@ async function moveCameraToBobineAndLaunchCycleAnim(){
 
 async function moveToSoutiragePositions(){
     input.cameraControllerRef.current?.setLookAt(0.1,2,0.5,0.1,2,0,true);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.tuyau_inf_bouilleur_V8),1500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.tuyau_inf_V8_bidon_V12),2500);
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.1,1.7,0.5,0.1,1.7,0,true), 3000);
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.1,1.3,0.5,0.1,1.3,0,true), 6000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bidon_1L_V15), 8000);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bidon_1L_V12),8000);
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.3,0.9,0.5,0.3,0.9,0,true), 9000);
-    setTimeout(() =>  moveToV8(), 12500);
-}
-
-
-
-
-
-
-async function moveToV8(){
-    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(-0.1,0.5,0.5,-0.1,0.5,0,true),500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v8_in),1500);
-    setTimeout(() => showFlowToBidon1LV12(),3000);
-}
-
-async function showFlowToBidon1LV12(){
-    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.2,0.6,0.6,-0,0.7,0,true),500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.tuyau_inf_bouilleur_V8),1500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.tuyau_inf_V8_bidon_V12),2500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bidon_1L_V12),5500);
-    setTimeout(() => showIHMAndSetP1_2(),6500);
-}
-
-
-
-async function showIHMAndSetP1_2(){
-    input.setIsIHMModalVisible(true);
-    setTimeout(() => input.updateIhmDto("highlighted","prechauffe") ,1000);
-    setTimeout(() => input.updateIhmDto("prechauffeValue",9) ,2000);
-    setTimeout(() => input.updateIhmDto("prechauffeValue",95) ,2500);
-    input.setIsIHMModalVisible(false);
-    setTimeout(() => moveAndOpenV15(),4000);
+    setTimeout(() =>  moveAndOpenV15(), 12500);
 }
 
 async function moveAndOpenV15(){

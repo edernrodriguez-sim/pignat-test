@@ -63,7 +63,7 @@ const euid_to_identifier: { [key: UUID]: keyof AnimationEntities } = {
      "a2664f3b-c99a-46cd-b4d6-9ce77d5f6cbd": "v3_in",
      "30f876c7-cc03-4242-95c2-d83997adb6bb": "v3_out",
     // Vanne V4
-     "6786201f-a452-43f8-951a-be102de62210s": "v4_in",
+     "6786201f-a452-43f8-951a-be102de62210": "v4_in",
      "10ec4acc-9df7-4a88-8ff6-0c39288e0c7e": "v4_out",
     // Vanne V5
      "170b5d93-98ac-42f2-be5e-bb000cf48c4e": "v5_in",

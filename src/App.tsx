@@ -235,6 +235,7 @@ function SceneViewer() {
   const [ihmDto, setIhmDto] = useState<IHMDto>({
     waterLevel: 0,
     isP1On: false,
+    isH1On: false,
     p1Value: 0,
     isLSL1ok: false,
     refluxType: "",
@@ -504,7 +505,7 @@ function SceneViewer() {
     if(!animationEntities) {
       return;
     }
-    setCanShowAnimationButton(false);
+    // setCanShowAnimationButton(false);
     console.log("++++ LaunchAnimationCompleteContinueFromButton ++++");
     await resetMachineToStart();
 

@@ -5,6 +5,7 @@ import type { MachineParameter } from "./machineParameter";
 export interface IHMDto {
     waterLevel: number;
     isP1On: boolean;
+    isH1On: boolean;
     p1Value: number;
     isLSL1ok: boolean;
     refluxType: string;
