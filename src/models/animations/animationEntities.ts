@@ -6,7 +6,6 @@ import type { Entity } from "@3dverse/livelink"
 export interface AnimationEntities {
     screen_glow: Entity | null
     // Bac de rétention
-    bac_de_retention: Entity | null
     bac_de_retention_out: Entity | null
     bac_de_retention_in: Entity | null
     // BIDONS
@@ -53,15 +52,12 @@ export interface AnimationEntities {
     tuyau_inf_V8_bidon_V12: Entity | null;
     // Préchauffeur
     prechauffeur_fill: Entity | null
-    prechauffeur_fill_horizon_bottom: Entity | null
-    prechauffeur_fill_horizon_top: Entity | null
-    prechauffeur_fill_vert_2: Entity | null
     // Tuyau vertical parallèle au préchauffeur
     prechauffeur_parallel_fill: Entity | null
     // Tuyau horizontal à la sortie de la pompe juste avant le préchauffeur 
     prechauffeur_horizontal_entry_fill: Entity | null
     // Tuyau horizontal en haut du préchauffeur
-    prechauffeur_horizontal_end_fill: Entity | null
+    prechauffeur_fill_horizon_top: Entity | null
     // Tuyau vertical à la sortie de la pompe juste avant le préchauffeur
     postPrechauffeurTube1_fill: Entity | null
     postPrechauffeurTube1_V2: Entity | null

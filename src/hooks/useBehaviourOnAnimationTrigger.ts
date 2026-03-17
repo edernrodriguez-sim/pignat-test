@@ -10,29 +10,31 @@ import { AnimationHelper } from "../animationHelper";
  * @param entities 
  */
 export function useBehaviourOnAnimationTrigger(
+    instance: Livelink | null,
     cameraControllerRef: React.RefObject<DefaultCameraController | null>,
     entities: {
-        instance: Livelink | null;
         dropParent: Entity | null;
-        bac_de_retention_IN: Entity;
-        prechauffeur_FILL: Entity;
-        postPrechauffeurTube1_fill: Entity;
-        tubes?: Entity;
-        boilerEmptying?: Entity;
-        matterGoingDown?: Entity;
-        stopMatterGoingDown?: Entity;
-        goutte_created?: Entity;
-        soutirage_on?: Entity;
-        soutirage_off?: Entity;
-        V15_1L_fill?: Entity;
-        soutirage_anim?: Entity;
+        bac_de_retention_IN: Entity | null;
+        prechauffeur_FILL: Entity | null;
+        postPrechauffeurTube1_fill: Entity | null;
+        tubes?: Entity | null;
+        boilerEmptying?: Entity | null;
+        matterGoingDown?: Entity | null;
+        stopMatterGoingDown?: Entity | null;
+        goutte_drop?: Entity | null;
+        soutirage_on?: Entity | null;
+        soutirage_off?: Entity | null;
+        V15_1L_fill?: Entity | null;
+        soutirage_anim?: Entity | null;
     }
 ) {
-    const { instance, dropParent, bac_de_retention_IN, prechauffeur_FILL, postPrechauffeurTube1_fill, goutte_created, soutirage_on, soutirage_off,V15_1L_fill,soutirage_anim, /* tubes, boilerEmptying, matterGoingDown, stopMatterGoingDown */} = entities; 
+    const { dropParent, bac_de_retention_IN, prechauffeur_FILL, postPrechauffeurTube1_fill, goutte_drop, soutirage_on, soutirage_off,V15_1L_fill,soutirage_anim, /* tubes, boilerEmptying, matterGoingDown, stopMatterGoingDown */} = entities; 
     const  isSoutirageOn = useRef(false);
     // DETECTION DES TRIGGERS POUR L'ANIM DU PLACEMENT DU BAC DE RETENTION
     useEffect(() => {
         if (!bac_de_retention_IN) return;
+
+        const bac = bac_de_retention_IN;
         
         const event_map_id = "3b4ec3a6-28fd-4fdb-8569-d45a272c2624";
         const event_name = "bac_de_retention_in_end";
@@ -43,19 +45,17 @@ export function useBehaviourOnAnimationTrigger(
 
         
 
-        bac_de_retention_IN.addScriptEventListener({ 
+        bac.addScriptEventListener({ 
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
 
         return () => {
-            bac_de_retention_IN.removeScriptEventListener({ 
+            bac.removeScriptEventListener({ 
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
         }
             
@@ -65,7 +65,7 @@ export function useBehaviourOnAnimationTrigger(
     // DETECTION DES TRIGGERS POUR L'ANIM DU REMPLISSAGE DU PRECHAUFFEUR
     useEffect(() => {
         if (!prechauffeur_FILL) return;
-        
+
         const event_map_id = "3b4ec3a6-28fd-4fdb-8569-d45a272c2624";
         const event_name = "prechauffeur_fill_end";
 
@@ -81,7 +81,6 @@ export function useBehaviourOnAnimationTrigger(
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
 
         return () => {
@@ -89,11 +88,10 @@ export function useBehaviourOnAnimationTrigger(
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
         }
             
-    }, [prechauffeur_FILL, cameraControllerRef]);
+    }, [postPrechauffeurTube1_fill, prechauffeur_FILL, cameraControllerRef]);
 
     // DETECTION DES TRIGGERS POUR L'ANIM D'ACTIVATION DE LA BOBINE DE SOUTIRAGE
     useEffect(() => {
@@ -112,14 +110,12 @@ export function useBehaviourOnAnimationTrigger(
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
         return () => {
             soutirage_on.removeScriptEventListener({ 
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
         }
             
@@ -143,14 +139,12 @@ export function useBehaviourOnAnimationTrigger(
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
         return () => {
             soutirage_off.removeScriptEventListener({ 
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
         }
             
@@ -158,128 +152,132 @@ export function useBehaviourOnAnimationTrigger(
 
 
     // DETECTION DES TRIGGERS POUR L'ANIM DES GOUTTES
+    const isCreating = useRef(false);
+    const entityCount = useRef(0); // 👈 compteur global à l'effet
+    const blockCount = useRef(0); // 👈 compteur de blocages pour éviter les appels en rafale    
     useEffect(() => {
-        if (!goutte_created) return;
+        if (!goutte_drop) return;
+
+        console.debug("+++++++++++++ Setting up goutte_drop trigger +++++++++++++");
+        const goutte = goutte_drop;
         
         const event_map_id = "3b4ec3a6-28fd-4fdb-8569-d45a272c2624";
         const event_name = "goutte_drop_end";
         // 🔒 Guard pour éviter les appels concurrents
-        let isCreating = false;
-        let entityCount = 0; // 👈 compteur global à l'effet
-        let blockCount = 0;
         const onAnimEnd = async () => {
             // ✅ Empêche les appels en rafale
-            if (isCreating) {
+            if (isCreating.current) {
                 console.warn("⛔ newEntity bloqué car déjà en cours");
-                blockCount++;
-                if (blockCount > 10)
+                blockCount.current++;
+                if (blockCount.current > 10)
                 {
                     console.warn("trop de blocage");
-                    isCreating = false;
-                    blockCount = 0;
+                    isCreating.current = false;
+                    blockCount.current = 0;
                 }
                 return;
             }
-            isCreating = true;
+            isCreating.current = true;
 
+            let abortTimeout: NodeJS.Timeout | null = null;
             try {
-                entityCount++;
-                console.log(`🟡 newEntity appelé — entités actives estimées : ${entityCount}`);
+                entityCount.current++;
+                console.log(`🟡 newEntity appelé — entités actives estimées : ${entityCount.current}`);
 
-            const animId = isSoutirageOn.current ? "7c9f4abe-1e48-4768-b47c-d7e0f2c5030e" : "eed0c2a3-296e-4ee2-b4f2-cbc0d56eea9b";
-
-
-
-            const name = isSoutirageOn.current ? "entityTestSoutirage" : "entityTestReflux";
-
-            const result=  await Promise.race([instance?.scene.newEntity({
-                name: name,
-                parent: dropParent,
-                components: {
-                    local_transform: {
-                        position: [-0.12737,2.242702,0.04652],
-                        scale: [0.009,0.009,0.009]
-                    },
-                    mesh_ref: {value: "d9f4eb2b-6a85-4034-9044-fefa7b0f864a"},
-                    material_ref: {value: "17c27f52-6b09-447d-9d59-0829436a85b4"},
-                    animation_sequence_controller: {
-                        animationSequenceRef: animId          
-                    },
-                        
+                const animId = isSoutirageOn.current ? "7c9f4abe-1e48-4768-b47c-d7e0f2c5030e" : "eed0c2a3-296e-4ee2-b4f2-cbc0d56eea9b";
+                const name = isSoutirageOn.current ? "entityTestSoutirage" : "entityTestReflux";
+                
+                new Promise((_, reject) =>
+                    abortTimeout = setTimeout(() => {
+                        abortTimeout = null;
+                        reject(new Error("⏱️ newEntity timeout"));
+                    }, 5000)
+                );
+                const goutte = await instance?.scene.newEntity({
+                    name: name,
+                    parent: dropParent,
+                    components: {
+                        local_transform: {
+                            position: [-0.12737,2.242702,0.04652],
+                            scale: [0.009,0.009,0.009]
+                        },
+                        mesh_ref: {value: "d9f4eb2b-6a85-4034-9044-fefa7b0f864a"},
+                        material_ref: {value: "17c27f52-6b09-447d-9d59-0829436a85b4"},
+                        animation_sequence_controller: {
+                            animationSequenceRef: animId          
+                        },
                     }
-                }),
-            new Promise((_, reject) =>
-                setTimeout(() => reject(new Error("⏱️ newEntity timeout")), 5000)
-            ),
-        ]);
+                });
+                clearTimeout(abortTimeout!); // ✅ Clear le timeout si l'opération réussit
 
-        if (!result){
-            console.error("❌ newEntity null");
-            return;
-        }
-        const resou = result as Entity;
-        
-        if (isSoutirageOn.current) {
-            resou!.animation_sequence_controller!.entities["7c571ab7-ba02-4444-9b21-582f51e557de"] = {originalEUID: resou!.euid.value}
-            resou!.animation_sequence_controller!.entities["6eec3a1a-b2b0-4762-a68d-db9b6656b2c5"] = {originalEUID: resou!.euid.value}
-            resou!.animation_sequence_controller!.entities["2e319197-f876-4d34-9390-e17c17d78586"] = {originalEUID: resou!.euid.value}
-            
-
-            setTimeout(() => {
-                console.log(`🗑️ deleteEntities — entités actives restantes : ${--entityCount}`);
-                instance?.scene.deleteEntities({entities: [resou]})
-            }, 14000)
-        }
-        else {
-            resou!.animation_sequence_controller!.entities["00b56afe-4245-4eb8-b95c-cee5b883f370"] = {originalEUID: resou!.euid.value}
-            resou!.animation_sequence_controller!.entities["100dbeb8-60a4-4e5e-ae51-dce416a14312"] = {originalEUID: resou!.euid.value}
-            
-            setTimeout(() => {
-                try {
-                    console.log(`🗑️ deleteEntities — entités actives restantes : ${--entityCount}`);
-                    instance?.scene.deleteEntities({entities: [resou]})
-                    console.log(`🗑️ Entité supprimée`);
-                } catch (error) {
-                    console.error(`❌ deleteEntities échoué :`, error);
+                if (!goutte){
+                    console.error("❌ newEntity null");
+                    return;
                 }
-            }, 4000)
-        }
+                if(!goutte.animation_sequence_controller){
+                    console.error("❌ animation_sequence_controller manquant sur la goutte");
+                    return;
+                }
+               
+                const { entities } = goutte.animation_sequence_controller;
+                const originalEUID = goutte.euid.value;
+                if (isSoutirageOn.current) {
+                    entities["7c571ab7-ba02-4444-9b21-582f51e557de"] = { originalEUID };
+                    entities["6eec3a1a-b2b0-4762-a68d-db9b6656b2c5"] = { originalEUID };
+                    entities["2e319197-f876-4d34-9390-e17c17d78586"] = { originalEUID };
 
+                    setTimeout(() => {
+                        console.log(`🗑️ deleteEntities — entités actives restantes : ${--entityCount.current}`);
+                        instance?.scene.deleteEntities({entities: [goutte]});
+                    }, 14000)
+                }
+                else {
+                    entities["00b56afe-4245-4eb8-b95c-cee5b883f370"] = { originalEUID };
+                    entities["100dbeb8-60a4-4e5e-ae51-dce416a14312"] = { originalEUID };
+                    
+                    setTimeout(() => {
+                        try {
+                            console.log(`🗑️ deleteEntities — entités actives restantes : ${--entityCount.current}`);
+                            instance?.scene.deleteEntities({entities: [goutte]});
+                            console.log(`🗑️ Entité supprimée`);
+                        } catch (error) {
+                            console.error(`❌ deleteEntities échoué :`, error);
+                        }
+                    }, 4000)
+                }
 
-
-        resou!.animation_sequence_controller!.playState = 1;
+                goutte.animation_sequence_controller.seekOffset = 0;
+                goutte.animation_sequence_controller.playState = 1;
             }
             catch (err){
-        // ✅ Catch le timeout ET les vraies erreurs
-        console.error("💥 Erreur ou timeout dans newEntity :", err);
+                // ✅ Catch le timeout ET les vraies erreurs
+                console.error("💥 Erreur ou timeout dans newEntity :", err);
             }
             finally {
                 // ✅ Toujours libérer le lock, même en cas d'erreur
-                blockCount = 0;
-                isCreating = false;
-            }
-
-                
-                
+                blockCount.current = 0;
+                isCreating.current = false;
+                if(abortTimeout ) {
+                    clearTimeout(abortTimeout);
+                }
+            }   
         };
         
-        goutte_created.addScriptEventListener({ 
+        goutte.addScriptEventListener({ 
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
 
         return () => {
-            goutte_created.removeScriptEventListener({ 
-            event_map_id, 
-            event_name, 
-            onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
-        });
+            goutte.removeScriptEventListener({ 
+                event_map_id, 
+                event_name, 
+                onReceived: onAnimEnd, 
+            });
         }
             
-    }, [goutte_created, dropParent, instance]);
+    }, [goutte_drop, dropParent, instance]);
 
         // DETECTION DES TRIGGERS POUR L'ANIM DES GOUTTES SOUTIREES
     useEffect(() => {
@@ -297,7 +295,6 @@ export function useBehaviourOnAnimationTrigger(
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
 
         return () => {
@@ -305,7 +302,6 @@ export function useBehaviourOnAnimationTrigger(
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
-            onEmitted: onAnimEnd 
         });
         }
             

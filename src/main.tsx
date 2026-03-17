@@ -10,7 +10,7 @@ import TestPage from "./testPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter  basename="/pignat-test">
+    <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/testPage" element={<TestPage />} />

@@ -12,27 +12,23 @@ export function LaunchAnimationCompleteDiscontinue({ input } : { input : AnimDis
     // 1°) Start position facing bac de retention
     input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
     // 2°) Launching bac placement animation
-    setTimeout(() => launchBacInAnimation(),2000);
+    setTimeout(() => launchBacInAnimation(),2500);
     //moveToDropsAndLaunchAnim();
 
 async function launchBacInAnimation(){
     AnimationHelper.launchAnim(input.animationEntities.bac_de_retention_in);
-    setTimeout(() =>  AnimationHelper.pauseAnim(input.animationEntities.bac_de_retention_in),850);
     setTimeout(() => launchBidonV12Animation(),1000);
 }
 async function launchBidonV12Animation(){
     AnimationHelper.launchAnim(input.animationEntities.bidon_10L_V12_in);
-    setTimeout(() =>  AnimationHelper.pauseAnim(input.animationEntities.bidon_10L_V12_in),850);
     setTimeout(() => launchBidonV15Animation(),1000);
 }
 async function launchBidonV15Animation(){
     AnimationHelper.launchAnim(input.animationEntities.bidon_10L_V15_in);
-    setTimeout(() =>  AnimationHelper.pauseAnim(input.animationEntities.bidon_10L_V15_in),850);
     setTimeout(() => launchBidon20LAnimation(),1000);
 }
 async function launchBidon20LAnimation(){
     AnimationHelper.launchAnim(input.animationEntities.bidon_20L_in);
-    setTimeout(() =>  AnimationHelper.pauseAnim(input.animationEntities.bidon_20L_in),850);
     setTimeout(() => moveCameraToV16(),2000);
 }
 

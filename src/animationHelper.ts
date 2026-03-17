@@ -9,27 +9,29 @@ export class AnimationHelper {
     public static animationOtherKeyWord = "_other";
     
     public static launchAnim(animToLaunch: Entity | undefined | null){
-        
+        console.log("Launch animatio : " + animToLaunch?.name);
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
             controller.playbackSpeed = 1;
+            controller.seekOffset = 0;
+            controller.playState = 0;
             controller.playState = 1;
-            // i
         }
     }
 
      public static pauseAnim(animToLaunch: Entity | undefined | null){
-        
+        console.log("Pause anim : " + animToLaunch?.name);
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
-            controller.playbackSpeed = 0;
+            controller.playState = 2;
         }
     }
 
     public static closeAnim(animToLaunch: Entity | undefined | null){
-        
+        console.log("Close anim : " + animToLaunch?.name);
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
+            controller.seekOffset = 0;
             controller.playState = 0;
         }
     }

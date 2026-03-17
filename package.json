@@ -7,18 +7,24 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "vite --host",
+    "dev:mqtt": "vite --host --mode mqtt",
+    "dev:bridge": "vite --host --mode bridge",
     "build": "tsc -b && vite build",
+    "build:mqtt": "tsc -b && vite build --mode mqtt",
+    "build:bridge": "tsc -b && vite build --mode bridge",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@3dverse/livelink": "^0.8.57",
+    "@3dverse/api": "^0.8.14",
+    "@3dverse/livelink": "^0.8.61",
     "@3dverse/livelink-react": "^0.2.60",
     "@3dverse/livelink-react-ui": "^0.3.17",
     "@tailwindcss/vite": "^4.1.5",
     "mqtt": "^5.15.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-icons": "^5.6.0",
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {

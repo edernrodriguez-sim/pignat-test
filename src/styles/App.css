@@ -84,6 +84,20 @@ canvas {
     }
 }
 
+@keyframes flash-update {
+    0%   { background-color: #86efac; }
+    100% { background-color: transparent; }
+}
+
+.param-line {
+    border-radius: 4px;
+    padding: 1px 4px;
+}
+
+.param-updated {
+    animation: flash-update 1s ease-out forwards;
+}
+
 .readOnlyBtn {
   margin-left: 5vh;
   margin-right: 5vh;

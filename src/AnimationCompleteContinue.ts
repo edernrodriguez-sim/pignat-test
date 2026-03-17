@@ -10,10 +10,10 @@ export function LaunchAnimationCompleteContinue({ input } : { input : AnimDiscon
     AnimationHelper.closeAnim(input.animationEntities.fill_bouilleur_continu);
     AnimationHelper.closeAnim(input.animationEntities.complete_water_flow);
     // // 1°) Start position facing bac de retention
-     input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
+    input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
     // // 2°) Launching bac placement animation
-     setTimeout(() => launchBacInAnimation(),1500);
-    //moveCameraToBottomPrechauff();
+    setTimeout(() => launchBacInAnimation(),2500);
+    //launchFillPrechauffeur();
 
 async function launchBacInAnimation(){
     AnimationHelper.launchAnim(input.animationEntities.bac_de_retention_in);
@@ -135,11 +135,10 @@ async function launchFillPrechauffeur(){
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.prechauffeur_parallel_fill),2500);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.prechauffeur_fill_horizon_top),3000);
     setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.46,1.95,0.3,-0.4,1.95,0,true),4500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.postPrechauffeurTube1_fill),5500);
-    setTimeout(() => AnimationHelper.pauseAnim(input.animationEntities.postPrechauffeurTube1_fill),6400);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.postPrechauffeurTube1_V2),6500);
-    setTimeout(() => AnimationHelper.pauseAnim(input.animationEntities.postPrechauffeurTube1_V2),7400);
-    setTimeout(() => launchFillBoilerAnimAndShowLsl1(),8000);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.postPrechauffeurTube1_fill),6500);
+    setTimeout(() => AnimationHelper.pauseAnim(input.animationEntities.postPrechauffeurTube1_fill),6600);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.postPrechauffeurTube1_V2),7600);
+    setTimeout(() => launchFillBoilerAnimAndShowLsl1(),8700);
 }
 
 async function launchFillBoilerAnimAndShowLsl1(){
@@ -195,7 +194,7 @@ async function showBullageBouilleur(){
 async function moveToDropsAndLaunchAnim(){
     input.cameraControllerRef.current?.setLookAt(-0.2,2.25,0.4,-0.1,2.25,0,true);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.soutirage_off), 100);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.goutte_drop_cycle_on),1000);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.goutte_drop_cycle_on),2000);
     setTimeout(() => moveToBellPosition1AndLaunchAnim(),5000);
 }
 async function moveToBellPosition1AndLaunchAnim(){

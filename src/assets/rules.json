@@ -36,39 +36,18 @@
     },
     {
         "name": "Vanne V8",
-        "rule":"isFalse",
+        "rule":"isTrue",
         "params":"V8",
-        "value": false,
+        "value": true,
         "errorMessage": "La vanne V8 est fermée. Veuillez l'ouvrir avant de lancer un cycle."
 
     },
     {
         "name": "Vanne V9",
-        "rule":"isTrue",
+        "rule":"isFalse",
         "params":"V9",
-        "value": true,
+        "value": false,
         "errorMessage": "La vanne V9 est ouverte. Veuillez la fermer avant de lancer un cycle."
 
-    },
-    {
-        "name": "Allumage résistance",
-        "rule":"isTrue",
-        "params":"H1",
-        "value": false,
-        "errorMessage": "La résistance est éteinte."
-    },
-    {
-        "name": "Température résistance",
-        "rule":"isLessThan",
-        "params":"TTC6",
-        "value": 30,
-        "errorMessage": "La température de la résistance est trop basse."
-    },
-    {
-        "name": "Débit pompe eau",
-        "rule":"isLessThan",
-        "params":"FIC2",
-        "value": 20,
-        "errorMessage": "Lé débit d'eau est trop bas."
     }
 ]

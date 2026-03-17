@@ -127,7 +127,7 @@
     {
         "Key":"V3",
         "Label":"V3",
-        "Value":"true",
+        "Value":"false",
         "Type":"vanne"
     },
     {
@@ -163,7 +163,7 @@
     {
         "Key":"V9",
         "Label":"V9",
-        "Value":"false",
+        "Value":"true",
         "Type":"vanne"
     },
     {

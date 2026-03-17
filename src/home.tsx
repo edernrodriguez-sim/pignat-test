@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import App from "./App";
 import { useSearchParams } from 'react-router-dom';
-import { Canvas, Livelink, useClients,  Viewport } from '@3dverse/livelink-react';
+import { Canvas, Livelink, useClients,  useEntity,  Viewport } from '@3dverse/livelink-react';
 import { LoadingOverlay } from '@3dverse/livelink-react-ui';
 // import { useMqttListener } from './useMqttListener';
 import { ProjectConstants } from './projectConstants';
@@ -13,41 +13,29 @@ function Home() {
     const [params] = useSearchParams();
     const idsession = params.get("idsession");
     const idclient = params.get("idclient");
-    console.log("idsession");
-    console.log(idsession);
-
-
-
+    const idcamera = params.get("idcamera");
 
     // useMqttListener();
 
-
-
-
-    //const { clients } = useClients();
     // Si un mode est sélectionné, afficher App
     if (appMode !== 0) {
-        console.log(1);
         return <App appModeInput={appMode} />;
     }
     else if (idsession != undefined) {
-        console.log(2);
         return (
             <Livelink sessionId={idsession} token={token} LoadingPanel={LoadingOverlay}>
-                <AppLayout watchedClientId={idclient!} />
+                <AppLayout watchedClientId={idclient!} camera_entity_id={idcamera!} />
             </Livelink>
         )
     }
-
-        console.log(3);
     // Sinon, afficher les boutons
     return (
         <div id="home">
             <img src={Logo} />
             <div>
-                {/*<button onClick={() => setAppMode(ProjectConstants.APP_MODE_MAINTENANCE)}>
+                {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_MAINTENANCE)}>
                     Mode Support
-                </button>*/}
+                </button> */}
                 {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
                     Mode Exercice
                 </button> */}
@@ -68,20 +56,17 @@ export default Home;
 
 
 
-const AppLayout  = ({ watchedClientId }: { watchedClientId: string }) => {
+const AppLayout  = ({ watchedClientId,camera_entity_id }: { watchedClientId: string, camera_entity_id: string }) => {
     
     const { clients } = useClients();
+    const { entity: camera } = useEntity({ euid: camera_entity_id });
     const parent = clients.find(c => c.id == watchedClientId);
-    console.log("clients");
-    console.log(clients);
-    console.log("parent");
-    console.log(parent);
     if (parent == null || parent == undefined)
         return null;
 
     return (
         <Canvas className="w-full h-hull bg-black">
-            <Viewport className="w-full h-full" client={parent} />
+            <Viewport className="w-full h-full"  cameraEntity={camera} />
         </Canvas>
     );
 }
