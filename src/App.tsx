@@ -505,7 +505,7 @@ function SceneViewer() {
     if(!animationEntities) {
       return;
     }
-    // setCanShowAnimationButton(false);
+    setCanShowAnimationButton(false);
     console.log("++++ LaunchAnimationCompleteContinueFromButton ++++");
     await resetMachineToStart();
 
