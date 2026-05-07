@@ -1,15 +1,14 @@
 import type { Entity } from "@3dverse/livelink";
 
 export class AnimationHelper {
-    public static animationCloseKeyWord = "_close";
-    public static animationOpenKeyWord = "_open";
+    public static animationCloseKeyWord = "_out";
+    public static animationOpenKeyWord = "_in";
     public static animationGlowKeyWord = "_glow";
     public static animationStopGlowKeyWord = "_stopGlow";
     public static animationMoveKeyWord = "_move";
     public static animationOtherKeyWord = "_other";
     
     public static launchAnim(animToLaunch: Entity | undefined | null){
-        console.log("Launch animatio : " + animToLaunch?.name);
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
             controller.playbackSpeed = 1;
@@ -20,7 +19,6 @@ export class AnimationHelper {
     }
 
      public static pauseAnim(animToLaunch: Entity | undefined | null){
-        console.log("Pause anim : " + animToLaunch?.name);
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
             controller.playState = 2;
@@ -28,7 +26,6 @@ export class AnimationHelper {
     }
 
     public static closeAnim(animToLaunch: Entity | undefined | null){
-        console.log("Close anim : " + animToLaunch?.name);
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
             controller.seekOffset = 0;

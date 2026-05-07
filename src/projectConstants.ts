@@ -4,6 +4,14 @@ export class ProjectConstants {
     static readonly APP_MODE_EXERCICE = 2;
     static readonly APP_MODE_ANIMCONTINUE = 3;
     static readonly APP_MODE_ANIMDISCONTINUE = 4;
+    static readonly SHARE_TYPE_ACTIVE = "0";
+    static readonly SHARE_TYPE_PASSIVE = "1";
+    /**
+     * Clé de détection du type de paramètre de machine
+     * Permet de détecter quel est le paramètre pour en déterminer l'unité 
+     * (ex si le nom contient TT comme TT01 alors c'est une température : Unité = °c)
+     */
+    static readonly MACHINE_PARAM_UNIT_DETECTION_TEMPERATURE = "TT";
 
     /**
      * Mode de connexion MQTT (lu depuis la variable d'environnement Vite) :

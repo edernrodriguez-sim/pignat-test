@@ -1,0 +1,138 @@
+import { useState, useCallback, useRef, useContext } from "react";
+import type {
+  Exercise,
+  ExerciseStep,
+  ExerciseState,
+  StepStatus,
+  AnimationTrigger,
+} from "./exercice";
+import { AnimationHelper } from "../animationHelper";
+import type { Livelink } from "@3dverse/livelink";
+import { LivelinkContext } from "@3dverse/livelink-react";
+
+// ─── 3DVerse API shim ─────────────────────────────────────────────────────────
+// Adaptez selon votre version de l'API 3DVerse
+declare const SDK: {
+  getEntityByName: (name: string) => Promise<{ id: string } | null>;
+  playAnimation: (entityId: string, animationName: string) => void;
+};
+
+let entityLivelink: Livelink | null;
+
+async function playAnimation(trigger: AnimationTrigger) {
+  try {
+    
+    if (!entityLivelink || !trigger.entityId) return;
+    
+    const root_animations = await entityLivelink.scene.findEntity({ entity_uuid: trigger.entityId});
+    AnimationHelper.launchAnim(root_animations);
+    
+  } catch (e) {
+    console.warn("[Exercise] Impossible de jouer l'animation :", e);
+  }
+}
+
+interface UseExerciseOptions {
+  onStepComplete?: (step: ExerciseStep, stepIndex: number) => void;
+  onExerciseComplete?: (exercise: Exercise) => void;
+}
+
+export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}) {
+  const { onStepComplete, onExerciseComplete } = options;
+    const { instance } = useContext(LivelinkContext);
+    entityLivelink = instance;
+    
+  const initialStatuses = Object.fromEntries(
+    exercise.steps.map((s, i) => [s.id, i === 0 ? "active" : "pending"])
+  ) as Record<string, StepStatus>;
+
+  const [state, setState] = useState<ExerciseState>({
+    exercise,
+    currentStepIndex: 0,
+    stepStatuses: initialStatuses,
+    isCompleted: false,
+  });
+
+  const stateRef = useRef(state);
+  stateRef.current = state;
+
+  // ── Validation interne ────────────────────────────────────────────────────
+
+  const completeCurrentStep = useCallback(async () => {
+    const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
+    if (isCompleted) return;
+
+    const currentStep = ex.steps[currentStepIndex];
+    const isLast = currentStepIndex === ex.steps.length - 1;
+
+    if (currentStep.onCompleteAnimation) {
+      await playAnimation(currentStep.onCompleteAnimation);
+    }
+
+    setState((prev) => {
+      const nextIndex = isLast ? prev.currentStepIndex : currentStepIndex + 1;
+      const newStatuses = { ...prev.stepStatuses };
+      newStatuses[currentStep.id] = "completed";
+      if (!isLast) newStatuses[ex.steps[nextIndex].id] = "active";
+      return { ...prev, currentStepIndex: nextIndex, stepStatuses: newStatuses, isCompleted: isLast };
+    });
+
+    onStepComplete?.(currentStep, currentStepIndex);
+
+    if (isLast) {
+      if (ex.onCompleteAnimation) await playAnimation(ex.onCompleteAnimation);
+      onExerciseComplete?.(ex);
+    }
+  }, [onStepComplete, onExerciseComplete]);
+
+  // ── Handler clic 3D — appelé depuis ExerciceCanvas ────────────────────────
+
+  const onEntityClicked = useCallback(async (entityName: string) => {
+    const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
+    if (isCompleted) return;
+    
+    const step = ex.steps[currentStepIndex];
+    if (step.action.type !== "click3D") return;
+    if (step.action.entityTag !== entityName) return;
+
+    if (step.onActionAnimation) await playAnimation(step.onActionAnimation);
+
+    completeCurrentStep();
+  }, [completeCurrentStep]);
+
+  // ── Handler input ─────────────────────────────────────────────────────────
+
+  const onInputChange = useCallback(async (fieldId: string, value: string) => {
+    const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
+    if (isCompleted) return;
+
+    const step = ex.steps[currentStepIndex];
+    if (step.action.type !== "inputChange") return;
+    if (step.action.fieldId !== fieldId) return;
+
+    const expected = step.action.expectedValue;
+    const isValid = expected === undefined || String(value) === String(expected);
+    if (!isValid) return;
+
+    if (step.onActionAnimation) await playAnimation(step.onActionAnimation);
+
+    completeCurrentStep();
+  }, [completeCurrentStep]);
+
+  // ── Reset ─────────────────────────────────────────────────────────────────
+
+  const reset = useCallback(() => {
+    setState({
+      exercise,
+      currentStepIndex: 0,
+      stepStatuses: Object.fromEntries(
+        exercise.steps.map((s, i) => [s.id, i === 0 ? "active" : "pending"])
+      ) as Record<string, StepStatus>,
+      isCompleted: false,
+    });
+  }, [exercise]);
+
+  const currentStep = state.exercise.steps[state.currentStepIndex] ?? null;
+
+  return { state, currentStep, onEntityClicked, onInputChange, completeCurrentStep, reset };
+}

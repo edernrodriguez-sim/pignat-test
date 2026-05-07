@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { MachineStateLineDto } from "./models/machineStateLineDto";
 
+function GetValue(value: string) : string {
+    return value.substring(0,5);
+}
+
 function MachineStateLine({ machineStateLineDto } : { machineStateLineDto: MachineStateLineDto }) {
     const [isUpdated, setIsUpdated] = useState(false);
     const prevValueRef = useRef(machineStateLineDto.param.value);
@@ -42,7 +46,7 @@ function MachineStateLine({ machineStateLineDto } : { machineStateLineDto: Machi
             case "value":
                 return <label>{param.label} : {param.value}</label>;
             case "unit":
-                return <label>{param.label} : {param.value} {param.unitType}</label>;
+                return <label>{param.label} : {GetValue(param.value.toString())} {param.unitType}</label>;
             default:
                 return <label>Mode : {param.value}</label>;
         }

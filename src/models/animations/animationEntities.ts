@@ -52,6 +52,7 @@ export interface AnimationEntities {
     tuyau_inf_V8_bidon_V12: Entity | null;
     // Préchauffeur
     prechauffeur_fill: Entity | null
+    empty_prechauffeur_fill: Entity | null
     // Tuyau vertical parallèle au préchauffeur
     prechauffeur_parallel_fill: Entity | null
     // Tuyau horizontal à la sortie de la pompe juste avant le préchauffeur 
@@ -128,5 +129,7 @@ export interface AnimationEntities {
     complete_water_flow: Entity | null
     // vapeur
     vapeur_on: Entity | null
-    
+    //ARU button
+    aru_in: Entity | null
+    aru_out: Entity | null
 }

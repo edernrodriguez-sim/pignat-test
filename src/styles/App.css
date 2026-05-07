@@ -157,10 +157,78 @@ canvas {
   min-width: 30vh;
 }
 
+#text-input-modal {
+  align-items: center;
+  box-shadow: 5px 5px 10px -5px black;
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap:4vh;
+  padding: 3vh 7vh;
+  min-width: 30vh;
+  position: absolute;
+  margin: 0 auto;
+  left: 80vh;
+  right: 80vh;
+  top: 30vh;
+  input {
+    border: 1px solid rgb(194, 194, 194);
+    border-radius: 5px;
+    padding-left: 1vh;
+    padding: 0.5vh;
+    width: 100%;
+  }
+  button {
+    width: 100%;
+  }
+
+  p {
+    width: 100%;
+  }
+
+  #text-input-modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap:1vh;
+    width: 100%;
+  }
+  button {
+    transition-duration: 0.4s;
+  }
+
+  #validation-button {
+    color: white;
+    background-color: rgb(59, 50, 50);
+  }
+
+  #validation-button:hover {
+    background-color: rgb(119, 101, 101);
+  }
+
+  #cancel-button {
+    color: rgb(59, 50, 50);
+    background-color: rgb(224 224 224);
+  }
+
+  #cancel-button:hover {
+    background-color: rgb(243, 243, 243)
+  }
+}
+
+#modal-bg{
+  background: black;
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  opacity: 50%;
+}
+
 .basicBtn{
   background-color: rgb(222, 222, 222);
   border-radius: 5px;
-  padding: 0.5vh;
+  padding: 0.5vh 2.5vh;
 }
 
 
@@ -182,8 +250,36 @@ canvas {
   }
 }
 
-#errorDiv {
-  p {
-    max-width: 19vw;
-  }
+.fontPad {
+  border-radius: 2px;
+  border-style: groove;
+  color: #2e250dc9;
+  text-align: left;
+  padding: 2px;
+}
+
+.labelFont {
+  font-size: 3px;
+}
+.valueFont {
+  font-weight: bold;
+  font-size: 5px;
+}
+
+.infoPanelBaseColor {
+  background-color: #ffe194e1;
+  border-color: #fecc4fc9;
+}
+.infoPanelGreenColor {
+  background-color: #a0ff94e1;
+  border-color: #4ffe78c9;
+}
+.infoPanelRedColor {
+  background-color: #ff9494e1;
+  border-color: #fe4f4fc9;
+}
+
+.infoPanelBlueColor {
+  background-color: #94dbffe1;
+  border-color: #524ffec9;
 }

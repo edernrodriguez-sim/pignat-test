@@ -3,39 +3,54 @@ import App from "./App";
 import { useSearchParams } from 'react-router-dom';
 import { Canvas, Livelink, useClients,  useEntity,  Viewport } from '@3dverse/livelink-react';
 import { LoadingOverlay } from '@3dverse/livelink-react-ui';
-// import { useMqttListener } from './useMqttListener';
 import { ProjectConstants } from './projectConstants';
 import Logo from './assets/Logo.jpg'
+import TextInputModal from './modals/textInputModal';
+
+let machineId = "";
+const token = "public_wfVLwtMF9Rg0rp_k";
+
+
 
 function Home() {
-    const token = "public_wfVLwtMF9Rg0rp_k";
     const [appMode, setAppMode] = useState<number>(0);
+    const [isIdModalOpen, setIsIdModalOpen] = useState(false);
     const [params] = useSearchParams();
     const idsession = params.get("idsession");
     const idclient = params.get("idclient");
     const idcamera = params.get("idcamera");
 
-    // useMqttListener();
+    function onInputModalValidated(machineIdInput: string){
+        machineId = machineIdInput;
+        setAppMode(ProjectConstants.APP_MODE_MAINTENANCE);
+    }
 
     // Si un mode est sélectionné, afficher App
     if (appMode !== 0) {
-        return <App appModeInput={appMode} />;
+        return <App appModeInput={appMode} sessionIdV={idsession} machineId={machineId} />;
     }
     else if (idsession != undefined) {
-        return (
-            <Livelink sessionId={idsession} token={token} LoadingPanel={LoadingOverlay}>
-                <AppLayout watchedClientId={idclient!} camera_entity_id={idcamera!} />
-            </Livelink>
-        )
+        if (idclient != undefined)
+        {
+            return (
+                <Livelink sessionId={idsession} token={token} LoadingPanel={LoadingOverlay}>
+                    <AppLayout watchedClientId={idclient!} camera_entity_id={idcamera!} />
+                </Livelink>
+            )
+        }
+        else {
+            return <App appModeInput={appMode} sessionIdV={idsession} machineId={machineId} />;
+        }
     }
     // Sinon, afficher les boutons
     return (
+        <>
         <div id="home">
             <img src={Logo} />
             <div>
-                {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_MAINTENANCE)}>
+                <button onClick={() => setIsIdModalOpen(true) }>
                     Mode Support
-                </button> */}
+                </button>
                 {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
                     Mode Exercice
                 </button> */}
@@ -49,6 +64,20 @@ function Home() {
                 </button>
             </div>
         </div>
+        <div>
+
+        </div>
+
+        {isIdModalOpen && (<TextInputModal 
+            textInputModalDto={{
+                onModalCancel:() => {setIsIdModalOpen(!isIdModalOpen)},
+                onModalValidate: onInputModalValidated,
+                text: "Id de la machine à écouter :",
+            }}
+        />
+        )}
+        
+        </>
     );
 }
 
@@ -67,6 +96,7 @@ const AppLayout  = ({ watchedClientId,camera_entity_id }: { watchedClientId: str
     return (
         <Canvas className="w-full h-hull bg-black">
             <Viewport className="w-full h-full"  cameraEntity={camera} />
+            
         </Canvas>
     );
 }

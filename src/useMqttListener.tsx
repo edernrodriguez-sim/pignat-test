@@ -14,23 +14,38 @@ interface MqttState {
 }
 
 const BROKER_URL = ProjectConstants.BROKER_WS_URL;
-const TOPIC = "machine/data";
+// const TOPIC = "Tags";
+// const TOPIC = "machine/data"
+/**
+ * Topic de base auquel on ajoute l'identifiant de la machine
+ */
+const BASE_TOPIC = "tags/"
+let TOPIC = "";
 
-export function useMqttListener() {
+/**
+ * Lance l'écoute du mqtt pour récupérer les données de la machine dont l'id est passé en paramètre
+ * @param machineIdentifier Identifiant de la machine
+ * @returns données des enregistrements reçus par le broker
+ */
+export function useMqttListener(machineIdentifier: string) {
   const [state, setState] = useState<MqttState>({
     records: [],
     timestamp: null,
     isConnected: false,
   });
-
+  // Ajout de l'identifiant de la machine pour créer le topic complet  
+  TOPIC = BASE_TOPIC + machineIdentifier;
+  
   // Keep latest records accessible without re-subscribing
   const recordsRef = useRef<MqttRecord[]>([]);
 
   useEffect(() => {
     // Ne pas se connecter si le mode actif est "bridge"
     if (ProjectConstants.CONNECTION_MODE !== "mqtt") return;
-
-    const client = mqtt.connect(BROKER_URL, {
+    
+    const client = mqtt.connect(BROKER_URL, { 
+      username: 'Edern',
+      password: 'guFVmVlVm4V4oQ',
       clientId: `react_${Math.random().toString(16).slice(2)}`,
       clean: true,
       reconnectPeriod: 1000,
@@ -48,6 +63,7 @@ export function useMqttListener() {
     client.on("message", (_topic, payload) => {
       try {
         const data = JSON.parse(payload.toString());
+        // console.log (data);
         const records: MqttRecord[] = data.Records ?? [];
         recordsRef.current = records;
         setState((prev) => ({

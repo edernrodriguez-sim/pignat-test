@@ -1,53 +1,226 @@
 [
     {
+        "name": "Conditions d'état avant démarrage",
+        "rule":"and",
+        "errorMessage": "Les conditions de démarrage ne sont pas remplies",
+        "isBlockingForStart": true,
+        "sessionType": ["continu","discontinu"],
+        "rules": [
+            {
+                "name": "V1 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS01",
+                "expectedValue": false
+            },
+            {
+                "name": "V5 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS05",
+                "expectedValue": false
+            },
+            {
+                "name": "V6 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS06",
+                "expectedValue": false
+            },
+            {
+                "name": "V7 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS07",
+                "expectedValue": false
+            },
+            {
+                "name": "V9 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS09",
+                "expectedValue": false
+            },
+            {
+                "name": "V11 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS11",
+                "expectedValue": false
+            },
+            {
+                "name": "V12 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS12",
+                "expectedValue": false
+            },
+            {
+                "name": "V14 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS14",
+                "expectedValue": false
+            },
+            {
+                "name": "V15 fermée",
+                "rule":"isFalse",
+                "tagName":"ZS15",
+                "expectedValue": false
+            },
+            {
+                "name": "Débit d'eau froide",
+                "rule":"greaterThan",
+                "tagName":"FIC02_SP",
+                "expectedValue": 100
+            }
+        ]
+    },
+    {
+        "name": "Condition démarrage V8 discontinu",
+        "rule":"isFalse",
+        "tagName":"ZS08",
+        "errorMessage": "La vanne V8 est ouverte. Veuillez la fermer avant de lancer un cycle.",
+        "isBlockingForStart": true,
+        "sessionType": ["discontinu"]
+    },
+    {
+        "name": "Condition démarrage V8 continu",
+        "rule":"isFalse",
+        "tagName":"ZS08",
+        "expectedValue": true,
+        "errorMessage": "La vanne V8 est fermée. Veuillez l'ouvrir' avant de lancer un cycle.",
+        "isBlockingForStart": true,
+        "sessionType": ["continu"]
+    },
+    {
         "name": "Test des valves V2 V3 V4",
         "rule":"onlyOneTrue",
-        "params":["V2","V3","V4"],
+        "tagName":["V2","V3","V4"],
+        "sessionType": ["all"],
         "errorMessage": "Une seule valve doit être ouverte à la fois."
 
     },
     {
-        "name": "Température du bouilleur",
+        "name": "Notification : Bidon V15 plein",
+        "rule":"isFalse",
+        "tagName":"LSH02",
+        "sessionType": ["all"],
+        "errorMessage": "Bidon de 1L au dessus de V15 plein",
+        "isBlockingForStart": false
+    },
+    {
+        "name": "Notification : Bidon V12 plein",
+        "rule":"isFalse",
+        "tagName":"LSH01",
+        "sessionType": ["all"],
+        "errorMessage": "Bidon de 1L au dessus de V12 plein",
+        "isBlockingForStart": false
+    },
+    {
+        "name": "TT01 Trop haut",
+        "rule":"lessThan",
+        "tagName":"TT01",
+        "expectedValue": 110,
+        "errorMessage": "Température TT01 trop haute (< 110)",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "TT02 Trop chaud",
+        "rule":"lessThan",
+        "tagName":"TT02",
+        "expectedValue": 100,
+        "errorMessage": "Température TT02 trop haute (< 100)",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "TT03 Trop chaud",
+        "rule":"lessThan",
+        "tagName":"TT03",
+        "expectedValue": 100,
+        "errorMessage": "Température TT03 trop haute (< 100)",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "TT04 Trop chaud",
+        "rule":"lessThan",
+        "tagName":"TT04",
+        "expectedValue": 100,
+        "errorMessage": "Température TT04 trop haute (< 100)",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "TT05 Trop chaud",
+        "rule":"lessThan",
+        "tagName":"TT05",
+        "expectedValue": 100,
+        "errorMessage": "Température TT05 trop haute (< 100)",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "TT06 Trop chaud",
+        "rule":"lessThan",
+        "tagName":"TT06",
+        "expectedValue": 90,
+        "errorMessage": "Température TT06 trop haute (< 90)",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "TT08 Trop chaud",
+        "rule":"lessThan",
+        "tagName":"TT08",
+        "expectedValue": 50,
+        "errorMessage": "Température TT08 trop haute (< 50)",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "ARU enclenché",
+        "rule":"isFalse",
+        "tagName":"ARU",
+        "errorMessage": "Le bouton ARU est enclenché",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "Bac de rétention",
+        "rule":"isTrue",
+        "tagName":"ZS01",
+        "errorMessage": "Bac de rétention non placé",
+        "isBlockingForStart": true,
+        "sessionType": ["all"]
+    },
+    {
+        "name": "DPIC1 (DPIC01_SP)",
+        "rule":"lessThan",
+        "tagName":"DPIC01_SP",
+        "expectedValue": 30,
+        "errorMessage": "La pression DPIC1 (DPIC01_SP) doit être inférieure à 30mbars"
+
+    },
+
+
+
+
+
+
+
+
+    {
+        "name": "FT02",
         "rule":"and",
         "rules" :
         [
             {
-                "name": "Température supérieur à 20°c",
+                "name": "Débit FT02 > 100 L/h",
                 "rule":"greaterThan",
-                "params":"BoilerTemp",
-                "value": 20
+                "tagName":"FT02",
+                "expectedValue": 100
             },{
-                "name": "Température inférieur à 80°c",
+                "name": "Débit FT02 < 1500 L/h",
                 "rule":"lessThan",
-                "params":"BoilerTemp",
-                "value": 80
+                "tagName":"FT02",
+                "expectedValue": 1500
             }
         ],
-        "errorMessage": "La température doit être comprise entre 20°c et 80°c."
-
-    },
-    {
-        "name": "Débit pompe préchauffage",
-        "rule":"greaterThan",
-        "params":"FSL1",
-        "value": 1,
-        "errorMessage": "La débit de la pompe de préchauffage doit être supérieur à 1 L/h. Vérifier que V1 n'est pas ouverte."
-
-    },
-    {
-        "name": "Vanne V8",
-        "rule":"isTrue",
-        "params":"V8",
-        "value": true,
-        "errorMessage": "La vanne V8 est fermée. Veuillez l'ouvrir avant de lancer un cycle."
-
-    },
-    {
-        "name": "Vanne V9",
-        "rule":"isFalse",
-        "params":"V9",
-        "value": false,
-        "errorMessage": "La vanne V9 est ouverte. Veuillez la fermer avant de lancer un cycle."
-
+        "errorMessage": "Le débit d'eau FT02 doit être compris entre 100 et 1500 L/h"
     }
 ]

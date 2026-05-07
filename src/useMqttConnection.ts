@@ -11,8 +11,8 @@ import { ProjectConstants } from "./projectConstants";
  * Les deux hooks sont toujours instanciés (règles de React),
  * mais seul celui du mode actif établit réellement une connexion.
  */
-export function useMqttConnection() {
-  const mqtt = useMqttListener();
+export function useMqttConnection(machineIdentifier: string) {
+  const mqtt = useMqttListener(machineIdentifier);
   const bridge = useBridgeWs();
 
   return ProjectConstants.CONNECTION_MODE === "bridge" ? bridge : mqtt;

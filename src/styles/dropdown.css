@@ -1,0 +1,10 @@
+.dropdown {
+    background-color: gainsboro;
+    padding: 8px 45px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px 0px gray;
+}
+.dropdown-item {
+    padding: 8px 8px;
+    width: 166px;
+}

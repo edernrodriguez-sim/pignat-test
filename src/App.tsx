@@ -8,7 +8,7 @@ import {
   useCameraEntity,
   LivelinkContext,
   useEntity,
-  DefaultCameraController,
+  DefaultCameraController
 } from "@3dverse/livelink-react";
 import {
   useCallback,
@@ -19,14 +19,14 @@ import {
   useState,
   type SetStateAction,
 } from "react";
-import { type Entity/*, type Vec3 */} from "@3dverse/livelink";
+import { type Entity} from "@3dverse/livelink";
 import { LoadingOverlay } from "@3dverse/livelink-react-ui";
 import "./styles/App.css";
 import data from "./assets/machineState.json";
 import exercises from "./assets/exercise1.json";
 import rulesData from "./assets/rules.json";
 import machinePartsJson from "./assets/machineLabelIdMapping.json";
-import { RulesSystem, type Rule, type RuleResult } from "./RulesSystem";
+import { RulesSystem, type Rule, type RuleResult } from "./rules/RulesSystem";
 import { MachineState } from "./MachineState";
 import { IHM } from "./IHM";
 // import { getVannesValues } from "./vanneManager";
@@ -45,9 +45,14 @@ import { LaunchAnimationCompleteContinue } from "./AnimationCompleteContinue";
 import { ProjectConstants } from "./projectConstants";
 import { LaunchAnimationCompleteDiscontinue } from "./AnimationCompleteDiscontinue";
 import QRModal from "./QRModal";
-import { /*useMqttMachineSync,*/ type VanneUpdate } from "./hooks/useMqttMachineSync";
+import { useMqttMachineSync} from "./hooks/useMqttMachineSync";
 import type { MachineAnimation } from "./models/machineAnimation";
 import type { AnimationEntities } from "./models/animations/animationEntities";
+import Dropdown from "./ui/Dropdown";
+import Avatars from "./avatars/avatars";
+import RulesDisplay from "./rules/rulesDisplay";
+import InfoPanels from "./InfoPanels/InfoPanels";
+import { applyMachineUpdates } from "./animations/animationRunner";
 
 // Scene et token publics
 const scene_id = "05b63dcd-ce5c-4e8f-b363-89a38118462c";
@@ -64,6 +69,7 @@ const keysFromJson: MachineParameter[] = data.map(
       data.Type,
       data.UnitType,
       data.showInIHM,
+      data.satisfyingValue
     ),
 );
 const datasForIHM: MachineParameter[] = data
@@ -81,8 +87,7 @@ const datasForIHM: MachineParameter[] = data
   );
 let isSetMachineStateLaunched: boolean = false;
 // let isSoutirageOn = false;
-let rulesResult: RuleResult[];
-let isProjectReadOnly: boolean = true;
+let isProjectReadOnly: boolean = false;
 //let testUseEffect: boolean = false;
 const allMachineAnimations: { [key: string]: MachineAnimation } = {};
 const AnimationIdvanneIdMapping: { [key: string]: string } = {};
@@ -91,13 +96,24 @@ let exerciseManager: ExerciseManager;
 let isHintModalVisible: boolean;
 let machineLabelIdMapping: MachineMapping;
 let appMode: number;
+/**
+ * Identifiant de la machine à connecter
+ */
+let machineIdentifier: string = "";
 
 export default function App({
   appModeInput,
+  sessionIdV,
+  machineId
 }: {
   readonly appModeInput: number;
+  readonly sessionIdV: string | null;
+  readonly machineId: string;
 }) {
   appMode = appModeInput;
+  machineIdentifier = machineId;
+  console.log(`Machine id : ${machineId}`)
+  
   if (appMode == ProjectConstants.APP_MODE_EXERCICE) isProjectReadOnly = false;
   // Récupération du mapping des labels et des ids
   machineLabelIdMapping = new MachineMapping(machinePartsJson.machineParts);
@@ -110,7 +126,18 @@ export default function App({
         e.steps.map((s) => Object.assign(new Step(), s)),
       ),
   )[0];
-
+if (sessionIdV != null){
+  return (
+    <Livelink
+      sessionId={sessionIdV}
+      token={token}
+      LoadingPanel={LoadingOverlay}
+    >
+      <SceneViewer />
+    </Livelink>
+  );
+}
+else {
   return (
     <Livelink
       sceneId={scene_id}
@@ -123,8 +150,10 @@ export default function App({
     </Livelink>
   );
 }
+}
 
 function SceneViewer() {
+  const [canStartMqtt, setCanStartMqt] = useState(false);
   const cameraControllerRef = useRef<DefaultCameraController>(null);
   const { cameraEntity } = useCameraEntity();
   const [isOpen, setIsOpen] = useState(false);
@@ -135,11 +164,11 @@ function SceneViewer() {
   const [hoveredEntity, setHoveredEntity] = useState<Entity | null>(null);
   const [machineParams, setMachineParams] = useState(keysFromJson);
   // Récupération des infos mqtt dans la scene
-  // const { vanneUpdates } = useMqttMachineSync(setMachineParams);
-  const vanneUpdates: VanneUpdate[] = [];
+  const { vanneUpdates, machineUpdates } = useMqttMachineSync(setMachineParams, canStartMqtt, machineIdentifier);
   const [animationEntities, setAnimationEntities] = useState<AnimationEntities | null>(null);
   const [canShowAnimationButton, setCanShowAnimationButton] = useState(false);
-
+  const [rulesResult, setRulesResult] = useState<RuleResult[]>([]);
+  // console.log(machineParams);
   const { entity: dropParent } = useEntity({
     euid: "79235261-a781-4f84-80d1-5689adabdd57",
   });
@@ -205,6 +234,7 @@ function SceneViewer() {
       const entities = await fetchAnimationEntities(instance);
       setAnimationEntities(entities);
       console.log("!!!!!! SceneViewer - init done");
+      setCanStartMqt(true);
       setTimeout(() => {
         setCanShowAnimationButton(true);
       }, (1000));
@@ -214,18 +244,225 @@ function SceneViewer() {
 
   // Déclenchement des animations de vannes à chaque mise à jour MQTT
   useEffect(() => {
-    if (vanneUpdates.length === 0) return;
-    vanneUpdates.forEach(({ key, isOpen }) => {
-      const fakeParam = { value: isOpen ? true : false } as MachineParameter;
-      launchVanneAnimIfNeeded(fakeParam, key);
-    });
-    console.log(vanneUpdates);
-    testRules(machineParams);
 
-  }, [vanneUpdates, machineParams]);
+    console.log("machineUpdates.length");
+    console.log(machineUpdates.length);
+    if (machineUpdates.length === 0) return;
+
+    applyMachineUpdates(machineUpdates, animationEntities);
+
+
+//     machineUpdates.forEach(({ key, newValue }) => {
+
+//     if (key === "ZS01"){
+//       if (newValue){
+//           AnimationHelper.launchAnim(animationEntities?.bac_de_retention_in);
+//       }
+//       else {
+//           AnimationHelper.launchAnim(animationEntities?.bac_de_retention_out);
+//       }
+//     }
+//     if (key === "LSH01"){
+//       if (newValue){
+//           AnimationHelper.closeAnim(animationEntities?.empty_bidon_1L_V12);
+//       }
+//       else {
+//           AnimationHelper.closeAnim(animationEntities?.fill_bidon_1L_V12);
+//       }
+//     }
+
+    
+//     if (key === "LSH02"){
+//       if (newValue){
+//           AnimationHelper.closeAnim(animationEntities?.empty_bidon_1L_V15);
+//       }
+//       else {
+//           AnimationHelper.closeAnim(animationEntities?.fill_bidon_1L_V15);
+//       }
+//     }
+
+
+
+
+
+// if (key === "V2"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v2_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v2_out);
+//       }
+//       else if (key === "V3"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v3_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v3_out);
+//       }
+//       else if (key === "V4"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v4_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v4_out);
+//       }
+//       else if (key === "V5"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v5_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v5_out);
+//       }
+//       else if (key === "V6"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v6_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v6_out);
+//       }
+//       else if (key === "V7"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v7_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v7_out);
+//       }
+//       else if (key === "V8"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v8_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v8_out);
+//       }
+//       else if (key === "V9"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v9_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v9_out);
+//       }
+//       else if (key === "V11"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v11_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v11_out);
+//       }
+//       else if (key === "V12"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v12_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v12_out);
+//       }
+//       else if (key === "V14"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v14_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v14_out);
+//       }
+//       else if (key === "V15"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v15_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v15_out);
+//       }
+//       else if (key === "V16"){
+//         if (newValue)
+//           AnimationHelper.launchAnim(animationEntities?.v16_in);
+//         else
+//           AnimationHelper.launchAnim(animationEntities?.v16_out);
+//       }
+//     });
+
+
+
+
+    // if (vanneUpdates.length === 0) return;
+    // vanneUpdates.forEach(({ key, isOpen }) => {
+    //   //const fakeParam = { value: isOpen ? true : false } as MachineParameter;
+
+    //   if (key === "V2"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v2_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v2_out);
+    //   }
+    //   else if (key === "V3"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v3_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v3_out);
+    //   }
+    //   else if (key === "V4"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v4_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v4_out);
+    //   }
+    //   else if (key === "V5"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v5_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v5_out);
+    //   }
+    //   else if (key === "V6"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v6_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v6_out);
+    //   }
+    //   else if (key === "V7"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v7_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v7_out);
+    //   }
+    //   else if (key === "V8"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v8_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v8_out);
+    //   }
+    //   else if (key === "V9"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v9_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v9_out);
+    //   }
+    //   else if (key === "V11"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v11_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v11_out);
+    //   }
+    //   else if (key === "V12"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v12_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v12_out);
+    //   }
+    //   else if (key === "V14"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v14_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v14_out);
+    //   }
+    //   else if (key === "V15"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v15_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v15_out);
+    //   }
+    //   else if (key === "V16"){
+    //     if (isOpen)
+    //       AnimationHelper.launchAnim(animationEntities?.v16_in);
+    //     else
+    //       AnimationHelper.launchAnim(animationEntities?.v16_out);
+    //   }
+
+
+    //   //launchVanneAnimIfNeeded(fakeParam, key);
+    // });
+
+  }, [machineUpdates, machineParams]);
 
   useEffect(() =>  {
-    testRules(machineParams);
+
+    const ruleSystem = new RulesSystem();
+    const result = ruleSystem.testRulesForMachineParameters(rulesData.filter(r => !r.isBlockingForStart) as Rule[], machineParams);
+    setRulesResult(result);
+    
   }, [machineParams])
 
   const [isExerciseOnGoing, setIsExerciseOnGoing] = useState(false);
@@ -261,6 +498,7 @@ function SceneViewer() {
       toggleReadOnly: toggleIsReadOnly,
       value: machineParams,
       onHover: onMachineStateHover,
+      onMachineElementUpdate: () => {}
     }),
     [machineParams],
   );
@@ -315,6 +553,11 @@ function SceneViewer() {
     );
 
     console.log(pickedEntity!.entity.id);
+    if (labelFromId?.charAt(0) === 'V'){
+      if (labelFromId?.charAt(1) === '2'){
+        AnimationHelper.launchAnim(animationEntities?.v2_out);
+      }
+    }
     if (labelFromId != undefined) {
       lastLabelClicked = labelFromId;
       console.log("setLastLabelClicked");
@@ -363,9 +606,10 @@ function SceneViewer() {
         });
       }
 
-      instance.scene.highlightEntities({
-        entities: [entity],
-      });
+      // Disable entity highlighting (colored outline around the entity mesh)
+      // instance.scene.highlightEntities({
+      //   entities: [entity],
+      // });
       onObjectClicked();
     } else {
       instance.scene.highlightEntities({
@@ -687,36 +931,6 @@ function SceneViewer() {
   ) {
     console.log(label);
     console.log(value);
-    // switch(label){
-    //     case "bouilleurRate":
-    //         setBouilleurRate(value as SetStateAction<number>);
-    //         break;
-    //     case "p1Value":
-    //         setp1Value(value as SetStateAction<number>);
-    //         break;
-    //     case "isP1On":
-    //         setStatusP1(value as SetStateAction<boolean>);
-    //         break;
-    //     case "prechauffeValue":
-    //         setPrechauffeValue(value as SetStateAction<number>);
-    //         break;
-    //     case "waterLevel":
-    //         setWaterLevel(value as SetStateAction<number>);
-    //         break;
-    //     case "dpic":
-    //         setDpic(value as SetStateAction<number>);
-    //         break;
-    //     case "reflux":
-    //         setrefluxType(value as SetStateAction<string>);
-    //         break;
-    //     case "isBouilleurOn":
-    //         setIsBouilleurOn(value as SetStateAction<boolean>);
-    //         break;
-    //     case "refluxRate":
-    //         setrefluxRate(value as SetStateAction<number>);
-    //         break;
-
-    // }
     if (isExerciseOnGoing) {
       onClickWhileExerciseOnGoing();
     }
@@ -724,25 +938,65 @@ function SceneViewer() {
 
   //#endregion
   
-  function shareSessionQRCode() {
+  function shareSessionQRCode(shareSessionType: string) {
+    // Création de l'url de base utilisable pour un spectateur actif
     QR_URL =
       window.location.origin +
       import.meta.env.BASE_URL +
-      "?idsession=" +
-      instance!.session.session_id.toString() +
-      "&idclient=" +
-      instance!.session.client_id +
-      "&idcamera=" +
-      cameraEntity?.id;
+      "?idsession=" + instance!.session.session_id.toString();
+      // Ajout des éléments pour un spectateur passif
+      if (shareSessionType === ProjectConstants.SHARE_TYPE_PASSIVE) {
+        
+        QR_URL += 
+        "&idclient=" +
+        instance!.session.client_id +
+        "&idcamera=" +
+        cameraEntity?.id;
+      }
 
     console.log(QR_URL);
     setIsOpen(true);
   }
 
+  //--------------------------------------------------------------------------
+  // Camera constraints
+  // const MIN_DOLLY_DISTANCE = 0.5;
+  const MAX_DOLLY_DISTANCE = 5;
+  const ON_DRAG_THRESHOLD_DISTANCE_IN_PX = 5;
+
+  //--------------------------------------------------------------------------
+  const bindCameraController = useCallback(
+    (controller: DefaultCameraController | undefined) => {
+        cameraControllerRef.current = controller ?? null;
+        if (!controller){
+          return;
+        }
+
+        // Keep orbital camera on the upper hemisphere (avoid going under floor).
+        // controller.minPolarAngle = -Math.PI / 2;
+        // controller.maxPolarAngle = Math.PI  - 0.6;
+
+        // Clamp dolly range.
+        // controller.minDistance = MIN_DOLLY_DISTANCE;
+        controller.maxDistance = MAX_DOLLY_DISTANCE;
+        controller.infinityDolly = false;
+
+        controller.dollySpeed = 0.5;
+
+        controller.lock_pointer = {
+            aim: "on-drag",
+            on_drag_threshold_in_pixels: ON_DRAG_THRESHOLD_DISTANCE_IN_PX,
+        };
+    },
+    [cameraControllerRef],
+  );
+
   if(!instance) {
     return;
   }
 
+  //----------------------------------------------------------------------------
+  //#region VUE
   //----------------------------------------------------------------------------
   const renderUX = () => {
     if(instance == null) {
@@ -751,46 +1005,18 @@ function SceneViewer() {
     
     return (
       <>
+        {/*Panneaux d'infos de la machine dans l'UI*/}
+        <InfoPanels machineParams={machineParams} />
+
         {/*État de la machine*/}
-        {appMode === ProjectConstants.APP_MODE_MAINTENANCE && (
           <div className={`absolute top-[2vh] left-[2vh]`}>
             <MachineState machineStateDto={machineStateDto} />
           </div>
-        )}
         {/* Erreurs */}
-        {appMode === ProjectConstants.APP_MODE_MAINTENANCE &&
-          rulesResult != undefined &&
-          rulesResult.filter((r) => r.result === "Echec").length > 0 && (
-            <div className={`absolute top-[2vh] right-[2vh]`}>
-              <div className="titleDiv">
-                <b>Erreur(s) :</b>
-              </div>
-
-              <div id="errorDiv" className="contentDiv">
-                {/* Affichage de chaque élément de la machine */}
-                {rulesResult
-                  .filter((r) => r.result === "Echec")
-                  .map((r) => (
-                    <div
-                      onClick={revealErrors}
-                      onPointerLeave={() => {
-                        launchValveErrors(false);
-                      }}
-                      onPointerOverCapture={() => {
-                        launchValveErrors(true);
-                      }}
-                    >
-                      <p>
-                        <b>{r.name}</b>
-                      </p>
-                      {/* <p>État : <b>{r.result}</b></p> */}
-                      <p>{r.errorMessage}</p>
-                      <hr />
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
+        <RulesDisplay 
+          appMode={appMode}
+          currentRules={rulesData.filter(r => !r.isBlockingForStart) as Rule[]}
+          machineDto={machineStateDto} />
 
         {isHintModalVisible ? (
           <div className={`absolute bottom-[40vh] right-[92vh]`}>
@@ -828,10 +1054,11 @@ function SceneViewer() {
           ))}
         {
             /* Affichage des boutons toujours présents */
-            <div className={`absolute yop-[10vh] right-[28vh]`}>
-                <button id="exerciseBtn" onClick={() => shareSessionQRCode()}>
+            <div className={`absolute yop-[10vh] right-[28vh] top-[3vh]`}>
+                {/* <button id="exerciseBtn" onClick={() => shareSessionQRCode()}>
                 Partager la Session
-                </button>
+                </button> */}
+                <Dropdown onValueSelected={((value) => shareSessionQRCode(value))} />
             </div>
           
         }
@@ -853,7 +1080,7 @@ function SceneViewer() {
         canShowAnimationButton ? (
           <div className={`absolute bottom-[10vh] right-[42vw]`}>
             <button
-              id="exerciseBtn"
+              id="exerciseBtnn"
               onClick={LaunchAnimationCompleteDisContinueFromButton}
             >
               LANCER ANIMATION DISCONTINUE
@@ -874,9 +1101,6 @@ function SceneViewer() {
       </>
     );
   }
-
-  //----------------------------------------------------------------------------
-  //#region VUE
   return (
     <Canvas className="w-full h-full">
       <Viewport
@@ -885,8 +1109,9 @@ function SceneViewer() {
         setPickedEntity={setPickedEntity}
         setHoveredEntity={(data) => setHoveredEntity(data?.entity ?? null)}
       >
-        <CameraController ref={cameraControllerRef} />
-        
+        {/* <CameraController preset={CameraControllerPresets.pointer_locked_orbital}/> */}
+        <CameraController ref={bindCameraController} />
+        <Avatars />
         {renderUX()}
 
       </Viewport>
@@ -896,255 +1121,16 @@ function SceneViewer() {
   //#endregion
 }
 
-// async function fetchVannesAnimations(livelink: LivelinkInstance) {
-//   const promises = getVannesValues().map((v) => {
-//     AnimationIdvanneIdMapping[v.id] = v.label;
-//     return AddVanneAnimations(
-//       livelink,
-//       v.label,
-//       v.openAnimId,
-//       v.closeAnimId,
-//       v.glowAnimId,
-//       v.stopGlowAnimId,
-//     );
-//   });
-//   await Promise.all(promises);
-// }
-
-/**
- * Ajout des animations d'une vanne dans le tableau d'animation. Les vannes ont 3 animations, ouverture, fermeture, clignotement
- * @param livelink Instance de livelink pour récupérer les entités d'animation
- * @param vanneEntityBaseName Nom de la vanne (ex "V2")
- * @param openAnimationId id de l'animation d'ouverture
- * @param closeAnimationId id de l'animation de fermeture
- * @param glowAnimationId id de l'animation de clignotement
- */
-// async function AddVanneAnimations(
-//   livelink: LivelinkInstance,
-//   vanneEntityBaseName: string,
-//   openAnimationId: string,
-//   closeAnimationId: string,
-//   glowAnimationId: string,
-//   stopGlowAnimationId: string | undefined,
-// ) {
-//   const openAnimationEntity = await livelink.scene.findEntity({
-//     entity_uuid: openAnimationId,
-//   });
-//   const closeAnimationEntity = await livelink.scene.findEntity({
-//     entity_uuid: closeAnimationId,
-//   });
-//   const glowAnimationEntity = await livelink.scene.findEntity({
-//     entity_uuid: glowAnimationId,
-//   });
-//   const stopGlowAnimationEntity = await livelink.scene.findEntity({
-//     entity_uuid: stopGlowAnimationId ?? "",
-//   });
-
-//   const OpenAnimationName = AnimationHelper.getAnimationName(
-//     vanneEntityBaseName,
-//     AnimationTypes.open,
-//   );
-//   const CloseAnimationName = AnimationHelper.getAnimationName(
-//     vanneEntityBaseName,
-//     AnimationTypes.close,
-//   );
-//   const GlowAnimationName = AnimationHelper.getAnimationName(
-//     vanneEntityBaseName,
-//     AnimationTypes.glow,
-//   );
-//   allMachineAnimations[OpenAnimationName] = {
-//     key: OpenAnimationName,
-//     animationController: openAnimationEntity!,
-//   };
-//   allMachineAnimations[CloseAnimationName] = {
-//     key: CloseAnimationName,
-//     animationController: closeAnimationEntity!,
-//   };
-//   allMachineAnimations[GlowAnimationName] = {
-//     key: GlowAnimationName,
-//     animationController: glowAnimationEntity!,
-//   };
-
-//   if (stopGlowAnimationEntity != null) {
-//     const StopGlowAnimationName = AnimationHelper.getAnimationName(
-//       vanneEntityBaseName,
-//       AnimationTypes.stopGlow,
-//     );
-//     allMachineAnimations[StopGlowAnimationName] = {
-//       key: StopGlowAnimationName,
-//       animationController: stopGlowAnimationEntity,
-//     };
-//   }
-// }
-
-// async function fetchAnimations(livelink: LivelinkInstance) {
-//   const promises: Promise<void>[] = [];
-//   promises.push(AddAnimation(
-//     livelink,
-//     "741cbe2b-7198-46e7-92ba-3498c87e0461",
-//     AnimationTypes.glow,
-//     "ecran",
-//   ));
-//   // Bac de retention
-//   promises.push(AddAnimation(
-//     livelink,
-//     "be244dc8-0da4-4036-94ba-b1d875c24134",
-//     AnimationTypes.glow,
-//     "bac_de_retention",
-//   ));
-//   promises.push(AddAnimation(
-//     livelink,
-//     "d6d376eb-3686-4483-926e-82c901e04f21",
-//     AnimationTypes.move,
-//     "bac_de_retention",
-//   ));
-
-//   promises.push(AddAnimation(
-//     livelink,
-//     "a66152e4-f0a6-478f-8cc1-4d1331ae1141",
-//     AnimationTypes.glow,
-//     "bidon_10L_V12",
-//   ));
-//   promises.push(AddAnimation(
-//     livelink,
-//     "d2c81ff2-0f48-4c61-b5eb-27932a1ce27e",
-//     AnimationTypes.move,
-//     "bidon_10L_V12",
-//   ));
-
-//   promises.push(AddAnimation(
-//     livelink,
-//     "5ef27586-7f3a-43ad-8f30-1c6b322a3b30",
-//     AnimationTypes.glow,
-//     "bidon_10L_V15",
-//   ));
-//   promises.push(AddAnimation(
-//     livelink,
-//     "41ee3239-b6d8-4127-8401-c06b2b421bf8",
-//     AnimationTypes.move,
-//     "bidon_10L_V15",
-//   ));
-
-//   promises.push(AddAnimation(
-//     livelink,
-//     "ea69d273-7301-476c-90b1-5cee298cd45c",
-//     AnimationTypes.glow,
-//     "bidon_20L",
-//   ));
-//   promises.push(AddAnimation(
-//     livelink,
-//     "6e1710fe-8116-4209-989b-fa4315a94056",
-//     AnimationTypes.move,
-//     "bidon_20L",
-//   ));
-
-//   //bouchon
-//   promises.push(AddAnimation(
-//     livelink,
-//     "dee38e6f-39d0-42f6-b371-b06af8606b97",
-//     AnimationTypes.glow,
-//     "bouchon",
-//   ));
-//   promises.push(AddAnimation(
-//     livelink,
-//     "04f499fa-8dbe-4682-9d8d-e39aad9eee2d",
-//     AnimationTypes.move,
-//     "bouchon",
-//   ));
-
-//   promises.push(AddAnimation(
-//     livelink,
-//     "2cf59cc7-b06d-430a-ae37-e5c98b052bd0",
-//     AnimationTypes.other,
-//     "bells",
-//   ));
-
-//   promises.push(AddAnimation(
-//     livelink,
-//     "4b0d14d8-e1b0-42fe-8ad5-b1ed28f96f6b",
-//     AnimationTypes.other,
-//     "heat_boiler",
-//   ));
-
-//   //V14
-//   promises.push(AddAnimation(
-//     livelink,
-//     "a82aa290-ee90-487e-a921-e4597aadfb96",
-//     AnimationTypes.open,
-//     "V14",
-//   ));
-//   promises.push(AddAnimation(
-//     livelink,
-//     "fc80d23c-0b6a-4de4-82cc-9cc69934697b",
-//     AnimationTypes.close,
-//     "V14",
-//   ));
-//   promises.push(AddAnimation(
-//     livelink,
-//     "451e35a8-bdc6-4ee5-81b1-f0ff3d00cb16",
-//     AnimationTypes.glow,
-//     "V14",
-//   ));
-//   // echantillon
-//   promises.push(AddAnimation(
-//     livelink,
-//     "5046e472-12e9-4a46-a91c-18f7a5296fe2",
-//     AnimationTypes.other,
-//     "echantillon_v14",
-//   ));
-
-//   await Promise.all(promises);
-// }
-
-// async function AddAnimation(
-//   livelink: LivelinkInstance,
-//   animId: string,
-//   animationType: AnimationTypes,
-//   entityLabel: string,
-// ) {
-//   const animToAdd = await livelink.scene.findEntity({
-//     entity_uuid: animId,
-//   });
-//   const animationName = AnimationHelper.getAnimationName(
-//     entityLabel,
-//     animationType,
-//   );
-//   allMachineAnimations[animationName] = {
-//     key: animationName,
-//     animationController: animToAdd!,
-//   };
-// }
-
 function setMachineStateDatas() {
   if (isSetMachineStateLaunched === false) {
     isSetMachineStateLaunched = true;
-    console.log(keysFromJson);
     keysFromJson.forEach((k) => {
       if (k.type === ProjectConstants.UNITTYPE_VANNE) {
         launchVanneAnimIfNeeded(k, k.key);
-      } else {
-        console.log("launchAnimIfNeeded(k)");
       }
     });
   }
   //testRules();
-}
-
-function testRules(params: MachineParameter[]) {
-  rulesResult = [];
-  rulesData.forEach((r) => {
-    const ruleSystem = new RulesSystem();
-    const result = ruleSystem.testRule(r as Rule, params);
-    rulesResult.push({
-      name: r.name,
-      result: result === true ? "Validé" : "Echec",
-      errorMessage: r.errorMessage,
-    } as RuleResult);
-  });
-  // if (rulesResult.filter(r => r.result === "Echec").length > 0)
-  //     launchValveErrors(true);
-  // else
-  //     launchValveErrors(false);
 }
 
 function launchValveErrors(value: boolean) {
@@ -1185,26 +1171,29 @@ function launchValveErrors(value: boolean) {
     );
   }
 }
-
-function revealErrors() {
-  alert("REVEAL ERROSRS");
-}
-// function launchAnimIfNeeded(param : MachineParameter)
-// {
-// }
 function launchVanneAnimIfNeeded(param: MachineParameter, vanneLabel: string) {
-  if (param.value === true || param.value === "true")
-    AnimationHelper.launchAnim(
-      allMachineAnimations[
-        AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.open)
-      ]?.animationController,
-    );
-  else
-    AnimationHelper.launchAnim(
-      allMachineAnimations[
-        AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.close)
-      ]?.animationController,
-    );
+  // console.log("launchVanneAnimIfNeeded");
+  // console.log(param);
+  // console.log(vanneLabel);
+  // console.log(allMachineAnimations);
+  // console.log(AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.open));
+  // if (param.value === true || param.value === "true")
+
+  //   if (param.key === "V2"){
+  //     AnimationHelper.launchAnim(animationEntities)
+  //   }
+
+  //   AnimationHelper.launchAnim(
+  //     allMachineAnimations[
+  //       AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.open)
+  //     ]?.animationController,
+  //   );
+  // else
+  //   AnimationHelper.launchAnim(
+  //     allMachineAnimations[
+  //       AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.close)
+  //     ]?.animationController,
+  //   );
 }
 
 // Quand on clique sur n’importe quel objet, on lance l’animation

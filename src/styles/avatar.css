@@ -1,0 +1,10 @@
+.avatar {
+    border-radius: 3vh;
+    padding: 1vh;
+    background-color: yellowgreen;
+    width: 4.5vh;
+}
+
+.border-accent {
+    border-color: yellow;
+}

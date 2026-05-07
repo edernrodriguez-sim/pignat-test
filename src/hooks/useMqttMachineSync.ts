@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { useMqttConnection } from "../useMqttConnection";
-import { mapMqttRecordsToUpdates, MQTT_TAG_MAPPING, VANNE_MQTT_TAGS } from "../mqttTagMapping";
+import { mapMqttRecordsToUpdates, MQTT_TAG_MAPPING } from "../mqttTagMapping";
 import type { MachineParameter } from "../models/machineParameter";
 
 export interface VanneUpdate {
@@ -9,6 +9,13 @@ export interface VanneUpdate {
   key: string;
   /** true = ouverte, false = fermée */
   isOpen: boolean;
+}
+
+export interface MachineUpdate {
+  /** Clé du capteur, ex: "V2", "TT01", ... */
+  key: string;
+  /** true = ouverte, false = fermée */
+  newValue: string | number | boolean;
 }
 
 /**
@@ -22,17 +29,23 @@ export interface VanneUpdate {
  */
 export function useMqttMachineSync(
   setMachineParams: Dispatch<SetStateAction<MachineParameter[]>>,
+  canStartMqtt: boolean,
+  machineIdentifier: string
 ) {
-  const { records, isConnected, timestamp } = useMqttConnection();
-  const [vanneUpdates, setVanneUpdates] = useState<VanneUpdate[]>([]);
+  
+  const { records, isConnected, timestamp } = useMqttConnection(machineIdentifier);
+  const [vanneUpdates] = useState<VanneUpdate[]>([]);
+  const [machineUpdates, setMachineUpdates] = useState<MachineUpdate[]>([]);
   // Mémorise le dernier état connu de chaque vanne pour éviter de rejouer
   // une animation si la valeur n'a pas changé entre deux messages MQTT.
-  const vanneStateRef = useRef<Record<string, boolean>>({});
+  
+  const machineStateRef = useRef<Record<string, string | number | boolean>>({});
 
   useEffect(() => {
-    if (records.length === 0) return;
+    if (records.length === 0 || !canStartMqtt) return;
 
     const updates = mapMqttRecordsToUpdates(records);
+    
     if (updates.length === 0) return;
 
     // Met à jour les machineParams
@@ -44,23 +57,25 @@ export function useMqttMachineSync(
           : param,
       ),
     );
-
-    // N'émet que les vannes dont l'état a réellement changé
-    const changedVannes: VanneUpdate[] = [];
+    const changedElements: MachineUpdate[] = [];
     for (const record of records) {
-      if (!VANNE_MQTT_TAGS.has(record.TagName)) continue;
+      // Si clé non trouvé on passe au suivant
+      if (MQTT_TAG_MAPPING[record.TagName] == null) continue;
+      // On récupère la valeur selon la clé
       const key = MQTT_TAG_MAPPING[record.TagName];
-      const isOpen = Boolean(record.Value);
-      if (vanneStateRef.current[key] !== isOpen) {
-        vanneStateRef.current[key] = isOpen;
-        changedVannes.push({ key, isOpen });
+
+      // On check les valeurs de référence
+      if (machineStateRef.current[key] !== record.Value) {
+        machineStateRef.current[key] = record.Value;
+        changedElements.push({ key,  newValue: record.Value });
       }
     }
 
-    if (changedVannes.length > 0) {
-      setVanneUpdates(changedVannes);
-    }
+    //if (changedElements.length > 0){
+      setMachineUpdates(changedElements);
+    //}
+    
   }, [records, setMachineParams]);
 
-  return { isConnected, timestamp, vanneUpdates };
+  return { isConnected, timestamp, vanneUpdates, machineUpdates };
 }
