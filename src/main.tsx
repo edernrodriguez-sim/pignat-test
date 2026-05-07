@@ -7,7 +7,6 @@ import "./styles/IHM.css";
 import "./styles/dropdown.css";
 import Home from "./home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AppExercice from "./exercices/app.example";
 
 
 

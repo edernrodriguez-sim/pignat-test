@@ -164,7 +164,7 @@ function SceneViewer() {
   const [hoveredEntity, setHoveredEntity] = useState<Entity | null>(null);
   const [machineParams, setMachineParams] = useState(keysFromJson);
   // Récupération des infos mqtt dans la scene
-  const { vanneUpdates, machineUpdates } = useMqttMachineSync(setMachineParams, canStartMqtt, machineIdentifier);
+  const {  machineUpdates } = useMqttMachineSync(setMachineParams, canStartMqtt, machineIdentifier);
   const [animationEntities, setAnimationEntities] = useState<AnimationEntities | null>(null);
   const [canShowAnimationButton, setCanShowAnimationButton] = useState(false);
   const [rulesResult, setRulesResult] = useState<RuleResult[]>([]);
@@ -462,7 +462,7 @@ function SceneViewer() {
     const ruleSystem = new RulesSystem();
     const result = ruleSystem.testRulesForMachineParameters(rulesData.filter(r => !r.isBlockingForStart) as Rule[], machineParams);
     setRulesResult(result);
-    
+    console.log(rulesResult);
   }, [machineParams])
 
   const [isExerciseOnGoing, setIsExerciseOnGoing] = useState(false);
@@ -653,10 +653,6 @@ function SceneViewer() {
     }
     machineParam.value = machineParam.value === "false" ? "true" : "false";
     setMachineParams([...machineParams]);
-    launchVanneAnimIfNeeded(
-      machineParam,
-      AnimationIdvanneIdMapping[pickedEntity!.entity.id],
-    );
   }
 
   function onMachineStateHover(key: string, status: boolean) {
@@ -1126,75 +1122,13 @@ function setMachineStateDatas() {
     isSetMachineStateLaunched = true;
     keysFromJson.forEach((k) => {
       if (k.type === ProjectConstants.UNITTYPE_VANNE) {
-        launchVanneAnimIfNeeded(k, k.key);
+        // launchVanneAnimIfNeeded(k, k.key);
       }
     });
   }
   //testRules();
 }
 
-function launchValveErrors(value: boolean) {
-  if (value === true) {
-    AnimationHelper.launchAnim(
-      allMachineAnimations["V4_glow"].animationController,
-    );
-    AnimationHelper.launchAnim(
-      allMachineAnimations["V2_glow"].animationController,
-    );
-    AnimationHelper.launchAnim(
-      allMachineAnimations["V3_glow"].animationController,
-    );
-  } else {
-    AnimationHelper.closeAnim(
-      allMachineAnimations["V4_glow"].animationController,
-    );
-    AnimationHelper.closeAnim(
-      allMachineAnimations["V2_glow"].animationController,
-    );
-    AnimationHelper.closeAnim(
-      allMachineAnimations["V3_glow"].animationController,
-    );
-    AnimationHelper.closeAnim(
-      allMachineAnimations[
-        AnimationHelper.getAnimationName("V4", AnimationTypes.stopGlow)
-      ].animationController,
-    );
-    AnimationHelper.closeAnim(
-      allMachineAnimations[
-        AnimationHelper.getAnimationName("V2", AnimationTypes.stopGlow)
-      ].animationController,
-    );
-    AnimationHelper.closeAnim(
-      allMachineAnimations[
-        AnimationHelper.getAnimationName("V3", AnimationTypes.stopGlow)
-      ].animationController,
-    );
-  }
-}
-function launchVanneAnimIfNeeded(param: MachineParameter, vanneLabel: string) {
-  // console.log("launchVanneAnimIfNeeded");
-  // console.log(param);
-  // console.log(vanneLabel);
-  // console.log(allMachineAnimations);
-  // console.log(AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.open));
-  // if (param.value === true || param.value === "true")
-
-  //   if (param.key === "V2"){
-  //     AnimationHelper.launchAnim(animationEntities)
-  //   }
-
-  //   AnimationHelper.launchAnim(
-  //     allMachineAnimations[
-  //       AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.open)
-  //     ]?.animationController,
-  //   );
-  // else
-  //   AnimationHelper.launchAnim(
-  //     allMachineAnimations[
-  //       AnimationHelper.getAnimationName(vanneLabel, AnimationTypes.close)
-  //     ]?.animationController,
-  //   );
-}
 
 // Quand on clique sur n’importe quel objet, on lance l’animation
 // if (pickedEntity/* && animationEntity*/) {

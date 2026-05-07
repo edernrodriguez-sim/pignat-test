@@ -1,3 +1,4 @@
+import type { Entity } from "@3dverse/livelink";
 import { AnimationHelper } from "../animationHelper";
 import type { AnimationEntities } from "../models/animations/animationEntities";
 
@@ -25,8 +26,10 @@ export const ANIM_MAP: Record<string, AnimResolver> = {
     ["V2","V3","V4","V5","V6","V7","V8","V9","V11","V12","V14","V15","V16"].map(
       (v) => [
         v,
-        (e: AnimationEntities, newValue: boolean) =>
-          AnimationHelper.launchAnim(newValue ? e[`${v.toLowerCase()}_in`] : e[`${v.toLowerCase()}_out`]),
+        (e: AnimationEntities, newValue: boolean) => {
+           const key = `${v.toLowerCase()}_${newValue ? "in" : "out"}` as keyof AnimationEntities;
+          AnimationHelper.launchAnim(e[key] as Entity);
+        }
       ]
     )
   ),

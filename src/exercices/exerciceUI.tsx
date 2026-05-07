@@ -1,6 +1,9 @@
+import type { ExerciseState, ExerciseStep } from "./exercice";
 import { ExercisePanel } from "./exercicePanel";
 
-export default function ExerciceUI({state, reset, completeCurrentStep, currentStep, pressureValue , handlePressureChange}) {
+export default function ExerciceUI({state, reset, completeCurrentStep, currentStep, pressureValue , handlePressureChange}
+  : { state: ExerciseState, reset: () => void, completeCurrentStep: () => void, currentStep: ExerciseStep, pressureValue: string, handlePressureChange: (e: React.ChangeEvent<HTMLInputElement>) => void}
+) {
   return (
     <div style={{ display: "flex", gap: "24px", padding: "32px" }}>
 

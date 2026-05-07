@@ -83,7 +83,7 @@ export function ExercisePanel({
   onForceComplete,
   showDebug = false,
 }: ExercisePanelProps) {
-  const { exercise, currentStepIndex, stepStatuses, isCompleted } = state;
+  const { exercise, stepStatuses, isCompleted } = state;
   const completedCount = Object.values(stepStatuses).filter(
     (s) => s === "completed"
   ).length;
