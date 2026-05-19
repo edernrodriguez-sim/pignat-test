@@ -71,23 +71,6 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
     init();
   }, [instance]);
 
-  function updateParameter(updated: MachineParameter[]){
-    let newMachine = machineParams;
-    updated.forEach(u => 
-      
-      {
-        console.log(`updateParameter : key ${u.key} / value : ${u.value}`)
-        
-        newMachine = newMachine.map((p) =>
-          p.key === u.key ? { ...p, value: u.value  } : p
-        );
-
-      });
-      console.log(machineParams);
-      setMachineParams(newMachine);
-
-  }
-
   /** Permet le lancement d'une simulation de temperature si besoin dans l'exercice */
   const { startTransitions, completeAll } = UseTemperatureSimulation({
     onParametersChange: (updated) => {

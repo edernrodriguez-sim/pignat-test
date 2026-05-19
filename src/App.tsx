@@ -459,6 +459,7 @@ function SceneViewer() {
   useEffect(() =>  {
 
     const ruleSystem = new RulesSystem();
+    console.log(rulesResult);
     const result = ruleSystem.testRulesForMachineParameters(rulesData.filter(r => !r.isBlockingForStart) as Rule[], machineParams);
     setRulesResult(result);
     
@@ -650,10 +651,6 @@ function SceneViewer() {
 
 
   //#endregion
-
-  function showIHMModal() {
-    setIsIHMModalVisible(true);
-  }
 
   function closeIHMModal() {
     setIsIHMModalVisible(false);
@@ -1058,37 +1055,6 @@ function SceneViewer() {
         {isOpen && <QRModal url={QR_URL} onClose={() => setIsOpen(false)} />}
       </>
     );
-  }
-
-
-  
-  let overlays: SchemaOverlay[] = [
-    {
-        id: "1",
-        type: "value",
-        x: 72,
-        y: 50.2,
-        value: 15
-    },
-    {
-        id: "2",
-        type: "value",
-        x: 70.5,
-        y: 57,
-        value: 70
-    },
-    {
-        id: "2",
-        type: "button",
-        x: 7.5,
-        y: 62,
-        onClick: () => {},
-        label: "P1"
-    }
-  ];
-
-  function onIhmInputUpdate(inputId: String, value: string | number | boolean){
-    console.log(`New update for ${inputId} value : ${value}`)
   }
 
   function onParameterUpdate(newMachineParams : MachineParameter[]){
