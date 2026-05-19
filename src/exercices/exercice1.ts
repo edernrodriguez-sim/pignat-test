@@ -6,28 +6,17 @@ const myExercise: Exercise = {
   name: "Remplissage du bouilleur",
   description: "Suivez les étapes pour remplir correctement le bouilleur.",
   steps: [
-    // {
-    //   id: "step-1", number: 1, name: "Placer le bac de retention",
-    //   description: "Cliquez sur le bac de retention pour le placer.",
-    //   action: { type: "click3D", entityName: "retentionBox", label: "Cliquez sur le bac de retention dans la scène 3D" },
-    //   onCompleteAnimation: { animationName: "bac_de_retention_in", entityId: "d6d376eb-3686-4483-926e-82c901e04f21" },
-    // },
-    // {
-    //   id: "step-2", number: 2, name: "Régler la pression",
-    //   description: "Entrez la valeur de pression correcte (12 bar) dans le champ ci-dessous.",
-    //   action: { type: "inputChange", fieldId: "pressure-input", expectedValue: "12", label: "Entrez 12 dans le champ de pression" },
-    //   onCompleteAnimation: { animationName: "pressure_set",},
-    // },
     {
       id: "step-1", number: 1, name: "Retirer le bouchon",
       description: "Cliquez sur le bouchon pour l'ouvrir.",
       action: { type: "click3D", entityTag: "boilerCap", label: "Cliquez sur le bouchon dans la scène 3D" },
       onCompleteAnimation: { animationName: "bouchon_out", entityId: "04f499fa-8dbe-4682-9d8d-e39aad9eee2d" },
+      startTemperatureOnComplete: false
     },
     {
       id: "step-2", number: 2, name: "Remplir le bouilleur",
       description: "Cliquez sur le bouilleur pour le remplir",
-      action: { type: "click3D", entityTag:"boiler", label: "Entrez 12 dans le champ de pression" },
+      action: { type: "click3D", entityTag:"boiler", label: "Cliquez sur le bouilleur dans la scène 3D" },
       onCompleteAnimation: { animationName: "boilerFillDiscontinu", entityId: "cfa61690-aad6-4cac-8f4a-ee4b6cc9ee78 "},
     },
     {
@@ -41,13 +30,46 @@ const myExercise: Exercise = {
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: "V16", label: "Cliquez sur la vanne dans la scène 3D" },
       onActionAnimation: { animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b" },
-      onCompleteAnimation: { animationName: "complete_water_flow", entityId: "9b67bb27-1672-488a-a851-1549bbfb174a" },
+  
     },
     {
       id: "step-5", number: 5, name: "Réglage du débit d'eau",
       description: "Entrez la valeur de débit sur 200 l/H",
-      action: { type: "inputChange", fieldId: "pressure-input", expectedValue: "200", label: "Entrez 200 dans le champ de débit" },
-      onCompleteAnimation: { animationName: "pressure_set",},
+      action: { type: "inputChange", fieldId: "FIC02_SP", expectedValue: "200", 
+      label: "Entrez 200 dans le champ de débit" },
+      onCompleteAnimation: { animationName: "complete_water_flow", entityId: "9b67bb27-1672-488a-a851-1549bbfb174a" },
+      startTemperatureOnComplete: true,
+      targetTemperatures: [
+      { key: "TT01", value: 90, time: 15 },
+      { key: "TT02", value: 85, time: 15 }, 
+      { key: "TT03", value: 80, time: 15 },
+      { key: "TT04", value: 75, time: 15 }, 
+      { key: "TT05", value: 70, time: 15 }, 
+    ]
+    },
+    {
+      id: "step-6", number: 6, name: "Relevé de température TT01",
+      description: "Indiquer la valeur de température du bouilleur",
+      action: { type: "inputChange", fieldId: "TT01", isDirectAnswer: true, expectedValue: "90", 
+        label: "Entrez 90 dans le champ de débit", modalTitle: "Indiquer la valeur de TT01" },
+    },
+    {
+      id: "step-7", number: 7, name: "Relevé de température TT02",
+      description: "Indiquer la valeur de température du pied de colonne",
+      action: { type: "inputChange", fieldId: "TT02", isDirectAnswer: true, expectedValue: "85", 
+        label: "Entrez 85 dans le champ de débit", modalTitle: "Indiquer la valeur de TT02" },
+    },
+    {
+      id: "step-8", number: 8, name: "Relevé de température TT03",
+      description: "Indiquer la valeur de température du milieu de colonne",
+      action: { type: "inputChange", fieldId: "TT03", isDirectAnswer: true, expectedValue: "80", 
+        label: "Entrez 80 dans le champ de débit", modalTitle: "Indiquer la valeur de TT03" },
+    },
+    {
+      id: "step-9", number: 9, name: "Relevé de température TT04",
+      description: "Indiquer la valeur de température en haut de colonne",
+      action: { type: "inputChange", fieldId: "TT04", isDirectAnswer: true, expectedValue: "75", 
+        label: "Entrez 75 dans le champ de débit", modalTitle: "Indiquer la valeur de TT04" },
     },
   ],
   onCompleteAnimation: { animationName: "engine_complete"},

@@ -164,6 +164,15 @@
         "sessionType": ["all"]
     },
     {
+        "name": "TT07 Trop chaud",
+        "rule":"lessThan",
+        "tagName":"TT07",
+        "expectedValue": 90,
+        "errorMessage": "Température TT07 trop haute (< 90)",
+        "isBlockingForStart": false,
+        "sessionType": ["all"]
+    },
+    {
         "name": "TT08 Trop chaud",
         "rule":"lessThan",
         "tagName":"TT08",

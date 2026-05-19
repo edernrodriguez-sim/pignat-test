@@ -23,8 +23,9 @@ function RulesDisplay({appMode, currentRules, machineDto} : {
         [rulesResult]
     );
     
-    
-    if (appMode !== ProjectConstants.APP_MODE_MAINTENANCE || failedRules.length === 0)
+    console.log(`failedRules.length : ${failedRules.length}`)
+    console.log(`appMode : ${appMode}`)
+    if (![ProjectConstants.APP_MODE_MAINTENANCE,ProjectConstants.APP_MODE_EXERCICE].includes(appMode) || failedRules.length === 0)
     {
         return null;
     }

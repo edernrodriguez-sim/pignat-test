@@ -9,6 +9,7 @@ import type {
 import { AnimationHelper } from "../animationHelper";
 import type { Livelink } from "@3dverse/livelink";
 import { LivelinkContext } from "@3dverse/livelink-react";
+import type { TempTarget } from "../temperatureRandomizer/temperatureSimulator";
 
 // ─── 3DVerse API shim ─────────────────────────────────────────────────────────
 // Adaptez selon votre version de l'API 3DVerse
@@ -35,9 +36,10 @@ async function playAnimation(trigger: AnimationTrigger) {
 interface UseExerciseOptions {
   onStepComplete?: (step: ExerciseStep, stepIndex: number) => void;
   onExerciseComplete?: (exercise: Exercise) => void;
+  launchTemperatureSimulation?: (t:TempTarget[]) => void;
 }
 
-export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}) {
+export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}, ) {
   const { onStepComplete, onExerciseComplete } = options;
     const { instance } = useContext(LivelinkContext);
     entityLivelink = instance;
@@ -67,6 +69,12 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
 
     if (currentStep.onCompleteAnimation) {
       await playAnimation(currentStep.onCompleteAnimation);
+    }
+
+    if (currentStep.startTemperatureOnComplete 
+      && currentStep.targetTemperatures
+      && options.launchTemperatureSimulation) {
+      options.launchTemperatureSimulation(currentStep.targetTemperatures);
     }
 
     setState((prev) => {
@@ -102,10 +110,10 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
 
   // ── Handler input ─────────────────────────────────────────────────────────
 
-  const onInputChange = useCallback(async (fieldId: string, value: string) => {
+  const onInputChange = useCallback(async (fieldId: string, value: string | number | boolean) => {
     const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
     if (isCompleted) return;
-
+    
     const step = ex.steps[currentStepIndex];
     if (step.action.type !== "inputChange") return;
     if (step.action.fieldId !== fieldId) return;

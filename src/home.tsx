@@ -6,11 +6,10 @@ import { LoadingOverlay } from '@3dverse/livelink-react-ui';
 import { ProjectConstants } from './projectConstants';
 import Logo from './assets/Logo.jpg'
 import TextInputModal from './modals/textInputModal';
+import ExerciceChoice from './exercices/exerciceChoice';
 
 let machineId = "";
 const token = "public_wfVLwtMF9Rg0rp_k";
-
-
 
 function Home() {
     const [appMode, setAppMode] = useState<number>(0);
@@ -26,8 +25,11 @@ function Home() {
     }
 
     // Si un mode est sélectionné, afficher App
-    if (appMode !== 0) {
+    if (appMode === ProjectConstants.APP_MODE_MAINTENANCE) {
         return <App appModeInput={appMode} sessionIdV={idsession} machineId={machineId} />;
+    }
+    else if (appMode === ProjectConstants.APP_MODE_EXERCICE) {
+        return <ExerciceChoice />;
     }
     else if (idsession != undefined) {
         if (idclient != undefined)
@@ -51,9 +53,9 @@ function Home() {
                 <button onClick={() => setIsIdModalOpen(true) }>
                     Mode Support
                 </button>
-                {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
+                <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
                     Mode Exercice
-                </button> */}
+                </button>
                 
                 <button onClick={() => setAppMode(ProjectConstants.APP_MODE_ANIMCONTINUE)}>
                     Animation Continue

@@ -19,7 +19,7 @@ export default function CustomDropdown({onValueSelected} :
       </button>
 
       {open && (
-        <div style={{ position: "absolute", top: "calc(100% + 4px)", left: 0,
+        <div className="customDropdown" style={{ position: "absolute", top: "calc(100% + 4px)", left: 0,
           background: "white", border: "1px solid #ccc", borderRadius: 6 }}
           >
           <div className="dropdown-item" onClick={() => select(0, LaunchType.All) }>Toutes</div>

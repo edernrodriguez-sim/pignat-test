@@ -18,7 +18,7 @@ interface BaseInfoPanelDto {
 
 function BaseInfoPanel({xPos, yPos, zPos, label, machineParam, anchor, width, height, baseColor, _displayLabelOnly} : BaseInfoPanelDto){
 
-    const defaultLength = 0.2;
+    const defaultLength = 0.22;
     const defaultHeight = 0.15;
 
     let bottomValue = 0;

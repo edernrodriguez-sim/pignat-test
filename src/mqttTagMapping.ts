@@ -23,7 +23,7 @@ export const MQTT_TAG_MAPPING: Record<string, string> = {
   TT03: "TT03",
   TT04: "TT04",
   TT05: "TT05",
-  TTC06_OP: "TTC6",
+  TT06: "TT06",
   TT07: "TT07",
   TT08: "TT08",
 
@@ -35,13 +35,15 @@ export const MQTT_TAG_MAPPING: Record<string, string> = {
   FSL01: "FSL1",
   LSL01: "LSL01",
   LSL02: "LSL02",
+  LSL03: "LSL03",
+  LSL04: "LSL04",
   // LSL01 / LSL02 / LSL03 / LSL04 : pas de clé directe dans machineState.json
   // LSH01 / LSH02 : idem
   LSH01: "LSH01",
   LSH02: "LSH02",
 
   // ── Vannes (ZS = retour capteur position vanne) ───────────────────────
-  ZS01: "ZS01",   // V1 absent de machineState.json — à confirmer
+  ZS01: "ZS01",
   ZS02: "V2",
   ZS03: "V3",
   ZS04: "V4",
@@ -51,12 +53,18 @@ export const MQTT_TAG_MAPPING: Record<string, string> = {
   ZS08: "V8",
   ZS09: "V9",
   ZS11: "V11",
+  ZS12: "V12",
   ZS14: "V14",
-  // ZS12 / ZS15 / ZS16 : à confirmer si correspondance V12/V15/V16
+  ZS15: "V15",
+  ZS16: "V16",
 
   // ── Auxiliaires ───────────────────────────────────────────────────────
   H1: "H1",
-  // H2, P1, VR01, EV01, TH01, DPIC01_OP, DPT01 :
+  H2: "H2",
+  P1: "P1",
+  EV01: "EV01",
+  DPIC01_OP: "DPIC01_OP",
+  // VR01, TH01, DPT01 :
   //   pas de clé MachineParameter directe — à ajouter si nécessaire
   ARU: "ARU"
 };

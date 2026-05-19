@@ -6,8 +6,8 @@
         "Type":"mode"
     },
     {
-        "Key":"V1",
-        "Label":"V1",
+        "Key":"ZS01",
+        "Label":"ZS01",
         "Value":true,
         "Type":"vanne"
     },
@@ -161,6 +161,22 @@
         "Type":"unit"
     },
     {
+        "Key":"LSL03",
+        "Label":"LSL03",
+        "Value":true,
+        "satisfyingValue": true,
+        "UnitType": "",
+        "Type":"unit"
+    },
+    {
+        "Key":"LSL04",
+        "Label":"LSL04",
+        "Value":true,
+        "satisfyingValue": true,
+        "UnitType": "",
+        "Type":"unit"
+    },
+    {
         "Key":"LSH01",
         "Label":"LSH01",
         "Value":true,
@@ -177,13 +193,34 @@
     {
         "Key":"H1",
         "Label": "H1",
-        "Value":false,
+        "Value":true,
         "Type":"vanne",
         "showInIHM": false
     },
     {
-        "Key":"FIC2",
-        "Label": "FIC2",
+        "Key":"H2",
+        "Label": "H2",
+        "Value":true,
+        "Type":"vanne",
+        "showInIHM": false
+    },
+    {
+        "Key":"EV01",
+        "Label": "EV01",
+        "Value":true,
+        "Type":"vanne",
+        "showInIHM": false
+    },
+    {
+        "Key":"P1",
+        "Label": "P1",
+        "Value":true,
+        "Type":"vanne",
+        "showInIHM": false
+    },
+    {
+        "Key":"FIC02",
+        "Label": "FIC02",
         "Value":20,
         "UnitType": "L/h",
         "Type":"unit",
@@ -211,8 +248,15 @@
     {
         "Key":"DPIC01_SP",
         "Label": "DPIC01_SP",
-        "Value": 1,
-        "UnitType": "L/h",
+        "Value": 27,
+        "UnitType": "°c",
+        "Type": "unit"
+    },
+    {
+        "Key":"DPIC01_OP",
+        "Label": "DPIC01_OP",
+        "Value": 5,
+        "UnitType": "mBar",
         "Type": "unit"
     }
 ]

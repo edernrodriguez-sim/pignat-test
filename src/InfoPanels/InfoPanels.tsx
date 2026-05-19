@@ -105,6 +105,7 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               label="FIC02_SP" 
               machineParam={getMachineParamDataFromKey("FIC02_SP")}
               xPos={0.45}  yPos={1.2} zPos={0.1}
+              width={0.28}
               baseColor="blue"
               anchor="bottom-left"
               />

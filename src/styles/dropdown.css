@@ -1,10 +1,13 @@
 .dropdown {
-    background-color: gainsboro;
+    background: linear-gradient(135deg, #3f3f3f 0%, #161616 100%);
+    color: #eef1f3;
+    font-weight: bold;
     padding: 8px 45px;
     border-radius: 5px;
-    box-shadow: 2px 2px 4px 0px gray;
 }
 .dropdown-item {
+    font-weight: 500;
     padding: 8px 8px;
     width: 166px;
+    color: black;
 }

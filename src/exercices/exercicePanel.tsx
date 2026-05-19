@@ -1,6 +1,7 @@
 
+import { useState } from "react";
 import type { StepStatus, ExerciseStep, ExerciseState } from "./exercice";
-import "./exercicePanel.css";
+import "../styles/exercicePanel.css";
 
 // ─── Step Icon ────────────────────────────────────────────────────────────────
 
@@ -26,30 +27,41 @@ function StepIcon({ status, number }: { status: StepStatus; number: number }) {
 
 // ─── Action Hint ──────────────────────────────────────────────────────────────
 
-function ActionHint({ step }: { step: ExerciseStep }) {
+function ActionHint({ step, onMouseDown, onMouseUp, canShow }: { step: ExerciseStep, onMouseDown : () => void, onMouseUp: () => void, canShow: boolean}) {
   const { action } = step;
 
-  if (action.type === "click3D") {
+  if (!canShow) {
     return (
-      <p className="ep-action-hint ep-action-hint--click">
+      <p className="ep-action-hint ep-action-hint--click" onMouseDown={onMouseDown}>
         <span className="ep-action-hint__icon">🖱️</span>
-        {action.label ?? `Cliquez sur « ${action.entityTag} » dans la scène 3D`}
-      </p>
-    );
+        {"Afficher l'indice"}
+      </p>)
+    
   }
+  else 
+  {
+    if (action.type === "click3D") {
+      return (
+        <p className="ep-action-hint ep-action-hint--click"  onMouseUp={onMouseUp}>
+          <span className="ep-action-hint__icon">🖱️</span>
+          {action.label ?? `Cliquez sur « ${action.entityTag} » dans la scène 3D`}
+        </p>
+      );
+    }
 
-  if (action.type === "inputChange") {
-    return (
-      <p className="ep-action-hint ep-action-hint--input">
-        <span className="ep-action-hint__icon">✏️</span>
-        {action.label ?? `Renseignez le champ « ${action.fieldId} »`}
-        {action.expectedValue !== undefined && (
-          <span className="ep-action-hint__expected">
-            {" "}— valeur attendue : <code>{action.expectedValue}</code>
-          </span>
-        )}
-      </p>
-    );
+    if (action.type === "inputChange") {
+      return (
+        <p className="ep-action-hint ep-action-hint--input"  onMouseUp={onMouseUp}>
+          <span className="ep-action-hint__icon">✏️</span>
+          {action.label ?? `Renseignez le champ « ${action.fieldId} »`}
+          {action.expectedValue !== undefined && (
+            <span className="ep-action-hint__expected">
+              {" "}— valeur attendue : <code>{action.expectedValue}</code>
+            </span>
+          )}
+        </p>
+      );
+    }
   }
 
   return null;
@@ -84,6 +96,8 @@ export function ExercisePanel({
   showDebug = false,
 }: ExercisePanelProps) {
   const { exercise, stepStatuses, isCompleted } = state;
+  
+  const [canShowHint, setCanShowHint] = useState(false);
   const completedCount = Object.values(stepStatuses).filter(
     (s) => s === "completed"
   ).length;
@@ -118,7 +132,12 @@ export function ExercisePanel({
               {isActive && (
                 <div className="ep-step__body">
                   <p className="ep-step__desc">{step.description}</p>
-                  <ActionHint step={step} />
+                  {
+                    <ActionHint step={step}
+                    onMouseDown={() => setCanShowHint(true)}
+                    onMouseUp={() => setCanShowHint(false)}
+                    canShow={canShowHint} />
+                  }
                   {showDebug && onForceComplete && (
                     <button
                       className="ep-btn ep-btn--debug"

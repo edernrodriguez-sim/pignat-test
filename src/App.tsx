@@ -28,7 +28,6 @@ import rulesData from "./assets/rules.json";
 import machinePartsJson from "./assets/machineLabelIdMapping.json";
 import { RulesSystem, type Rule, type RuleResult } from "./rules/RulesSystem";
 import { MachineState } from "./MachineState";
-import { IHM } from "./IHM";
 // import { getVannesValues } from "./vanneManager";
 import { AnimationHelper, AnimationTypes } from "./animationHelper";
 import { Exercise } from "./models/exercices/exercice";
@@ -53,6 +52,9 @@ import Avatars from "./avatars/avatars";
 import RulesDisplay from "./rules/rulesDisplay";
 import InfoPanels from "./InfoPanels/InfoPanels";
 import { applyMachineUpdates } from "./animations/animationRunner";
+import { IhmModal } from "./ihm/ihmModal";
+import type { SchemaOverlay } from "./ihm/ihmViewer";
+import { MachineParameterProvider } from "./ihm/machineParameterContext/machineParameterProvider";
 
 // Scene et token publics
 const scene_id = "05b63dcd-ce5c-4e8f-b363-89a38118462c";
@@ -168,7 +170,6 @@ function SceneViewer() {
   const [animationEntities, setAnimationEntities] = useState<AnimationEntities | null>(null);
   const [canShowAnimationButton, setCanShowAnimationButton] = useState(false);
   const [rulesResult, setRulesResult] = useState<RuleResult[]>([]);
-  // console.log(machineParams);
   const { entity: dropParent } = useEntity({
     euid: "79235261-a781-4f84-80d1-5689adabdd57",
   });
@@ -244,9 +245,7 @@ function SceneViewer() {
 
   // Déclenchement des animations de vannes à chaque mise à jour MQTT
   useEffect(() => {
-
-    console.log("machineUpdates.length");
-    console.log(machineUpdates.length);
+    
     if (machineUpdates.length === 0) return;
 
     applyMachineUpdates(machineUpdates, animationEntities);
@@ -462,7 +461,7 @@ function SceneViewer() {
     const ruleSystem = new RulesSystem();
     const result = ruleSystem.testRulesForMachineParameters(rulesData.filter(r => !r.isBlockingForStart) as Rule[], machineParams);
     setRulesResult(result);
-    console.log(rulesResult);
+    
   }, [machineParams])
 
   const [isExerciseOnGoing, setIsExerciseOnGoing] = useState(false);
@@ -512,17 +511,6 @@ function SceneViewer() {
     setIhmDto((prev) => ({ ...prev, [key]: value }));
   };
   //#region Recup Anims
-  // Récupération des animations ici car elles ne sont pas lisible avant
-  // Ajout des vannes
-
-  
-  // Mon Animation Sequence Controller
-  // const { entity: v18Anim_open } = useEntity({
-  //     euid: "ef3cdc0b-f2e4-4569-8563-cc4a335cbc04",
-  // });
-  // useEffect(() => {
-  //     alert("playstate");
-  // }, [v18Anim_open?.playState])
 
   const screenId = machineLabelIdMapping.getIdByLabelIfExists("ecran");
   
@@ -552,7 +540,7 @@ function SceneViewer() {
       pickedEntity!.entity.id,
     );
 
-    console.log(pickedEntity!.entity.id);
+    
     if (labelFromId?.charAt(0) === 'V'){
       if (labelFromId?.charAt(1) === '2'){
         AnimationHelper.launchAnim(animationEntities?.v2_out);
@@ -560,8 +548,6 @@ function SceneViewer() {
     }
     if (labelFromId != undefined) {
       lastLabelClicked = labelFromId;
-      console.log("setLastLabelClicked");
-      console.log(lastLabelClicked);
     }
 
     if (
@@ -571,10 +557,11 @@ function SceneViewer() {
       //AnimationHelper.launchAnim(v18Anim_open);
       customFireEvent("V18_clicked");
     }
-
+    console.log("ici");
+    console.log(`valeur cliquée : ${pickedEntity!.entity.id} screenId : ${screenId}`);
     if (pickedEntity!.entity.id === screenId) // screen
     {
-      showIHMModal();
+      setIsIHMModalVisible(true);
     }
     // Gestion au clic sur une vanne
     if (pickedEntity!.entity.id in AnimationIdvanneIdMapping) {
@@ -623,21 +610,6 @@ function SceneViewer() {
   }
 
   //#endregion
-  // const [sessionInfo, setSessionInfo] = useState<{
-  //         session_id: UUID;
-  //         client_id: UUID;
-  //         camera_entity_id: UUID;
-  //     } | null>(null);
-  // useEffect(() => {
-  //     if (instance && instance.session.client_id && cameraEntity) {
-  //         setSessionInfo({
-  //             session_id: instance.session.session_id,
-  //             client_id: instance.session.client_id,
-  //             camera_entity_id: cameraEntity.id,
-  //         });
-  //     }
-  // }, [instance, cameraEntity, setSessionInfo]);
-
 
   function onVanneClicked() {
     const machineParam = machineParams.find(
@@ -1051,9 +1023,6 @@ function SceneViewer() {
         {
             /* Affichage des boutons toujours présents */
             <div className={`absolute yop-[10vh] right-[28vh] top-[3vh]`}>
-                {/* <button id="exerciseBtn" onClick={() => shareSessionQRCode()}>
-                Partager la Session
-                </button> */}
                 <Dropdown onValueSelected={((value) => shareSessionQRCode(value))} />
             </div>
           
@@ -1085,18 +1054,51 @@ function SceneViewer() {
         ) : (
           <></>
         )}
-
-        {!isIHMModalVisible ? (
-          ""
-        ) : (
-          <div className={`absolute top-[5vh] left-[70vh]`}>
-            <IHM dto={ihmDto} />
-          </div>
-        )}
+        
         {isOpen && <QRModal url={QR_URL} onClose={() => setIsOpen(false)} />}
       </>
     );
   }
+
+
+  
+  let overlays: SchemaOverlay[] = [
+    {
+        id: "1",
+        type: "value",
+        x: 72,
+        y: 50.2,
+        value: 15
+    },
+    {
+        id: "2",
+        type: "value",
+        x: 70.5,
+        y: 57,
+        value: 70
+    },
+    {
+        id: "2",
+        type: "button",
+        x: 7.5,
+        y: 62,
+        onClick: () => {},
+        label: "P1"
+    }
+  ];
+
+  function onIhmInputUpdate(inputId: String, value: string | number | boolean){
+    console.log(`New update for ${inputId} value : ${value}`)
+  }
+
+  function onParameterUpdate(newMachineParams : MachineParameter[]){
+    setMachineParams(newMachineParams);
+    console.log(`Update ${newMachineParams.filter(k => k.key === "TT03")[0].value}`)
+    console.log(`Update ${machineParams.filter(k => k.key === "TT03")[0].value}`)
+  }
+
+
+
   return (
     <Canvas className="w-full h-full">
       <Viewport
@@ -1110,6 +1112,26 @@ function SceneViewer() {
         <Avatars />
         {renderUX()}
 
+        {/* ── Le Provider entoure TOUT ce qui a besoin des données ───────────────
+        Il reçoit :
+          - parameters     : le tableau de données actuel
+          - onParametersChange : la fonction pour le mettre à jour */}
+        <MachineParameterProvider
+          parameters={machineParams}
+          onParametersChange={onParameterUpdate}  // quand un paramètre est modifié,
+        >     
+        {
+          isIHMModalVisible && (
+            <div id="ihm" className={`relative inline-block w-full select-none`} >
+              <IhmModal
+              // overlays={overlays}
+              datas={machineParams}
+              callClose={() => setIsIHMModalVisible(false) }
+               />
+            </div>
+          )
+        }
+      </MachineParameterProvider>
       </Viewport>
     </Canvas>
   );

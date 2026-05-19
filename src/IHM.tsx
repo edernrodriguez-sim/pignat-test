@@ -2,7 +2,7 @@ import { IHMDatas } from "./models/IHMDatas";
 import type { IHMDto } from "./models/IHMDto";
 import type { MachineParameter } from "./models/machineParameter";
 
-export function IHM({ dto } : {dto: IHMDto}){
+export function IHM_Old({ dto } : {dto: IHMDto}){
     const headKeyword = "head";
     const boilerKeyword = "boiler";
     const feedKeyword = "feed";

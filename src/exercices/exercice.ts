@@ -1,10 +1,11 @@
+import type { TempTarget } from './../temperatureRandomizer/temperatureSimulator';
 // ─── Action Types ────────────────────────────────────────────────────────────
 
 export type ActionType = "click3D" | "inputChange";
 
 /**
  * Clic sur un objet 3D dans la scène 3DVerse.
- * `entityName` : nom de l'entité ciblée dans le scenegraph.
+ * `entityTag` : nom de l'entité ciblée dans le scenegraph.
  */
 export interface Click3DAction {
   type: "click3D";
@@ -19,9 +20,12 @@ export interface Click3DAction {
  */
 export interface InputChangeAction {
   type: "inputChange";
+  modalTitle?: string
+  fieldLabel?: string
   fieldId: string;
   expectedValue?: string | number;
   label?: string;
+  isDirectAnswer?: boolean;
 }
 
 export type StepAction = Click3DAction | InputChangeAction;
@@ -47,6 +51,10 @@ export interface ExerciseStep {
   onCompleteAnimation?: AnimationTrigger;
   /** Animation déclenchée quand l'action est détectée (avant validation) */
   onActionAnimation?: AnimationTrigger;
+  /** Lancement de la simulation de temperature */
+  startTemperatureOnComplete?: boolean | undefined;
+  /** Temperatures à atteindre lors de la simulation */
+  targetTemperatures?: TempTarget[];
 }
 
 // ─── Exercise ─────────────────────────────────────────────────────────────────
