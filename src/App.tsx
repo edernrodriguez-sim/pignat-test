@@ -53,7 +53,6 @@ import RulesDisplay from "./rules/rulesDisplay";
 import InfoPanels from "./InfoPanels/InfoPanels";
 import { applyMachineUpdates } from "./animations/animationRunner";
 import { IhmModal } from "./ihm/ihmModal";
-import type { SchemaOverlay } from "./ihm/ihmViewer";
 import { MachineParameterProvider } from "./ihm/machineParameterContext/machineParameterProvider";
 
 // Scene et token publics
