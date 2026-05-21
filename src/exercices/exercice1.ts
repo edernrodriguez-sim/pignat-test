@@ -4,8 +4,8 @@ import type { Exercise } from "./exercice";
 
 const myExercise: Exercise = {
   id: "ex-001",
-  name: "Remplissage du bouilleur",
-  description: "Suivez les étapes pour remplir correctement le bouilleur.",
+  name: "Relevé des températures en mode Batch",
+  description: "Etudier l’évolution de la température dans la distillation en mode batch",
   steps: [
     {
       id: "step-1", number: 1, name: "Retirer le bouchon",

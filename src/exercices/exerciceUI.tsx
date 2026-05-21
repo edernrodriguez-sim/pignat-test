@@ -28,7 +28,7 @@ export default function ExerciceUI({state, reset, completeCurrentStep, currentSt
           state={state}
           onReset={reset}
           onForceComplete={completeCurrentStep}
-          showDebug={true} // Désactivez en production
+          showDebug={false} // Désactivez en production
         />
 
         {/* Input de l'UI (étape 2) — visible uniquement quand c'est l'étape active */}
