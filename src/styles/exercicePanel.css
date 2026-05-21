@@ -19,6 +19,7 @@
   max-width: 360px;
   overflow: hidden;
   box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5);
+  z-index:100;
 }
 
 /* ── Header ────────────────────────────────────────────────────────────────── */

@@ -155,7 +155,7 @@
     {
         "Key":"LSL02",
         "Label":"LSL02",
-        "Value":true,
+        "Value":false,
         "satisfyingValue": true,
         "UnitType": "",
         "Type":"unit"
@@ -179,7 +179,7 @@
     {
         "Key":"LSH01",
         "Label":"LSH01",
-        "Value":true,
+        "Value":false,
         "satisfyingValue": false,
         "Type":"vanne"
     },
@@ -193,14 +193,14 @@
     {
         "Key":"H1",
         "Label": "H1",
-        "Value":true,
+        "Value":false,
         "Type":"vanne",
         "showInIHM": false
     },
     {
         "Key":"H2",
         "Label": "H2",
-        "Value":true,
+        "Value":false,
         "Type":"vanne",
         "showInIHM": false
     },
@@ -214,7 +214,7 @@
     {
         "Key":"P1",
         "Label": "P1",
-        "Value":true,
+        "Value":false,
         "Type":"vanne",
         "showInIHM": false
     },

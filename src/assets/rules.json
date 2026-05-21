@@ -89,7 +89,7 @@
         "name": "Test des valves V2 V3 V4",
         "rule":"onlyOneTrue",
         "tagName":["V2","V3","V4"],
-        "sessionType": ["all"],
+        "sessionType": ["continu"],
         "errorMessage": "Une seule valve doit être ouverte à la fois."
 
     },

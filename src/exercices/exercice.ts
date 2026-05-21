@@ -23,7 +23,7 @@ export interface InputChangeAction {
   modalTitle?: string
   fieldLabel?: string
   fieldId: string;
-  expectedValue?: string | number;
+  expectedValue?: string | boolean | number;
   label?: string;
   isDirectAnswer?: boolean;
 }

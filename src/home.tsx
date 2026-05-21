@@ -31,6 +31,9 @@ function Home() {
     else if (appMode === ProjectConstants.APP_MODE_EXERCICE) {
         return <ExerciceChoice />;
     }
+    else if (appMode === ProjectConstants.APP_MODE_ANIMCONTINUE || appMode === ProjectConstants.APP_MODE_ANIMDISCONTINUE) {
+        return <App appModeInput={appMode} sessionIdV={null} machineId={""}/>;
+    }
     else if (idsession != undefined) {
         if (idclient != undefined)
         {
@@ -50,20 +53,20 @@ function Home() {
         <div id="home">
             <img src={Logo} />
             <div>
-                <button onClick={() => setIsIdModalOpen(true) }>
+                {/* <button onClick={() => setIsIdModalOpen(true) }>
                     Mode Support
-                </button>
+                </button> */}
                 <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
                     Mode Exercice
                 </button>
                 
-                <button onClick={() => setAppMode(ProjectConstants.APP_MODE_ANIMCONTINUE)}>
+                {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_ANIMCONTINUE)}>
                     Animation Continue
                 </button>
                 
                 <button onClick={() =>  setAppMode(ProjectConstants.APP_MODE_ANIMDISCONTINUE)}>
                     Animation Discontinue
-                </button>
+                </button> */}
             </div>
         </div>
         <div>

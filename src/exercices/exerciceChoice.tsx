@@ -6,7 +6,10 @@ function ExerciceChoice() {
     const [exerciceIndex, setExerciceIndex] = useState<number>(0);
 
     if (exerciceIndex === 1) {
-        return <AppExercice />;
+        return <AppExercice exerciseCode='1' />;
+    }
+    else if (exerciceIndex === 2) {
+        return <AppExercice exerciseCode='2' />;
     }
     
     
@@ -17,6 +20,9 @@ function ExerciceChoice() {
             <div>
                 <button onClick={() => setExerciceIndex(1)}>
                     Exercice A
+                </button>
+                <button onClick={() => setExerciceIndex(2)}>
+                    Exercice B
                 </button>
             </div>
         </div>        

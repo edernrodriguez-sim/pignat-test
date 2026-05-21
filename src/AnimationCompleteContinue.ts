@@ -12,7 +12,9 @@ export function LaunchAnimationCompleteContinue({ input } : { input : AnimDiscon
     // // 1°) Start position facing bac de retention
     input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
     // // 2°) Launching bac placement animation
-    setTimeout(() => launchBacInAnimation(),2500);
+    // setTimeout(() => launchBacInAnimation(),2500);
+    
+    showIHMAndSetWaterLevel();
     //moveCameraToBottomPrechauff();
 
 async function launchBacInAnimation(){
@@ -51,11 +53,9 @@ async function moveCameraToIHMAndChangeWaterLevel(){
 }
 async function showIHMAndSetWaterLevel(){
     input.setIsIHMModalVisible(true);
-    
-    setTimeout(() => input.updateIhmDto("highlighted","water"),1000);
-    setTimeout(() => input.updateIhmDto("waterLevel",1),1500);
-    setTimeout(() => input.updateIhmDto("waterLevel",15),2000);
-    setTimeout(() => input.updateIhmDto("waterLevel",150),2500);
+    setTimeout(() => input.updateIhmDto("FIC02_SP",1),1500);
+    setTimeout(() => input.updateIhmDto("FIC02_SP",15),2000);
+    setTimeout(() => input.updateIhmDto("FIC02_SP",150),2500);
     setTimeout(() => input.setIsIHMModalVisible(false),4000);
     setTimeout(() => moveToFirstWaterPositionAndLaunchAnim(),5000);
 }

@@ -249,210 +249,6 @@ function SceneViewer() {
 
     applyMachineUpdates(machineUpdates, animationEntities);
 
-
-//     machineUpdates.forEach(({ key, newValue }) => {
-
-//     if (key === "ZS01"){
-//       if (newValue){
-//           AnimationHelper.launchAnim(animationEntities?.bac_de_retention_in);
-//       }
-//       else {
-//           AnimationHelper.launchAnim(animationEntities?.bac_de_retention_out);
-//       }
-//     }
-//     if (key === "LSH01"){
-//       if (newValue){
-//           AnimationHelper.closeAnim(animationEntities?.empty_bidon_1L_V12);
-//       }
-//       else {
-//           AnimationHelper.closeAnim(animationEntities?.fill_bidon_1L_V12);
-//       }
-//     }
-
-    
-//     if (key === "LSH02"){
-//       if (newValue){
-//           AnimationHelper.closeAnim(animationEntities?.empty_bidon_1L_V15);
-//       }
-//       else {
-//           AnimationHelper.closeAnim(animationEntities?.fill_bidon_1L_V15);
-//       }
-//     }
-
-
-
-
-
-// if (key === "V2"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v2_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v2_out);
-//       }
-//       else if (key === "V3"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v3_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v3_out);
-//       }
-//       else if (key === "V4"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v4_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v4_out);
-//       }
-//       else if (key === "V5"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v5_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v5_out);
-//       }
-//       else if (key === "V6"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v6_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v6_out);
-//       }
-//       else if (key === "V7"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v7_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v7_out);
-//       }
-//       else if (key === "V8"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v8_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v8_out);
-//       }
-//       else if (key === "V9"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v9_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v9_out);
-//       }
-//       else if (key === "V11"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v11_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v11_out);
-//       }
-//       else if (key === "V12"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v12_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v12_out);
-//       }
-//       else if (key === "V14"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v14_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v14_out);
-//       }
-//       else if (key === "V15"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v15_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v15_out);
-//       }
-//       else if (key === "V16"){
-//         if (newValue)
-//           AnimationHelper.launchAnim(animationEntities?.v16_in);
-//         else
-//           AnimationHelper.launchAnim(animationEntities?.v16_out);
-//       }
-//     });
-
-
-
-
-    // if (vanneUpdates.length === 0) return;
-    // vanneUpdates.forEach(({ key, isOpen }) => {
-    //   //const fakeParam = { value: isOpen ? true : false } as MachineParameter;
-
-    //   if (key === "V2"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v2_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v2_out);
-    //   }
-    //   else if (key === "V3"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v3_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v3_out);
-    //   }
-    //   else if (key === "V4"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v4_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v4_out);
-    //   }
-    //   else if (key === "V5"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v5_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v5_out);
-    //   }
-    //   else if (key === "V6"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v6_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v6_out);
-    //   }
-    //   else if (key === "V7"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v7_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v7_out);
-    //   }
-    //   else if (key === "V8"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v8_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v8_out);
-    //   }
-    //   else if (key === "V9"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v9_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v9_out);
-    //   }
-    //   else if (key === "V11"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v11_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v11_out);
-    //   }
-    //   else if (key === "V12"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v12_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v12_out);
-    //   }
-    //   else if (key === "V14"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v14_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v14_out);
-    //   }
-    //   else if (key === "V15"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v15_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v15_out);
-    //   }
-    //   else if (key === "V16"){
-    //     if (isOpen)
-    //       AnimationHelper.launchAnim(animationEntities?.v16_in);
-    //     else
-    //       AnimationHelper.launchAnim(animationEntities?.v16_out);
-    //   }
-
-
-    //   //launchVanneAnimIfNeeded(fakeParam, key);
-    // });
-
   }, [machineUpdates, machineParams]);
 
   useEffect(() =>  {
@@ -484,6 +280,7 @@ function SceneViewer() {
     TT3Value: 0,
     TT4Value: 0,
     TT5Value: 0,
+    FIC02_SP: 0,
     prechauffeValue: 0,
     dpic: 0,
     input: datasForIHM,
@@ -508,7 +305,11 @@ function SceneViewer() {
     key: keyof IHMDto,
     value: number | string | boolean,
   ) => {
+    setMachineParams((prev) => prev.map(
+      (p) => p.key === key ? {...p, value: value} as MachineParameter : p
+    ));
     setIhmDto((prev) => ({ ...prev, [key]: value }));
+
   };
   //#region Recup Anims
 
@@ -526,7 +327,15 @@ function SceneViewer() {
   };
 
   //#region Gestion du clique
+  async function testAnim(){
+    // const root_animations =  await instance!.scene.findEntity({ entity_uuid: "930d5a8f-416d-4680-b351-d3c06d055cd4", linkage: [
+    //     "f5305415-6c87-4ef9-b8e6-e5955739147b",
+    //     "98023327-2c90-4bd7-ba83-80108a54ec5e"
+    //   ] });
+    const root_animations = await instance!.scene.findEntity({ entity_uuid: "b70320a1-8009-4aff-88fc-27da9777e612"});
+      AnimationHelper.launchAnim(root_animations);
 
+  }
   // Change le curseur si on survole une entité
   useEffect(() => {
     document.body.style.cursor = hoveredEntity ? "pointer" : "default";
@@ -548,6 +357,14 @@ function SceneViewer() {
     }
     if (labelFromId != undefined) {
       lastLabelClicked = labelFromId;
+    }
+
+     if (
+      pickedEntity!.entity.id === "5dc3121e-6264-45b5-ba2b-29b20470ef7d"
+    ) // V16
+    {
+      console.log("ICI");
+      testAnim();
     }
 
     if (

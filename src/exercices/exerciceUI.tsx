@@ -9,7 +9,7 @@ export default function ExerciceUI({state, reset, completeCurrentStep, currentSt
   function handleSubmit(){
     const action = currentStep.action as InputChangeAction;
     handleCustomAnswer(action.fieldId, answerValue);
-    setAnswerValue("0");
+    setAnswerValue("");
   }
 
   function onValueChange(e: React.ChangeEvent<HTMLInputElement>){
@@ -28,7 +28,7 @@ export default function ExerciceUI({state, reset, completeCurrentStep, currentSt
           state={state}
           onReset={reset}
           onForceComplete={completeCurrentStep}
-          showDebug={false} // Désactivez en production
+          showDebug={true} // Désactivez en production
         />
 
         {/* Input de l'UI (étape 2) — visible uniquement quand c'est l'étape active */}
@@ -63,7 +63,7 @@ export default function ExerciceUI({state, reset, completeCurrentStep, currentSt
               </label>
               <input
                 id="pressure-input"
-                type="number"
+                type="text"
                 value={answerValue}
                 onChange={onValueChange}
                 style={{

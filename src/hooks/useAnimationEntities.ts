@@ -49,6 +49,8 @@ const euid_to_identifier: { [key: UUID]: keyof AnimationEntities } = {
     // Préchauffeur 
      "965a7e97-3045-4e98-852f-165436b2c4c0": "prechauffeur_fill",
      "74d43594-314a-460e-9b36-b261e81b315b": "empty_prechauffeur_fill",
+     "4b8d6998-d98c-4f75-8c63-0e6066e0bec4": "complete_fill_from_V4",
+     "8073c152-3372-42aa-8f4d-d06e243a9277": "boiler_bell_reflux_anim",
     // Tuyau vertical parallèle au préchauffeur
      "e536de13-a477-49ea-8afe-51572f9f5110": "prechauffeur_parallel_fill",
     // Tuyau horizontal à la sortie de la pompe juste avant le préchauffeur 

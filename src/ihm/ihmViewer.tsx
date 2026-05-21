@@ -259,6 +259,48 @@ export function IhmViewer({ datas, callClose }: { datas:MachineParameter[],  cal
             }} />
         </div>
 
+         {/* Bouton H1 */}
+        <div
+          key="Button_H1"
+          className="absolute w-10%"
+          style={{
+            left: `7%`,
+            top: `22.6%`,
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+            <IhmActionButton overlay={{
+              active: true,
+              id:"H1",
+              label: "H1",
+              onClick: () => {},
+              type:"button",
+              x: 2,
+              y:0
+            }} />
+        </div>
+
+         {/* Bouton H2 */}
+        <div
+          key="Button_H2"
+          className="absolute w-10%"
+          style={{
+            left: `35.6%`,
+            top: `84.6%`,
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+            <IhmActionButton overlay={{
+              active: true,
+              id:"H2",
+              label: "H2",
+              onClick: () => {},
+              type:"button",
+              x: 2,
+              y:0
+            }} />
+        </div>
+
         {/* Bouton FIC 02  */}
         <div
           key="Button_FIC02_SP"

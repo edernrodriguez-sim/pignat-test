@@ -18,6 +18,7 @@ export interface IHMDto {
     TT3Value: number;
     TT4Value: number;
     TT5Value: number;
+    FIC02_SP: number;
     prechauffeValue: number;
     dpic: number;
     input:MachineParameter[];

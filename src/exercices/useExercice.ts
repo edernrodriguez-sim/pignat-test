@@ -24,8 +24,8 @@ async function playAnimation(trigger: AnimationTrigger) {
   try {
     
     if (!entityLivelink || !trigger.entityId) return;
-    
-    const root_animations = await entityLivelink.scene.findEntity({ entity_uuid: trigger.entityId});
+      
+      const root_animations = await entityLivelink.scene.findEntity({ entity_uuid: trigger.entityId, });
     AnimationHelper.launchAnim(root_animations);
     
   } catch (e) {
@@ -102,7 +102,6 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
     const step = ex.steps[currentStepIndex];
     if (step.action.type !== "click3D") return;
     if (step.action.entityTag !== entityName) return;
-
     if (step.onActionAnimation) await playAnimation(step.onActionAnimation);
 
     completeCurrentStep();

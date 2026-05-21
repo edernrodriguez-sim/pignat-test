@@ -53,6 +53,8 @@ export interface AnimationEntities {
     // Préchauffeur
     prechauffeur_fill: Entity | null
     empty_prechauffeur_fill: Entity | null
+    complete_fill_from_V4: Entity | null
+    boiler_bell_reflux_anim: Entity | null
     // Tuyau vertical parallèle au préchauffeur
     prechauffeur_parallel_fill: Entity | null
     // Tuyau horizontal à la sortie de la pompe juste avant le préchauffeur 

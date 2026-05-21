@@ -5,6 +5,7 @@ import {
   Viewport,
   CameraController,
   LivelinkContext,
+  useEntity,
 } from "@3dverse/livelink-react";
 import { useRef, useCallback, useEffect, useState, useContext, useMemo } from "react";
 import ExerciceUI from "./exerciceUI";
@@ -24,6 +25,10 @@ import { MachineParameter } from "../models/machineParameter";
 import { IhmModal } from "../ihm/ihmModal";
 import { MachineParameterProvider } from "../ihm/machineParameterContext/machineParameterProvider";
 import UseTemperatureSimulation, { type TempTarget } from "../temperatureRandomizer/temperatureSimulator";
+import ResetMachine from "./resetMachine";  
+import { useAnimationEntities as fetchAnimationEntities } from "../hooks/useAnimationEntities";
+import { useBehaviourOnAnimationTrigger } from "../hooks/useBehaviourOnAnimationTrigger";
+import type { AnimationEntities } from "../models/animations/animationEntities";
 
 interface ExerciceCanvasProps {
   exercise: Exercise;
@@ -54,7 +59,7 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
   );
   const [machineParams, setMachineParams] = useState(keysFromJson);
   const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false);
-
+  const [animationEntities, setAnimationEntities] = useState<AnimationEntities | null>(null);
 
 
 
@@ -62,14 +67,37 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
   // ── Instance Livelink ─────────────────────────────────────────────────────
   // Disponible ici car on est sous <Livelink>
   const { instance } = useContext(LivelinkContext);
+  const { entity: dropParent } = useEntity({
+    euid: "79235261-a781-4f84-80d1-5689adabdd57",
+  });
 
   useEffect(() => {
     if (!instance) return;
     const init = async () => {
       instance.startSimulation();
+      
+      const entities = await fetchAnimationEntities(instance);
+      setTimeout(() => {
+        setAnimationEntities(entities);
+        ResetMachine(entities);
+      }, (1000));
     };
     init();
   }, [instance]);
+
+  
+  
+  useBehaviourOnAnimationTrigger(instance, cameraControllerRef, {
+    dropParent,
+    bac_de_retention_IN: animationEntities?.bac_de_retention_in ?? null,
+    prechauffeur_FILL: animationEntities?.prechauffeur_fill ?? null,
+    postPrechauffeurTube1_fill: animationEntities?.postPrechauffeurTube1_fill ?? null,
+    goutte_drop: animationEntities?.goutte_drop ?? null,
+    soutirage_on: animationEntities?.soutirage_on ?? null,
+    soutirage_off: animationEntities?.soutirage_off ?? null,
+    V15_1L_fill: animationEntities?.fill_bidon_1L_V15 ?? null,
+    soutirage_anim: animationEntities?.goutte_soutirage ?? null,
+  });
 
   /** Permet le lancement d'une simulation de temperature si besoin dans l'exercice */
   const { startTransitions, completeAll } = UseTemperatureSimulation({
