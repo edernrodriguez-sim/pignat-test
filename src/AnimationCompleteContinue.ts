@@ -12,9 +12,9 @@ export function LaunchAnimationCompleteContinue({ input } : { input : AnimDiscon
     // // 1°) Start position facing bac de retention
     input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
     // // 2°) Launching bac placement animation
-    // setTimeout(() => launchBacInAnimation(),2500);
+    setTimeout(() => launchBacInAnimation(),2500);
     
-    showIHMAndSetWaterLevel();
+    //showIHMAndSetWaterLevel();
     //moveCameraToBottomPrechauff();
 
 async function launchBacInAnimation(){
