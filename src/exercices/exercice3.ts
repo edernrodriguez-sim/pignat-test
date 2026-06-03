@@ -90,17 +90,18 @@ const myExercise: Exercise = {
       onCompleteAnimation: [{ animationName: "complete_water_flow", entityId: "9b67bb27-1672-488a-a851-1549bbfb174a" }]
     },
     {
-      id: "step-11", number: 11, name: "Ouvrir vanne V4",
+      id: "step-112", number: 12, name: "Ouvrir vanne V4",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V4, label: "Cliquez sur la vanne V4 dans la scène 3D" },
       onActionAnimation: [{ animationName: "v4_in", entityId: "6786201f-a452-43f8-951a-be102de62210" }],
     },
     
     {
-      id: "step-12", number: 12, name: "Démarrer la pompe",
+      id: "step-123", number: 13, name: "Démarrer la pompe",
       description: "Démarrer la pompe en appuyant sur le bouton P1 sur la dalle tactile et enclencher le bouton.",
       action: { type: "inputChange", expectedFields:[{key: "P1", value: true}],
       label: "Entrez 200 dans le champ de débit" },
+      onCompleteAnimation: [{ animationName: "complete_fill_from_V4", entityId: "4b8d6998-d98c-4f75-8c63-0e6066e0bec4" }],
     },
     {
       id: "step-14", number: 14, name: "Mettre la température de préchauffe à 80°c",
@@ -109,19 +110,19 @@ const myExercise: Exercise = {
       label: "Entrez 80 dans le champ SP" },
     },
     {
-      id: "step-17", number: 17, name: "Démarrer la préchauffe",
+      id: "step-176", number: 15, name: "Démarrer la préchauffe",
       description: "Ouvrir l'IHM et ouvrir la fenêtre H1 et cliquer sur le bouton ON.",
       action: { type: "inputChange", expectedFields:[{key: "H1", value: true}],
       label: "" },
     },
     {
-      id: "step-18", number:18, name: "Fixer la puissance de chauffe à 80%",
+      id: "step-186", number:16, name: "Fixer la puissance de chauffe à 80%",
       description: "Ouvrir l'IHM et ouvrir la fenêtre DPIC01 et mettre la valeur de OP_MAN à 80.",
       action: { type: "inputChange", expectedFields:[{key: "DPIC01_OP_MAN", value: 80}],
       label: "" },
     },
     {
-      id: "step-19", number:19, name: "Démarrer la chauffe",
+      id: "step-197", number:17, name: "Démarrer la chauffe",
       description: "Démarrer la chauffe en appuyant sur le bouton H2 sur la dalle tactile et enclencher le bouton.",
       action: { type: "inputChange", expectedFields:[{key: "H2", value: true }],
       label: "Cocher la case de H2" },
@@ -139,19 +140,19 @@ const myExercise: Exercise = {
     ]
     },
     {
-      id: "step-20", number: 20, name: "Fixer le cycle de relux sur 66.6%",
+      id: "step-208", number: 18, name: "Fixer le cycle de relux sur 66.6%",
       description: "Ouvrir l'IHM et ouvrir la fenêtre EV01 et mettre la valeur de Reflux à 66.6 .",
       action: { type: "inputChange", expectedFields:[{key: "EV_VALUE", value: 66.6}],
       label: "" },
     },
     {
-      id: "step-21", number: 21, name: "Mettre le Reflux en mode Cycle",
+      id: "step-219", number: 19, name: "Mettre le Reflux en mode Cycle",
       description: "Ouvrir l'IHM et ouvrir la fenêtre EV01 et cliquer sur Cycle .",
       action: { type: "inputChange", expectedFields:[{key: "EV_MODE", value: 2}],
       label: "" },
     },
     {
-      id: "step-22", number: 22, name: "Fermer la vanne de vidange de la recette distillat",
+      id: "step-222", number: 20, name: "Fermer la vanne de vidange de la recette distillat",
       description: "Cliquer sur la vanne V15.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V15, label: "Cliquez sur la vanne V15 dans la scène 3D" },
       onCompleteAnimation: [
@@ -160,7 +161,7 @@ const myExercise: Exercise = {
       ],
     },
     {
-      id: "step-23", number: 23, name: "Fermer la vanne de vidange de la recette résidu",
+      id: "step-231", number: 21, name: "Fermer la vanne de vidange de la recette résidu",
       description: "Cliquer sur la vanne V12.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V12, label: "Cliquez sur la vanne V12 dans la scène 3D" },
       onCompleteAnimation: [
@@ -169,14 +170,14 @@ const myExercise: Exercise = {
       ]
     },
     {
-      id: "step-wait2",
-      number: 24,
+      id: "step-wait22",
+      number: 22,
       name: "Attendre 5 min",
       description: "Temps d'attente acceléré.",
       action: { type: "wait", realDuration: 10, displayDuration: 300 },
     },
     {
-      id: "step-25", number: 25, name: "Ouvrir la vanne de vidange du distillat",
+      id: "step-235", number: 23, name: "Ouvrir la vanne de vidange du distillat",
       description: "Cliquer sur la vanne V15.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V15, label: "Cliquez sur la vanne V15 dans la scène 3D" },
       onCompleteAnimation: [
@@ -186,7 +187,7 @@ const myExercise: Exercise = {
       ],
     },
     {
-      id: "step-256", number: 26, name: "Ouvrir la vanne de vidange du résidu",
+      id: "step-256", number: 24, name: "Ouvrir la vanne de vidange du résidu",
       description: "Cliquer sur la vanne V12.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V12, label: "Cliquez sur la vanne V12 dans la scène 3D" },
       onCompleteAnimation: [
@@ -196,7 +197,7 @@ const myExercise: Exercise = {
       ],
     },
     {
-      id: "step-267", number: 27, name: "Calculez D à partir du volume du distillat",
+      id: "step-267", number: 25, name: "Calculez D à partir du volume du distillat",
       description: "Formule : D = V x 12 = .... L/h",
       action: { type: "inputChange", expectedFields:[{key: "answer", value: "12"}],
       isDirectAnswer: true,
@@ -204,7 +205,7 @@ const myExercise: Exercise = {
       informationsToShow: ["Volume du distillat : ", "V = 1L"],
     },
     {
-      id: "step-28", number: 28, name: "Calculez R à partir du volume du résidu",
+      id: "step-286", number: 26, name: "Calculez R à partir du volume du résidu",
       description: "Formule : R = V x 12 = .... L/h",
       action: { type: "inputChange", expectedFields:[{key: "answer", value: "12"}],
       isDirectAnswer: true,
@@ -212,7 +213,7 @@ const myExercise: Exercise = {
       informationsToShow: ["Volume du résidu : ", "V = 1L"],
     },
     {
-      id: "step-289", number: 29, name: "Vérifiez que A = D + R",
+      id: "step-2897", number: 27, name: "Vérifiez que A = D + R",
       description: "Indiquez le résultat de D + R",
       action: { type: "inputChange", expectedFields:[{key: "answer", value: "24"}],
       isDirectAnswer: true,
