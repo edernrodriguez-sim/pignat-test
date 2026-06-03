@@ -72,7 +72,8 @@ async function moveToCapAndLaunchAnim(){
     input.cameraControllerRef.current?.setLookAt(-0.15,1,0.6,-0.15,1,0,true);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.bouchon_in), 1000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bouilleur_discontinu), 3000);
-    setTimeout(() => setRefluxValues(),8000);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.bouchon_out), 7500);
+    setTimeout(() => setRefluxValues(),9000);
 }
 
 async function setRefluxValues(){
