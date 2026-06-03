@@ -1,4 +1,5 @@
 #ihm {
+    z-index: 140;
     .round {
         border-radius: 100%;
     }
@@ -16,6 +17,10 @@
         top: 2%;
         right: 2%;
     }
+}
+
+#parameter-edit-modal {
+    z-index:145;
 }
 
 #ihm-modal {
@@ -86,8 +91,129 @@
 }
 
 .parameterField  {
+
+    
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-weight: 600;
     input[type="checkbox"] {
         height: 2rem;
         width: 2em;
     }
+    input {
+        padding-left: 5px;  
+    }
 }
+
+.bool-modal-btn-container {
+    margin:auto;
+}
+
+.bool-modal-btn {
+    width: 2vw;
+    height: 2vw;
+    border-radius: 9px;
+    transition: all 100ms;
+}
+
+.btn-on {
+    background-color: green;
+    box-shadow: 0 0 11px 0px #207820;
+}
+
+.btn-on:hover {
+    background-color: rgb(18, 193, 18);
+    box-shadow: 0 0 11px 0px rgb(18, 193, 18);
+}
+.btn-on:active {
+    background-color: rgb(0, 87, 0);
+    box-shadow: 0 0 11px 0px rgb(0, 87, 0);
+}
+
+.btn-off {
+    background-color: red;
+    box-shadow: 0 0 11px 0px #a52727;
+}
+
+.btn-off:hover {
+    background-color: rgb(255, 85, 85);
+    box-shadow: 0 0 11px 0px rgb(255, 85, 85);
+}
+.btn-off:active {
+    background-color: rgb(189, 0, 0);
+    box-shadow: 0 0 11px 0px rgb(189, 0, 0);
+}
+
+.green {
+    background-color: rgb(0, 211, 0);
+}
+
+.red {
+    background-color: red;
+}
+
+.bool-modal-input {
+    display: none;
+}
+
+#bool-modal-status {
+    margin: auto;
+    width: 30%;
+    height: 0.5vw;
+
+}
+
+.parameterField-header  {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+
+.reflux-button-container {
+    button{
+        padding: 10px 30px;
+    }
+}
+
+#modal-reflux-left-side {
+    text-align: center;
+    input {
+        box-shadow: 0px 0px 1px 0px black;
+        max-width: 60%;
+    }
+}
+
+.modal-regulator-content  {
+    text-align: center;
+    input {
+        box-shadow: 0px 0px 1px 0px black;
+        max-width: 30%;
+    }
+}
+
+.modal-regulator-label {
+    width: 66px;
+    text-align: left;
+}
+
+.modal-regulator-label-right {
+    width: 25px;
+    text-align: left;
+}
+
+#modal-regulator-left {
+    width: 60%;
+}
+
+#regulator-auto-btn {
+    border-radius: 100%;
+    box-shadow: 0px 0px 10px 0px #737373;
+}
+
+.regulator-auto-btn-off {
+    background: linear-gradient(180deg, #e1e1e1, #e5e5e500);
+}
+
+.regulator-auto-btn-on {
+    background: linear-gradient(180deg, #e5e5e500 ,#2a2a2a);
+}
+

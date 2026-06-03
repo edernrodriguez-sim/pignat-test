@@ -1,7 +1,7 @@
 import type { TempTarget } from './../temperatureRandomizer/temperatureSimulator';
 // ─── Action Types ────────────────────────────────────────────────────────────
 
-export type ActionType = "click3D" | "inputChange";
+export type ActionType = "click3D" | "inputChange" | "WaitAction";
 
 /**
  * Clic sur un objet 3D dans la scène 3DVerse.
@@ -21,14 +21,27 @@ export interface Click3DAction {
 export interface InputChangeAction {
   type: "inputChange";
   modalTitle?: string
-  fieldLabel?: string
-  fieldId: string;
-  expectedValue?: string | boolean | number;
+  expectedFields: SavedField[];
   label?: string;
   isDirectAnswer?: boolean;
 }
+/**
+ * Étape d'attente
+ */
+export interface WaitAction {
+  type: "wait";
+  /** Durée réelle en secondes avant validation automatique */
+  realDuration: number;
+  /** Valeur affichée au départ sur le chrono (en secondes) ex: 600 pour 10:00 */
+  displayDuration: number;
+}
 
-export type StepAction = Click3DAction | InputChangeAction;
+export interface SavedField {
+  key: string;
+  value: string | number | boolean;
+}
+
+export type StepAction = Click3DAction | InputChangeAction | WaitAction;
 
 // ─── Animation ───────────────────────────────────────────────────────────────
 
@@ -48,13 +61,15 @@ export interface ExerciseStep {
   description: string;
   action: StepAction;
   /** Animation déclenchée quand l'étape est validée */
-  onCompleteAnimation?: AnimationTrigger;
+  onCompleteAnimation?: AnimationTrigger[];
   /** Animation déclenchée quand l'action est détectée (avant validation) */
-  onActionAnimation?: AnimationTrigger;
+  onActionAnimation?: AnimationTrigger[];
   /** Lancement de la simulation de temperature */
   startTemperatureOnComplete?: boolean | undefined;
   /** Temperatures à atteindre lors de la simulation */
   targetTemperatures?: TempTarget[];
+  /** Texte à afficher si besoin pour donner des infos sur l'exercice en cours (ex: des valeurs de mesures) */
+  informationsToShow?: string[];
 }
 
 // ─── Exercise ─────────────────────────────────────────────────────────────────

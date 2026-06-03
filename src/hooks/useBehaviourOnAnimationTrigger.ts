@@ -165,9 +165,6 @@ export function useBehaviourOnAnimationTrigger(
         const event_name = "goutte_drop_end";
         // 🔒 Guard pour éviter les appels concurrents
         const onAnimEnd = async () => {
-        console.log("---------------------ON ANIM END---------------------");
-        console.log(isCreating.current);
-        console.log(blockCount.current);
             // ✅ Empêche les appels en rafale
             if (isCreating.current) {
                 console.warn("⛔ newEntity bloqué car déjà en cours");

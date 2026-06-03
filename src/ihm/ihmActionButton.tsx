@@ -13,6 +13,7 @@ function IhmActionButton({ overlay }: { overlay: SchemaButton }) {
 
   return (
     <button
+      id={overlay.id}
       onClick={() => openEditModal(overlay.id)}
       onMouseDown={() => setPressed(true)}
       onMouseUp={() => setPressed(false)}

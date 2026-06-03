@@ -60,13 +60,13 @@ function Home() {
                     Mode Exercice
                 </button>
                 
-                {/* <button onClick={() => setAppMode(ProjectConstants.APP_MODE_ANIMCONTINUE)}>
+               <button onClick={() => setAppMode(ProjectConstants.APP_MODE_ANIMCONTINUE)}>
                     Animation Continue
                 </button>
                 
-                <button onClick={() =>  setAppMode(ProjectConstants.APP_MODE_ANIMDISCONTINUE)}>
+                 <button onClick={() =>  setAppMode(ProjectConstants.APP_MODE_ANIMDISCONTINUE)}>
                     Animation Discontinue
-                </button> */}
+                </button>
             </div>
         </div>
         <div>

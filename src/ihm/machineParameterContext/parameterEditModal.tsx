@@ -1,20 +1,32 @@
 import { useState } from "react";
 import type { MachineParameter } from "../../models/machineParameter";
 import { ParameterField } from "./parameterField";
+import type { SavedField } from "../../exercices/exercice";
 
 interface ParameterEditModalProps {
-  parameter: MachineParameter;
+  editingId: string | null;
+  parameter: MachineParameter[];
   onClose: () => void;
-  onSave: (value: MachineParameter["value"]) => void;
+  onSave: (value: SavedField[]) => void;
 }
  
-export function ParameterEditModal({ parameter, onClose, onSave }: ParameterEditModalProps) {
-  const [draft, setDraft] = useState<MachineParameter["value"]>(parameter.value);
+export function ParameterEditModal({editingId, parameter, onClose, onSave }: ParameterEditModalProps) {
+  // Champs de la modal qui sont en "brouillon" et ne seront appliqué qu'a la validation de la modal
+  const [draft, setDraft] = useState<SavedField[]>([]);
  
-  const handleSave = () => onSave(draft);
+  // Appelé pour valider les modifications dans la modal
+  const handleSave = () => {
+    onSave(draft);
+  };
+
+  const handleChange = (newValues : SavedField[]) => {
+    setDraft(newValues);
+    
+  }
  
   return (
     <div
+    id="parameter-edit-modal"
       className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40"
       onClick={onClose}
     >
@@ -25,7 +37,7 @@ export function ParameterEditModal({ parameter, onClose, onSave }: ParameterEdit
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b  border-gray-300">
           <div>
-            <p className="text-black font-bold text-lg">{parameter.label}</p>
+            {/* <p className="text-black font-bold text-lg">{parameter.label}</p> */}
           </div>
           <button
             onClick={onClose}
@@ -39,7 +51,7 @@ export function ParameterEditModal({ parameter, onClose, onSave }: ParameterEdit
  
         {/* Champ selon le type */}
         <div className="px-5 py-4">
-          <ParameterField parameter={parameter} value={draft} onChange={setDraft} />
+          <ParameterField regulatorPrefix={editingId} parameter={parameter} value={draft} onChange={handleChange} />
         </div>
  
         {/* Footer */}
@@ -51,6 +63,7 @@ export function ParameterEditModal({ parameter, onClose, onSave }: ParameterEdit
             Annuler
           </button>
           <button
+          id="parameterEditModalConfirmBtn"
             onClick={handleSave}
             className="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 text-sm font-semibold transition-colors cursor-pointer"
           >

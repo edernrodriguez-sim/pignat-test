@@ -146,6 +146,62 @@
         "Type":"unit"
     },
     {
+        "Key":"TTC06_PV",
+        "Label":"TTC06 PV",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_SP",
+        "Label":"TTC06 SP",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_OP",
+        "Label":"TTC06 OP",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_OP_MAN",
+        "Label":"TTC06 OP Man",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_PB",
+        "Label":"TTC06 PB",
+        "Value":3.80,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_TI",
+        "Label":"TTC06 TI",
+        "Value":1.80,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_TD",
+        "Label":"TTC06 TD",
+        "Value":0.70,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_AUTO",
+        "Label":"TTC06_AUTO",
+        "Value":false,
+        "UnitType": "",
+        "Type":""
+    },
+    {
         "Key":"LSL01",
         "Label":"LSL01",
         "Value":false,
@@ -193,6 +249,7 @@
     {
         "Key":"H1",
         "Label": "H1",
+        "Description":"H01 PRECHAUFFAGE",
         "Value":false,
         "Type":"vanne",
         "showInIHM": false
@@ -200,6 +257,7 @@
     {
         "Key":"H2",
         "Label": "H2",
+        "Description":"H02 CHAUFFAGE BOUILLEUR",
         "Value":false,
         "Type":"vanne",
         "showInIHM": false
@@ -207,13 +265,28 @@
     {
         "Key":"EV01",
         "Label": "EV01",
-        "Value":true,
+        "Value":false,
         "Type":"vanne",
+        "showInIHM": false
+    },
+    {
+        "Key":"EV_MODE",
+        "Label": "EV_MODE",
+        "Value":1,
+        "Type":"unit",
+        "showInIHM": false
+    },
+    {
+        "Key":"EV_VALUE",
+        "Label": "EV_VALUE",
+        "Value":1,
+        "Type":"unit",
         "showInIHM": false
     },
     {
         "Key":"P1",
         "Label": "P1",
+        "Description":"P01 POMPE INTRO",
         "Value":false,
         "Type":"vanne",
         "showInIHM": false
@@ -224,6 +297,70 @@
         "Value":20,
         "UnitType": "L/h",
         "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"FIC02_PV",
+        "Label": "FIC02_PV",
+        "Value":20,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"FIC02_SP",
+        "Label": "FIC02_SP",
+        "Value":20,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"FIC02_OP",
+        "Label": "FIC02_OP",
+        "Value":20,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"FIC02_OP_MAN",
+        "Label": "FIC02_OP_MAN",
+        "Value":20,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"FIC02_PB",
+        "Label": "FIC02_PB",
+        "Value":5.08,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"FIC02_TI",
+        "Label": "FIC02_TI",
+        "Value":86.19,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"FIC02_TD",
+        "Label": "FIC02_TD",
+        "Value":0.00,
+        "UnitType": "L/h",
+        "Type":"unit",
+        "showInIHM": true
+    },
+    {
+        "Key":"FIC02_AUTO",
+        "Label": "FIC02_AUTO",
+        "Value":false,
+        "UnitType": "",
+        "Type":"",
         "showInIHM": true
     },
     {
@@ -239,24 +376,68 @@
         "Type":"unit"
     },
     {
-        "Key":"FIC02_SP",
-        "Label":"Débit FIC02_SP",
-        "Value":105,
-        "UnitType": "L/h",
-        "Type":"unit"
+        "Key":"DPIC01_PV",
+        "Label": "DPIC01_PV",
+        "Value": 27,
+        "UnitType": "mBar",
+        "Type": "unit"
     },
     {
         "Key":"DPIC01_SP",
         "Label": "DPIC01_SP",
         "Value": 27,
-        "UnitType": "°c",
+        "UnitType": "mBar",
         "Type": "unit"
     },
     {
         "Key":"DPIC01_OP",
         "Label": "DPIC01_OP",
         "Value": 5,
-        "UnitType": "mBar",
+        "UnitType": "%",
+        "Type": "unit"
+    },
+    {
+        "Key":"DPIC01_OP_MAN",
+        "Label": "DPIC01_OP_MAN",
+        "Value": 5,
+        "UnitType": "%",
+        "Type": "unit"
+    },
+    {
+        "Key":"DPIC01_PB",
+        "Label": "DPIC01_PB",
+        "Value": 2.93,
+        "UnitType": "%",
+        "Type": "unit"
+    },
+    {
+        "Key":"DPIC01_TI",
+        "Label": "DPIC01_TI",
+        "Value": 37.69,
+        "UnitType": "%",
+        "Type": "unit"
+    },
+    {
+        "Key":"DPIC01_TD",
+        "Label": "DPIC01_TD",
+        "Value": 0.03,
+        "UnitType": "%",
+        "Type": "unit"
+    },
+    {
+        "Key":"DPIC01_AUTO",
+        "Label": "DPIC01_AUTO",
+        "Value": false,
+        "UnitType": "",
+        "Type": "unit"
+    },
+    {
+        "Key":"P1_SP_REEL",
+        "Label": "P1_SP_REEL",
+        "Value": 0,
+        "UnitType": "",
         "Type": "unit"
     }
 ]
+
+

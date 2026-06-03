@@ -22,9 +22,6 @@ function RulesDisplay({appMode, currentRules, machineDto} : {
         () => rulesResult.filter(r => r.result === "Echec"),
         [rulesResult]
     );
-    
-    console.log(`failedRules.length : ${failedRules.length}`)
-    console.log(`appMode : ${appMode}`)
     if (![ProjectConstants.APP_MODE_MAINTENANCE,ProjectConstants.APP_MODE_EXERCICE].includes(appMode) || failedRules.length === 0)
     {
         return null;
@@ -55,7 +52,7 @@ function RulesDisplay({appMode, currentRules, machineDto} : {
 
                 <div id="errorDiv" className="ruleContentDiv">
                     {/* Affichage des erreurs en fonction du filtre */}
-                    {failedRules.filter(f => f.launchType.includes(launchTypeFilter) || launchTypeFilter == LaunchType.All).map((r) => (
+                    {failedRules && failedRules.filter(f => f.launchType != undefined && f.launchType.length > 0 && (f.launchType.includes(launchTypeFilter) || launchTypeFilter == LaunchType.All)).map((r) => (
                         
                             <div
                             //onClick={revealErrors}

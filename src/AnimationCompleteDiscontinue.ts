@@ -1,5 +1,6 @@
 import { AnimationHelper } from "./animationHelper";
 import type { AnimDiscontinuDto } from "./models/animations/animDiscontinuDto";
+import { ProjectConstants } from "./projectConstants";
 
 export function LaunchAnimationCompleteDiscontinue({ input } : { input : AnimDiscontinuDto }){
 
@@ -25,11 +26,7 @@ async function launchBidonV12Animation(){
 }
 async function launchBidonV15Animation(){
     AnimationHelper.launchAnim(input.animationEntities.bidon_10L_V15_in);
-    setTimeout(() => launchBidon20LAnimation(),1000);
-}
-async function launchBidon20LAnimation(){
-    AnimationHelper.launchAnim(input.animationEntities.bidon_20L_in);
-    setTimeout(() => moveCameraToV16(),2000);
+    setTimeout(() => moveCameraToV16(),1000);
 }
 
 async function moveCameraToV16(){
@@ -48,12 +45,13 @@ async function moveCameraToIHMAndChangeWaterLevel(){
 async function showIHMAndSetWaterLevel(){
     input.setIsIHMModalVisible(true);
     
-    setTimeout(() => input.updateIhmDto("highlighted","water"),1000);
-    setTimeout(() => input.updateIhmDto("waterLevel",1),1500);
-    setTimeout(() => input.updateIhmDto("waterLevel",15),2000);
-    setTimeout(() => input.updateIhmDto("waterLevel",150),2500);
-    setTimeout(() => input.setIsIHMModalVisible(false),4000);
-    setTimeout(() => moveToFirstWaterPositionAndLaunchAnim(),5000);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_FIC02_BUTTON_ID, input),1500);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REGULATOR_AUTO_BUTTON_ID, input),3000);
+    setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, input),4000);
+    setTimeout(() => changeInput (ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID,"150", input ),5000);
+    setTimeout(() => validateParameterEditModal(input), 6000);
+    setTimeout(() => input.setIsIHMModalVisible(false),8000);
+    //setTimeout(() => moveToFirstWaterPositionAndLaunchAnim(),8500);
 }
 
 // Affichage du circuit d'eau
@@ -79,14 +77,23 @@ async function moveToCapAndLaunchAnim(){
 
 async function setRefluxValues(){
     input.setIsIHMModalVisible(true)
-    setTimeout(() => input.updateIhmDto("highlighted","refluxType"),1000);
-    setTimeout(() => input.updateIhmDto("refluxType","MANU"),2500);
-    setTimeout(() => input.updateIhmDto("refluxRate",1),4000);
-    setTimeout(() => input.updateIhmDto("refluxRate",10),4500);
-    setTimeout(() => input.updateIhmDto("refluxRate",100),5000);
-    setTimeout(() => input.updateIhmDto("refluxRate",100),5000);
-    setTimeout(() => input.setIsIHMModalVisible(false),6000);
-    setTimeout(() => moveCameraToBobine(),7000);
+
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_EV_MODE_BUTTON_ID, input),2500);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REFLUX_BUTTON_REFLUX_ID, input),4000);
+    setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID, input),5000);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"1", input),6000);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"10", input),6500);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"100", input),7000);
+    setTimeout(() => validateParameterEditModal(input),8500);
+
+    // setTimeout(() => input.updateIhmDto("highlighted","refluxType"),1000);
+    // setTimeout(() => input.updateIhmDto("refluxType","MANU"),2500);
+    // setTimeout(() => input.updateIhmDto("refluxRate",1),4000);
+    // setTimeout(() => input.updateIhmDto("refluxRate",10),4500);
+    // setTimeout(() => input.updateIhmDto("refluxRate",100),5000);
+    // setTimeout(() => input.updateIhmDto("refluxRate",100),5000);
+    setTimeout(() => input.setIsIHMModalVisible(false),9500);
+    setTimeout(() => moveCameraToBobine(),10500);
 }
 
 // Bobine
@@ -99,13 +106,21 @@ async function moveCameraToBobine(){
 async function setP1StatusAndBoiler(){
     input.cameraControllerRef.current?.setLookAt(-0.15,1,0.6,-0.15,1,0,true);
     setTimeout(() => input.setIsIHMModalVisible(true),1000);
-    setTimeout(() => input.updateIhmDto("highlighted","bouilleurStatus") ,4000);
-    setTimeout(() => input.updateIhmDto("isBouilleurOn",true),6000);
-    setTimeout(() => input.updateIhmDto("highlighted","bouilleurRate"),7500);
-    setTimeout(() => input.updateIhmDto("bouilleurRate",5),8500);
-    setTimeout(() => input.updateIhmDto("bouilleurRate",50),9000);
-    setTimeout(() => input.setIsIHMModalVisible(false),10500);
-    setTimeout(() => showBullageBouilleur(),10500);
+
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_H2_BUTTON_ID, input) ,2000);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_BOOL_BUTTON_ON_ID, input) ,3000);
+    setTimeout(() => validateParameterEditModal(input) ,5000);
+    setTimeout(() => setDPICValues(),6000);
+}
+
+async function setDPICValues(){
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_DPIC01_BUTTON_ID, input),1000);
+    setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REGULATOR_OP_MAN_INPUT_ID, input),2500);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_OP_MAN_INPUT_ID, "7", input),4000);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_OP_MAN_INPUT_ID, "70", input),4500);
+    setTimeout(() => validateParameterEditModal(input),6500);
+    setTimeout(() => input.setIsIHMModalVisible(false),7500);
+    setTimeout(() => showBullageBouilleur(),8500);
 }
 
 async function showBullageBouilleur(){
@@ -162,19 +177,27 @@ async function showIHMAndUpdateTT(){
 }
 
 async function SetDpic(){
-    setTimeout(() => input.updateIhmDto("highlighted","dpic"),1000);
-    setTimeout(() => input.updateIhmDto("dpic",1),2000);
-    setTimeout(() => input.updateIhmDto("dpic",13),2500);
+    input.setIsIHMModalVisible(true)
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_DPIC01_BUTTON_ID, input),1000);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REGULATOR_AUTO_BUTTON_ID, input),2500);
+    setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, input),2500);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "1", input),4000);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "14", input),4500);
+    setTimeout(() =>  validateParameterEditModal(input) ,6000);
     setTimeout(() => setRefluxValues33(),3000);
 }
 
 async function setRefluxValues33(){
     input.setIsIHMModalVisible(true)
-    setTimeout(() => input.updateIhmDto("highlighted","refluxType"),1000);
-    setTimeout(() => input.updateIhmDto("refluxRate",3),2000);
-    setTimeout(() => input.updateIhmDto("refluxRate",33),2500);
-    setTimeout(() => input.setIsIHMModalVisible(false),4500);
-    setTimeout(() => moveCameraToBobineAndLaunchCycleAnim(),7000);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_EV_MODE_BUTTON_ID, input),2500);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REFLUX_BUTTON_CYCLE_ID, input),4000);
+    setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID, input),5000);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"3", input),6000);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"33", input),6500);
+    setTimeout(() => validateParameterEditModal(input),8000);
+    
+    setTimeout(() => input.setIsIHMModalVisible(false),9000);
+    setTimeout(() => moveCameraToBobineAndLaunchCycleAnim(),10000);
 }
 async function moveCameraToBobineAndLaunchCycleAnim(){
     setTimeout(() => AnimationHelper.closeAnim(input.animationEntities.soutirage_cycle), 100);
@@ -205,4 +228,23 @@ async function moveAndOpenV15(){
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v15_out),9000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.liquide_falling_bidon_1L_V15_out),9100);
 }
+}
+
+
+
+
+function validateParameterEditModal(input : AnimDiscontinuDto){
+    input.updateNewIhm!(ProjectConstants.IHM_KEYS_PARAM_CONFIRM_BUTTON_ID,true);
+}
+
+function pressIHMButton(id: string, input : AnimDiscontinuDto){
+    input.updateNewIhm!(id,true);
+}
+
+function focusOnInput(id: string, input : AnimDiscontinuDto) {
+    input.updateNewIhm!(id ,false);
+}
+
+function changeInput(id: string, value: string, input: AnimDiscontinuDto) {
+    input.updateNewIhm!(id ,false, value);
 }

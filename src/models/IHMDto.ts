@@ -8,6 +8,8 @@ export interface IHMDto {
     isH1On: boolean;
     p1Value: number;
     isLSL1ok: boolean;
+    LSL01: boolean;
+    LSL02: boolean;
     refluxType: string;
     refluxRate: number;
     isBouilleurOn: boolean;
@@ -22,6 +24,7 @@ export interface IHMDto {
     prechauffeValue: number;
     dpic: number;
     input:MachineParameter[];
+    FIC02_OP_MAN: string;
     onClose: () => void;
     onValueChange: (label: string, value: SetStateAction<number> | SetStateAction<boolean> | SetStateAction<string>) => void;
 }

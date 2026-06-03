@@ -30,7 +30,7 @@ function BaseInfoPanel({xPos, yPos, zPos, label, machineParam, anchor, width, he
     let displayLabelOnly: boolean | undefined;
     
     function setData(){
-        if (!machineParam)
+        if (!machineParam || machineParam.value == undefined)
             return;
 
         valueToShow = machineParam.value.toString();
@@ -96,7 +96,7 @@ function BaseInfoPanel({xPos, yPos, zPos, label, machineParam, anchor, width, he
     function addValueUnitIfNeeded(){
         if (!machineParam)
             return;
-
+        
         if (machineParam.unitType !== undefined){
             valueToShow +=  machineParam.unitType;
         }

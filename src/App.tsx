@@ -54,6 +54,7 @@ import InfoPanels from "./InfoPanels/InfoPanels";
 import { applyMachineUpdates } from "./animations/animationRunner";
 import { IhmModal } from "./ihm/ihmModal";
 import { MachineParameterProvider } from "./ihm/machineParameterContext/machineParameterProvider";
+import type { SavedField } from "./exercices/exercice";
 
 // Scene et token publics
 const scene_id = "05b63dcd-ce5c-4e8f-b363-89a38118462c";
@@ -67,6 +68,7 @@ const keysFromJson: MachineParameter[] = data.map(
       data.Key,
       data.Label,
       data.Value,
+      data.Description,
       data.Type,
       data.UnitType,
       data.showInIHM,
@@ -81,9 +83,11 @@ const datasForIHM: MachineParameter[] = data
         data.Key,
         data.Label,
         data.Value,
+        data.Description,
         data.Type,
         data.UnitType,
         data.showInIHM,
+        data.satisfyingValue
       ),
   );
 let isSetMachineStateLaunched: boolean = false;
@@ -270,6 +274,8 @@ function SceneViewer() {
     isH1On: false,
     p1Value: 0,
     isLSL1ok: false,
+    LSL01: false,
+    LSL02: false,
     refluxType: "",
     refluxRate: 0,
     isBouilleurOn: false,
@@ -286,6 +292,7 @@ function SceneViewer() {
     input: datasForIHM,
     onClose: closeIHMModal,
     onValueChange: onIHMInputChange,
+    FIC02_OP_MAN: ""
   });
   
   const machineStateDto = useMemo<MachineStateDto>(
@@ -305,12 +312,44 @@ function SceneViewer() {
     key: keyof IHMDto,
     value: number | string | boolean,
   ) => {
+    
     setMachineParams((prev) => prev.map(
       (p) => p.key === key ? {...p, value: value} as MachineParameter : p
     ));
     setIhmDto((prev) => ({ ...prev, [key]: value }));
 
   };
+
+  const updateNewIhm = (id: string, isClick: boolean, value?: string) => {
+    const element = document.getElementById(id);
+    
+    if (isClick)
+    {
+      const clickElement= element as HTMLButtonElement;
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLButtonElement.prototype, "value")?.set;
+      nativeInputValueSetter?.call(clickElement, true);
+      clickElement.dispatchEvent(new Event("click", { bubbles: true }));
+    }
+    else if (value != undefined) {
+      const inputElement= element as HTMLInputElement; 
+
+      // Modifier la valeur via le setter natif (contourne React)
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+
+        // Convertir en number si l'input est de type number
+    const parsedValue = inputElement.type === "number" ? Number(value) : value;
+    
+      nativeInputValueSetter?.call(inputElement, parsedValue);
+
+      // Déclencher l'événement pour que React réagisse
+      inputElement.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    else {
+      
+      const inputElement= element as HTMLInputElement;
+      inputElement.focus();
+    }
+  }
   //#region Recup Anims
 
   const screenId = machineLabelIdMapping.getIdByLabelIfExists("ecran");
@@ -511,18 +550,18 @@ function SceneViewer() {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    updateIhmDto("isLSL1ok", false);
-    updateIhmDto("TT2Value", 0);
-    updateIhmDto("TT3Value", 0);
-    updateIhmDto("TT4Value", 0);
-    updateIhmDto("TT5Value", 0);
-    updateIhmDto("bouilleurRate", 0);
-    updateIhmDto("refluxRate", 0);
-    updateIhmDto("waterLevel", 0);
-    updateIhmDto("prechauffeValue", 0);
+    setTimeout(() => updateIhmDto("isLSL1ok", false),5000);
+    // updateIhmDto("TT2Value", 0);
+    // updateIhmDto("TT3Value", 0);
+    // updateIhmDto("TT4Value", 0);
+    // updateIhmDto("TT5Value", 0);
+    // updateIhmDto("bouilleurRate", 0);
+    // updateIhmDto("refluxRate", 0);
+    // updateIhmDto("waterLevel", 0);
+    // updateIhmDto("prechauffeValue", 0);
 
     //setDpic(0);
-    updateIhmDto("isP1On", false);
+    // updateIhmDto("isP1On", false);
     setIsBouilleurOn(false);
   }, [animationEntities, updateIhmDto, closeAllVannes]);
 
@@ -540,9 +579,10 @@ function SceneViewer() {
         cameraControllerRef,
         setIsIHMModalVisible,
         updateIhmDto,
+        updateNewIhm
       },
     });
-  }, [animationEntities, cameraControllerRef, setIsIHMModalVisible, updateIhmDto, resetMachineToStart]);
+  }, [animationEntities, cameraControllerRef, setIsIHMModalVisible, updateIhmDto,updateNewIhm, resetMachineToStart]);
 
   const LaunchAnimationCompleteDisContinueFromButton = useCallback(async () => {
     if(!animationEntities) {
@@ -558,6 +598,7 @@ function SceneViewer() {
         cameraControllerRef,
         setIsIHMModalVisible,
         updateIhmDto,
+        updateNewIhm
       },
     });
   }, [animationEntities, cameraControllerRef, setIsIHMModalVisible, updateIhmDto, resetMachineToStart]);
@@ -790,9 +831,14 @@ function SceneViewer() {
         <InfoPanels machineParams={machineParams} />
 
         {/*État de la machine*/}
-          <div className={`absolute top-[2vh] left-[2vh]`}>
-            <MachineState machineStateDto={machineStateDto} />
-          </div>
+        {
+          appMode === ProjectConstants.APP_MODE_EXERCICE || appMode === ProjectConstants.APP_MODE_MAINTENANCE && (
+              
+            <div className={`absolute top-[2vh] left-[2vh]`}>
+              <MachineState machineStateDto={machineStateDto} />
+            </div>
+          )
+        }
         {/* Erreurs */}
         <RulesDisplay 
           appMode={appMode}
@@ -843,9 +889,10 @@ function SceneViewer() {
 
         {appMode === ProjectConstants.APP_MODE_ANIMCONTINUE &&
         canShowAnimationButton ? (
-          <div className={`absolute bottom-[10vh] right-[42vw]`}>
+          <div className={`absolute bottom-[10vh] right-[42vw] `}>
             <button
               id="exerciseBtn"
+              className="animationButton"
               onClick={LaunchAnimationCompleteContinueFromButton}
             >
               LANCER ANIMATION CONTINUE
@@ -858,7 +905,8 @@ function SceneViewer() {
         canShowAnimationButton ? (
           <div className={`absolute bottom-[10vh] right-[42vw]`}>
             <button
-              id="exerciseBtnn"
+              id="exerciseBtn"
+              className="animationButton"
               onClick={LaunchAnimationCompleteDisContinueFromButton}
             >
               LANCER ANIMATION DISCONTINUE
@@ -872,15 +920,17 @@ function SceneViewer() {
       </>
     );
   }
-
-  function onParameterUpdate(newMachineParams : MachineParameter[]){
-    setMachineParams(newMachineParams);
-    console.log(`Update ${newMachineParams.filter(k => k.key === "TT03")[0].value}`)
-    console.log(`Update ${machineParams.filter(k => k.key === "TT03")[0].value}`)
+  
+  function onParameterSaved(newMachineParams : SavedField[]){
+      console.log("onParameterSaved");
+      console.log(newMachineParams);
+      setMachineParams((prev) => 
+        prev.map((p) => 
+          newMachineParams.find(f => f.key === p.key) ? { ...p, value: newMachineParams.find(f => f.key === p.key)?.value } as MachineParameter : p
+        )
+      );
   }
-
-
-
+  
   return (
     <Canvas className="w-full h-full">
       <Viewport
@@ -900,7 +950,7 @@ function SceneViewer() {
           - onParametersChange : la fonction pour le mettre à jour */}
         <MachineParameterProvider
           parameters={machineParams}
-          onParametersChange={onParameterUpdate}  // quand un paramètre est modifié,
+          onParameterSaved={onParameterSaved}
         >     
         {
           isIHMModalVisible && (

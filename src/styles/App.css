@@ -280,3 +280,11 @@ canvas {
   background-color: #94dbffe1;
   border-color: #524ffec9;
 }
+
+
+.animationButton {
+  background: linear-gradient(168deg, #5c5b5b 0%, #161616 100%);
+  color: rgb(240,240,240);
+  font-family: "DM Sans", system-ui, sans-serif;
+
+}

@@ -53,12 +53,7 @@ function ActionHint({ step, onMouseDown, onMouseUp, canShow }: { step: ExerciseS
       return (
         <p className="ep-action-hint ep-action-hint--input"  onMouseUp={onMouseUp}>
           <span className="ep-action-hint__icon">✏️</span>
-          {action.label ?? `Renseignez le champ « ${action.fieldId} »`}
-          {action.expectedValue !== undefined && (
-            <span className="ep-action-hint__expected">
-              {" "}— valeur attendue : <code>{action.expectedValue}</code>
-            </span>
-          )}
+          {action.label ?? ``}
         </p>
       );
     }

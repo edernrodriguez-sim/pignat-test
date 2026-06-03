@@ -8,4 +8,5 @@ export interface AnimDiscontinuDto{
     animationEntities: AnimationEntities;
     setIsIHMModalVisible: (value: SetStateAction<boolean>) => void;
     updateIhmDto: (key: keyof IHMDto, value: number | string | boolean) => void;
+    updateNewIhm?: (id: string, isClick: boolean, value?: string) => void;
 }

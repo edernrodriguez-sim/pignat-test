@@ -8,7 +8,6 @@ function IhmValueBadge({ value, w, h, isRound }: { value: string | number | bool
     <div className="
       flex flex-col items-center gap-1
       rounded-lg px-2 py-1
-      shadow-lg shadow-blue-500/10
       min-w-[4rem] 
       pointer-events-none
     "> 

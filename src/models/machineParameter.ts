@@ -1,6 +1,7 @@
 export class MachineParameter {
     key:string;
     label:string;
+    description: string|undefined;
     value:string | number | boolean;
     /**
      * Valeur indiquant que le paramètre est correct. Cette valeur peut changer selon les détecteurs.
@@ -16,6 +17,7 @@ export class MachineParameter {
   constructor(key : string,
     label: string,
     value : string | number | boolean,
+    description : string | undefined,
     type : string,
     unitType: string | undefined,
     showInIHM: boolean | undefined,
@@ -23,6 +25,7 @@ export class MachineParameter {
     this.key = key;
     this.label = label;
     this.value = value;
+    this.description = description;
     this.type = type;
     this.unitType = unitType;
     this.showInIHM = showInIHM ?? false;

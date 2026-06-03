@@ -5,6 +5,7 @@ import type {
   ExerciseState,
   StepStatus,
   AnimationTrigger,
+  SavedField,
 } from "./exercice";
 import { AnimationHelper } from "../animationHelper";
 import type { Livelink } from "@3dverse/livelink";
@@ -67,8 +68,10 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
     const currentStep = ex.steps[currentStepIndex];
     const isLast = currentStepIndex === ex.steps.length - 1;
 
-    if (currentStep.onCompleteAnimation) {
-      await playAnimation(currentStep.onCompleteAnimation);
+    if (currentStep.onCompleteAnimation && currentStep.onCompleteAnimation.length > 0) {
+      currentStep.onCompleteAnimation.forEach(async (anim) => {
+      await playAnimation(anim);
+      });
     }
 
     if (currentStep.startTemperatureOnComplete 
@@ -102,26 +105,44 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
     const step = ex.steps[currentStepIndex];
     if (step.action.type !== "click3D") return;
     if (step.action.entityTag !== entityName) return;
-    if (step.onActionAnimation) await playAnimation(step.onActionAnimation);
+    if (step.onActionAnimation && step.onActionAnimation.length > 0){
+      step.onActionAnimation.forEach(async (anim) => {
+        await playAnimation(anim);
+      })
+    }
+
 
     completeCurrentStep();
   }, [completeCurrentStep]);
 
   // ── Handler input ─────────────────────────────────────────────────────────
 
-  const onInputChange = useCallback(async (fieldId: string, value: string | number | boolean) => {
+  const onInputChange = useCallback(async (updatedFields : SavedField[]) => {
     const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
     if (isCompleted) return;
     
     const step = ex.steps[currentStepIndex];
     if (step.action.type !== "inputChange") return;
-    if (step.action.fieldId !== fieldId) return;
+    if (step.action.expectedFields === undefined || step.action.expectedFields.length <= 0) return;
 
-    const expected = step.action.expectedValue;
-    const isValid = expected === undefined || String(value) === String(expected);
+    // Construire un Map pour accéder aux valeurs soumises en O(1)
+    const submittedMap = new Map(updatedFields.map((f) => [f.key, f.value]));
+    
+
+    // Pour chaque champ nécessaire à l'exercice, on check s'il y a une valeur équivalente existante et qui a la bonne valeur
+    // Tous les champs attendus doivent être présents ET avoir la bonne valeur
+    const isValid = step.action.expectedFields.every((f) => {
+      if (!submittedMap.has(f.key)) return false;           // champ manquant → invalide
+      
+      return String(submittedMap.get(f.key)) === String(f.value); // valeur incorrecte → invalide
+    });
+
     if (!isValid) return;
-
-    if (step.onActionAnimation) await playAnimation(step.onActionAnimation);
+    if (step.onActionAnimation && step.onActionAnimation.length > 0){
+      step.onActionAnimation.forEach(async (anim) => {
+        await playAnimation(anim);
+      })
+    };
 
     completeCurrentStep();
   }, [completeCurrentStep]);

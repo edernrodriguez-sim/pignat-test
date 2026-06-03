@@ -10,7 +10,7 @@ import {
 import { useRef, useCallback, useEffect, useState, useContext, useMemo } from "react";
 import ExerciceUI from "./exerciceUI";
 import type { Entity } from "@3dverse/livelink";
-import type { Exercise } from "./exercice";
+import type { Exercise, SavedField } from "./exercice";
 import { useExercise } from "./useExercice";
 import { ProjectConstants } from "../projectConstants";
 import InfoPanels from "../InfoPanels/InfoPanels";
@@ -51,6 +51,7 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
         data.Key,
         data.Label,
         data.Value,
+        data.Description,
         data.Type,
         data.UnitType,
         data.showInIHM,
@@ -148,15 +149,8 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
   // ── Handler input ─────────────────────────────────────────────────────────
 
   const handleCustomAnswer = useCallback(
-    (key: string, value: string) => {      
-      // let newMachine = machineParams.map((p) =>
-      //   p.key === key ? { ...p, value: value } : p
-      // );
-      // setMachineParams(newMachine);
-      // console.log(newMachine);
-      console.log(`handleCustomAnswer : key: ${key} |||| value : ${value}`)
-      console.log(machineParams);
-      onInputChange(key, value);
+    (key: string, value: string) => {
+      onInputChange([{key, value: value}]);
     },
     [onInputChange],
   );
@@ -192,6 +186,12 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
       }
     }
   }, [pickedEntity, onEntityClicked]);
+
+  useEffect(() => {
+  if (!currentStep || currentStep.action.type !== "wait") return;
+  const timer = setTimeout(completeCurrentStep, currentStep.action.realDuration * 1000);
+  return () => clearTimeout(timer);
+}, [currentStep?.id]); // currentStep.id pour ne relancer qu'au changement d'étape
 
   // ── Camera controller ─────────────────────────────────────────────────────
 
@@ -283,25 +283,16 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
   // si vous avez choisi le même identifiant pour fieldId et parameterId.
  
   const handleParameterSaved = useCallback(
-    (parameterId: string, newValue: string | number | boolean) => {
-      // let newMachine = machineParams.map((p) =>
-      //   p.key === parameterId ? { ...p, value: newValue } as MachineParameter : p
-      // );
-
+    (fields: SavedField[]) => {
+      
       setMachineParams((prev) => 
         prev.map((p) => 
-          p.key === parameterId ? { ...p, value: newValue } as MachineParameter : p
+          fields.find(f => f.key === p.key) ? { ...p, value: fields.find(f => f.key === p.key)?.value } as MachineParameter : p
         )
       );
       
-
-
-      console.log(`handleParameterSaved : paramId : ${parameterId} / ${newValue}`)
-      console.log("machineParams1");
-      console.log(machineParams);
-      onInputChange(parameterId, newValue);
-      console.log("machineParams2");
-      console.log(machineParams);
+      onInputChange(fields);
+      
     },
     [onInputChange],
   );
@@ -332,7 +323,7 @@ useEffect(() => {
           - onParameterSaved : la fonction pour notifier l'élément qui a été mis à jour et sa valeur*/}
         <MachineParameterProvider
           parameters={machineParams}
-          onParametersChange={setMachineParams}  // quand un paramètre est modifié,
+          // onParametersChange={setMachineParams}  // quand un paramètre est modifié,
           onParameterSaved={handleParameterSaved}
         >     
         {

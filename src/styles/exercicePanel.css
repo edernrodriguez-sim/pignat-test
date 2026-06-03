@@ -78,6 +78,8 @@
   list-style: none;
   margin: 0;
   padding: 12px 0;
+  overflow-y: scroll;
+  max-height: 75vh;
 }
 
 /* ── Single step ───────────────────────────────────────────────────────────── */
@@ -256,4 +258,20 @@
   border: 1px dashed rgba(255, 200, 0, 0.4);
   color: #d8a200;
   font-size: 11px;
+}
+
+#wait-display {
+  background-color: white;
+  border-radius: 1.5vh;
+  min-width: 15vw;
+  #wait-display-header {
+    background: linear-gradient(135deg, #313131 0%, #161616 100%);
+    padding: 2vh;
+    border-radius: 1.5vh 1.5vh 0vh 0vh;
+    width: 100%;
+  }
+}
+
+.exercice-info-header { 
+  border-radius: 1.5vh 1.5vh 0vh 0vh;
 }
