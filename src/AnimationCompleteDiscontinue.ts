@@ -51,7 +51,7 @@ async function showIHMAndSetWaterLevel(){
     setTimeout(() => changeInput (ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID,"150", input ),5000);
     setTimeout(() => validateParameterEditModal(input), 6000);
     setTimeout(() => input.setIsIHMModalVisible(false),8000);
-    //setTimeout(() => moveToFirstWaterPositionAndLaunchAnim(),8500);
+    setTimeout(() => moveToFirstWaterPositionAndLaunchAnim(),8500);
 }
 
 // Affichage du circuit d'eau
