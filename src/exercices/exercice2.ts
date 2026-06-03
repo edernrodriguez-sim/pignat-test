@@ -14,19 +14,12 @@ const myExercise: Exercise = {
       onCompleteAnimation: [{ animationName: "bidon_20L_in", entityId: "6e1710fe-8116-4209-989b-fa4315a94056" }],
       startTemperatureOnComplete: false
     },
-    // {
-    //   id: "step-2", number: 2, name: "Placer le flexible dans le bidon",
-    //   description: "Cliquez sur le flexible pour le placer.",
-    //   action: { type: "click3D", entityTag:  ENTITY_TAG_LIST.FLEXIBLE_POMPE, label: "Cliquez sur le flexible dans la scène 3D" },
-    //   onCompleteAnimation: { animationName: "bidon_20L_flexible_in", entityId: "e5a14273-73da-4287-a306-33497e62390c" },
-    //   startTemperatureOnComplete: false
-    // },
     {
-      id: "step-wait",
-      number: 2,
-      name: "Attendre 10 min",
-      description: "Temps d'attente acceléré.",
-      action: { type: "wait", realDuration: 10, displayDuration: 600 },
+      id: "step-2", number: 2, name: "Placer le flexible dans le bidon",
+      description: "Cliquez sur le flexible pour le placer.",
+      action: { type: "click3D", entityTag:  ENTITY_TAG_LIST.FLEXIBLE_POMPE, label: "Cliquez sur le flexible dans la scène 3D" },
+      onCompleteAnimation: [{ animationName: "bidon_20L_flexible_in", entityId: "e5a14273-73da-4287-a306-33497e62390c" }],
+      startTemperatureOnComplete: false
     },
     {
       id: "step-3", number: 3, name: "Ouvrir vanne V16",
