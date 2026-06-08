@@ -157,14 +157,14 @@ export function useBehaviourOnAnimationTrigger(
     const blockCount = useRef(0); // 👈 compteur de blocages pour éviter les appels en rafale    
     useEffect(() => {
         if (!goutte_drop) return;
-
-        console.debug("+++++++++++++ Setting up goutte_drop trigger +++++++++++++");
-        const goutte = goutte_drop;
+        if (!instance) return;
+        
         
         const event_map_id = "3b4ec3a6-28fd-4fdb-8569-d45a272c2624";
         const event_name = "goutte_drop_end";
         // 🔒 Guard pour éviter les appels concurrents
         const onAnimEnd = async () => {
+            
             // ✅ Empêche les appels en rafale
             if (isCreating.current) {
                 console.warn("⛔ newEntity bloqué car déjà en cours");
@@ -263,17 +263,18 @@ export function useBehaviourOnAnimationTrigger(
             }   
         };
         
-        goutte.addScriptEventListener({ 
-            event_map_id, 
-            event_name, 
-            onReceived: onAnimEnd, 
+        
+        goutte_drop.addScriptEventListener({ 
+            event_map_id,
+            event_name,
+            onReceived: onAnimEnd
         });
-
+        
         return () => {
-            goutte.removeScriptEventListener({ 
+            goutte_drop.removeScriptEventListener({ 
                 event_map_id, 
                 event_name, 
-                onReceived: onAnimEnd, 
+                onReceived: onAnimEnd
             });
         }
             

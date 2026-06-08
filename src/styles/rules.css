@@ -1,8 +1,8 @@
 .ruleContentDiv {
   background-color: #ffffff;
   border-radius: 0px 0px 10px 10px;
-  
-  font-family: "DM Sans", system-ui, sans-serif;
+    
+    font-family: "DM Sans", system-ui, sans-serif;
   padding: 20px;
   max-height: 80vh;
   overflow: scroll;

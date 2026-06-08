@@ -551,17 +551,6 @@ function SceneViewer() {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     setTimeout(() => updateIhmDto("isLSL1ok", false),5000);
-    // updateIhmDto("TT2Value", 0);
-    // updateIhmDto("TT3Value", 0);
-    // updateIhmDto("TT4Value", 0);
-    // updateIhmDto("TT5Value", 0);
-    // updateIhmDto("bouilleurRate", 0);
-    // updateIhmDto("refluxRate", 0);
-    // updateIhmDto("waterLevel", 0);
-    // updateIhmDto("prechauffeValue", 0);
-
-    //setDpic(0);
-    // updateIhmDto("isP1On", false);
     setIsBouilleurOn(false);
   }, [animationEntities, updateIhmDto, closeAllVannes]);
 
@@ -602,21 +591,6 @@ function SceneViewer() {
       },
     });
   }, [animationEntities, cameraControllerRef, setIsIHMModalVisible, updateIhmDto, resetMachineToStart]);
-
-  // async function prepareGlobalAnimationThenStart(){
-  //     // 1°) Preparing all the scene
-  //     resetMachineToStart();
-
-  //     // 2°) wait before go the 1st camera placement
-  //     setTimeout(() => LaunchAnimationCompleteContinue({input: {
-  //         animationEntities: animationEntities,
-  //         cameraControllerRef: cameraControllerRef,
-  //         setIsIHMModalVisible: setIsIHMModalVisible,
-  //         updateIhmDto: updateIhmDto
-
-  //     } }),3000);
-  //     //moveAndOpenV15();
-  // }
 
   //#region Exercices
 
