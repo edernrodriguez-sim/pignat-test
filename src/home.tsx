@@ -53,9 +53,9 @@ function Home() {
         <div id="home">
             <img src={Logo} />
             <div>
-                {/* <button onClick={() => setIsIdModalOpen(true) }>
+                <button onClick={() => setIsIdModalOpen(true) }>
                     Mode Support
-                </button> */}
+                </button>
                 <button onClick={() => setAppMode(ProjectConstants.APP_MODE_EXERCICE)}>
                     Mode Exercice
                 </button>
