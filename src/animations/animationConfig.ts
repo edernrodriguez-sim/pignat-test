@@ -27,7 +27,7 @@ export const ANIM_MAP: Record<string, AnimResolver> = {
       (v) => [
         v,
         (e: AnimationEntities, newValue: boolean) => {
-           const key = `${v.toLowerCase()}_${newValue ? "in" : "out"}` as keyof AnimationEntities;
+           const key = `${v.toLowerCase()}_${newValue ? "out" : "in"}` as keyof AnimationEntities;
           AnimationHelper.launchAnim(e[key] as Entity);
         }
       ]
