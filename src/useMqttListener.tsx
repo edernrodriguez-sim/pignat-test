@@ -34,7 +34,7 @@ export function useMqttListener(machineIdentifier: string) {
     isConnected: false,
   });
   // Ajout de l'identifiant de la machine pour créer le topic complet  
-  // TOPIC = BASE_TOPIC + machineIdentifier;
+  TOPIC = BASE_TOPIC + machineIdentifier;
   TOPIC = BASE_TOPIC;
   
   // Keep latest records accessible without re-subscribing
