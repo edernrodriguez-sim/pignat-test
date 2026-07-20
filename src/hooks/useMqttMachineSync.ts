@@ -30,7 +30,7 @@ export interface MachineUpdate {
 export function useMqttMachineSync(
   setMachineParams: Dispatch<SetStateAction<MachineParameter[]>>,
   canStartMqtt: boolean,
-  machineIdentifier: string
+  machineIdentifier: number
 ) {
   
   const { records, isConnected, timestamp } = useMqttConnection(machineIdentifier);
@@ -60,7 +60,11 @@ export function useMqttMachineSync(
     const changedElements: MachineUpdate[] = [];
     for (const record of records) {
       // Si clé non trouvé on passe au suivant
-      if (MQTT_TAG_MAPPING[record.TagName] == null) continue;
+      if (MQTT_TAG_MAPPING[record.TagName] == null)
+      {
+        console.log("tag non trouvé : " + record.TagName);
+        continue;
+      }
       // On récupère la valeur selon la clé
       const key = MQTT_TAG_MAPPING[record.TagName];
 

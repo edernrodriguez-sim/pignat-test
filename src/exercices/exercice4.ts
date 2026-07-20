@@ -142,7 +142,7 @@ const myExercise: Exercise = {
     ]
     },
     {
-      id: "step-198", number: 18, name: "Fixer le cycle de relux sur 66.6%",
+      id: "step-198", number: 18, name: "Fixer l'OUTPUT de TI5 sur 66.6%",
       description: "Ouvrir l'IHM et ouvrir la fenêtre EV01 et mettre la valeur de Reflux à 66.6 .",
       action: { type: "inputChange", expectedFields:[{key: "EV_VALUE", value: 66.6}],
       label: "" },
@@ -150,7 +150,7 @@ const myExercise: Exercise = {
     {
       id: "step-209", number: 19, name: "Mettre le Reflux en mode Cycle",
       description: "Ouvrir l'IHM et ouvrir la fenêtre EV01 et cliquer sur Cycle .",
-      action: { type: "inputChange", expectedFields:[{key: "EV_MODE", value: 2}],
+      action: { type: "inputChange", expectedFields:[{key: "EV_MODE", value: 1}],
       label: "" },
     },
 

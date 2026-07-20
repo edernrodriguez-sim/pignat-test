@@ -1,9 +1,153 @@
 [
     {
-        "Key":"Mode",
-        "Label":"Mode",
-        "Value":"Discontinu",
-        "Type":"mode"
+        "Key":"N_SERIE",
+        "Label":"N_SERIE",
+        "Value":"",
+        "Type":"value"
+    },
+    {
+        "Key":"P1",
+        "Label": "P1",
+        "Description":"P01 POMPE INTRO",
+        "Value":false,
+        "Type":"vanne",
+        "showInIHM": false
+    },
+    {
+        "Key":"P1_SP_REEL",
+        "Label": "P1_SP_REEL",
+        "Value": 0,
+        "UnitType": "",
+        "Type": "unit"
+    },
+    {
+        "Key":"H1",
+        "Label": "H1",
+        "Description":"H01 PRECHAUFFAGE",
+        "Value":false,
+        "Type":"vanne",
+        "showInIHM": false
+    },
+    {
+        "Key":"H2",
+        "Label": "H2",
+        "Description":"H02 CHAUFFAGE BOUILLEUR",
+        "Value":false,
+        "Type":"vanne",
+        "showInIHM": false
+    },
+    {
+        "Key":"TT01",
+        "Label":"Temp TT01",
+        "Value":99,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT02",
+        "Label":"Temp TT02",
+        "Value":96,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT03",
+        "Label":"Temp TT03",
+        "Value":93,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT04",
+        "Label":"Temp TT04",
+        "Value":92,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT05",
+        "Label":"Temp TT05",
+        "Value":89.5,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT06",
+        "Label":"Temp TT06",
+        "Value":70,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT07",
+        "Label":"Temp TT07",
+        "Value":20,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TT08",
+        "Label":"Temp TT08",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    
+    {
+        "Key":"TTC06_PV",
+        "Label":"TTC06 PV",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_SP",
+        "Label":"TTC06 SP",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_OP",
+        "Label":"TTC06 OP",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_OP_MAN",
+        "Label":"TTC06 OP Man",
+        "Value":40,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_PB",
+        "Label":"TTC06 PB",
+        "Value":3.80,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_TI",
+        "Label":"TTC06 TI",
+        "Value":1.80,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_TD",
+        "Label":"TTC06 TD",
+        "Value":0.70,
+        "UnitType": "°C",
+        "Type":"unit"
+    },
+    {
+        "Key":"TTC06_AUTO",
+        "Label":"TTC06_AUTO",
+        "Value":false,
+        "UnitType": "",
+        "Type":"bool"
     },
     {
         "Key":"ZS01",
@@ -90,121 +234,10 @@
         "Type":"vanne"
     },
     {
-        "Key":"TT01",
-        "Label":"Temp TT01",
-        "Value":99,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TT02",
-        "Label":"Temp TT02",
-        "Value":96,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TT03",
-        "Label":"Temp TT03",
-        "Value":93,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TT04",
-        "Label":"Temp TT04",
-        "Value":92,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TT05",
-        "Label":"Temp TT05",
-        "Value":89.5,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TT06",
-        "Label":"Temp TT06",
-        "Value":70,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TT07",
-        "Label":"Temp TT07",
-        "Value":20,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TT08",
-        "Label":"Temp TT08",
-        "Value":40,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TTC06_PV",
-        "Label":"TTC06 PV",
-        "Value":40,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TTC06_SP",
-        "Label":"TTC06 SP",
-        "Value":40,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TTC06_OP",
-        "Label":"TTC06 OP",
-        "Value":40,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TTC06_OP_MAN",
-        "Label":"TTC06 OP Man",
-        "Value":40,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TTC06_PB",
-        "Label":"TTC06 PB",
-        "Value":3.80,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TTC06_TI",
-        "Label":"TTC06 TI",
-        "Value":1.80,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TTC06_TD",
-        "Label":"TTC06 TD",
-        "Value":0.70,
-        "UnitType": "°C",
-        "Type":"unit"
-    },
-    {
-        "Key":"TTC06_AUTO",
-        "Label":"TTC06_AUTO",
-        "Value":false,
-        "UnitType": "",
-        "Type":""
-    },
-    {
         "Key":"LSL01",
         "Label":"LSL01",
-        "Value":false,
+        "Value":true ,
+        "satisfyingValue": false,
         "UnitType": "",
         "Type":"unit"
     },
@@ -212,7 +245,7 @@
         "Key":"LSL02",
         "Label":"LSL02",
         "Value":false,
-        "satisfyingValue": true,
+        "satisfyingValue": false,
         "UnitType": "",
         "Type":"unit"
     },
@@ -220,7 +253,7 @@
         "Key":"LSL03",
         "Label":"LSL03",
         "Value":true,
-        "satisfyingValue": true,
+        "satisfyingValue": false,
         "UnitType": "",
         "Type":"unit"
     },
@@ -228,7 +261,7 @@
         "Key":"LSL04",
         "Label":"LSL04",
         "Value":true,
-        "satisfyingValue": true,
+        "satisfyingValue": false,
         "UnitType": "",
         "Type":"unit"
     },
@@ -245,22 +278,6 @@
         "Value":false,
         "satisfyingValue": false,
         "Type":"vanne"
-    },
-    {
-        "Key":"H1",
-        "Label": "H1",
-        "Description":"H01 PRECHAUFFAGE",
-        "Value":false,
-        "Type":"vanne",
-        "showInIHM": false
-    },
-    {
-        "Key":"H2",
-        "Label": "H2",
-        "Description":"H02 CHAUFFAGE BOUILLEUR",
-        "Value":false,
-        "Type":"vanne",
-        "showInIHM": false
     },
     {
         "Key":"EV01",
@@ -281,14 +298,6 @@
         "Label": "EV_VALUE",
         "Value":1,
         "Type":"unit",
-        "showInIHM": false
-    },
-    {
-        "Key":"P1",
-        "Label": "P1",
-        "Description":"P01 POMPE INTRO",
-        "Value":false,
-        "Type":"vanne",
         "showInIHM": false
     },
     {
@@ -359,8 +368,7 @@
         "Key":"FIC02_AUTO",
         "Label": "FIC02_AUTO",
         "Value":false,
-        "UnitType": "",
-        "Type":"",
+        "Type":"bool",
         "showInIHM": true
     },
     {
@@ -429,14 +437,7 @@
         "Label": "DPIC01_AUTO",
         "Value": false,
         "UnitType": "",
-        "Type": "unit"
-    },
-    {
-        "Key":"P1_SP_REEL",
-        "Label": "P1_SP_REEL",
-        "Value": 0,
-        "UnitType": "",
-        "Type": "unit"
+        "Type": "bool"
     }
 ]
 

@@ -52,7 +52,13 @@ function RulesDisplay({appMode, currentRules, machineDto} : {
 
                 <div id="errorDiv" className="ruleContentDiv">
                     {/* Affichage des erreurs en fonction du filtre */}
-                    {failedRules && failedRules.filter(f => f.launchType != undefined && f.launchType.length > 0 && (f.launchType.includes(launchTypeFilter) || launchTypeFilter == LaunchType.All)).map((r) => (
+                    {failedRules &&
+                        failedRules.filter(f => f.launchType != undefined 
+                                && f.launchType.length > 0 
+                                && (launchTypeFilter === LaunchType.All // Si le filtre All est sélectionné on affiche tout
+                                    || f.launchType.includes(LaunchType.All) // Si la règle est de type All on l'affiche tout le temps
+                                    || f.launchType.includes(launchTypeFilter)) // Sinon on vérifie que la règle est compatible
+                                ).map((r) => (
                         
                             <div
                             //onClick={revealErrors}

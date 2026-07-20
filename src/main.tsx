@@ -12,7 +12,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter basename="/pignat-test">
+    {/* <BrowserRouter basename="/pignat-test"> */}
+    <BrowserRouter>
       <Routes>
         {/* <Route path="/" element={<AppExercice />} /> */}
         <Route path="/" element={<Home />} />

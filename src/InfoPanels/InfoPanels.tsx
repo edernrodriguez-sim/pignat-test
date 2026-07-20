@@ -96,6 +96,7 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               label="DPIC01_SP" 
               machineParam={getMachineParamDataFromKey("DPIC01_SP")}
               xPos={0.3}  yPos={2.4} zPos={0}
+              width={0.3}
               baseColor="blue"
               anchor="bottom-left"
               />
@@ -103,7 +104,7 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               {/*FIC02_SP*/}    
               <BaseInfoPanel 
               label="FIC02_SP" 
-              machineParam={getMachineParamDataFromKey("FIC02")}
+              machineParam={getMachineParamDataFromKey("FIC02_SP")}
               xPos={0.45}  yPos={1.2} zPos={0.1}
               width={0.28}
               baseColor="blue"
@@ -111,7 +112,7 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               />
 
               {/*LSH01*/}    
-              {/* <BaseInfoPanel 
+              <BaseInfoPanel 
               label="LSH01" 
               machineParam={getMachineParamDataFromKey("LSH01")}
               xPos={0.24}  yPos={0.75} zPos={-0.08}
@@ -119,9 +120,9 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               width={0.13}
               anchor="bottom-right"
               _displayLabelOnly={true}
-              /> */}
+              />
               {/*LSH02*/}    
-              {/* <BaseInfoPanel 
+              <BaseInfoPanel 
               label="LSH02" 
               machineParam={getMachineParamDataFromKey("LSH02")}
               xPos={0.42}  yPos={0.75} zPos={-0.08}
@@ -129,7 +130,7 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               width={0.13}
               anchor="bottom-right"
               _displayLabelOnly={true}
-              /> */}
+              />
               </DOM3DOverlay>
     )
 }

@@ -104,7 +104,7 @@ let appMode: number;
 /**
  * Identifiant de la machine à connecter
  */
-let machineIdentifier: string = "";
+let machineIdentifier: number = 0;
 
 export default function App({
   appModeInput,
@@ -113,7 +113,7 @@ export default function App({
 }: {
   readonly appModeInput: number;
   readonly sessionIdV: string | null;
-  readonly machineId: string;
+  readonly machineId: number;
 }) {
   appMode = appModeInput;
   machineIdentifier = machineId;

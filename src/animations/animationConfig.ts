@@ -18,8 +18,8 @@ export const ANIM_MAP: Record<string, AnimResolver> = {
   LSH01: (e, v) => AnimationHelper.closeAnim(v ? e.empty_bidon_1L_V12 : e.fill_bidon_1L_V12),
   LSH02: (e, v) => AnimationHelper.closeAnim(v ? e.empty_bidon_1L_V15 : e.fill_bidon_1L_V15),
   ARU: (e, v) => AnimationHelper.launchAnim(v ? e.aru_in : e.aru_out),
-  LSL01: (e, v) => AnimationHelper.launchAnim(v ? e.fill_bouilleur_continu : e.boilerEmptying),
-  LSL02: (e, v) => AnimationHelper.launchAnim(v ? e.prechauffeur_fill : e.empty_prechauffeur_fill),
+  LSL01: (e, v) => AnimationHelper.launchAnim(v ? e.boilerEmptying : e.fill_bouilleur_continu),
+  LSL02: (e, v) => AnimationHelper.launchAnim(v ? e.empty_prechauffeur_fill : e.prechauffeur_fill),
 
   // Vannes — pattern uniforme
   ...Object.fromEntries(

@@ -7,8 +7,6 @@ export default function ParameterFieldReflux({ parameter, onChange }: FieldProps
     const [refluxType, setRefluxType] = useState(Number(parameter[1].value));
     const SELECTED_STYLE = "bg-gray-900 text-gray-200";
     const UNSELECTED_STYLE = "bg-gray-300 text-gray-900";
-    console.log("ParameterFieldReflux");
-    console.log(parameter);
     function ChangeRefluxType(newValue: number){
         setRefluxType(newValue);
         const newReturn: SavedField = {key: parameter[1].key, value: newValue}
@@ -37,13 +35,13 @@ export default function ParameterFieldReflux({ parameter, onChange }: FieldProps
                 className={`flex-1 py-2 rounded-lg hover:bg-gray-500  hover:text-gray-200 text-sm font-semibold transition-colors cursor-pointer
                 ${ refluxType === 0 ? SELECTED_STYLE : UNSELECTED_STYLE }`}>REFLUX</button>
 
-                <button id="parameter-reflux-soutirage-button" onClick={() => ChangeRefluxType(1)} autoFocus={refluxType === 1}  
+                <button id="parameter-reflux-cycle-button" onClick={() => ChangeRefluxType(1)} autoFocus={refluxType === 1}  
                 className={`flex-1 py-2 rounded-lg hover:bg-gray-500 hover:text-gray-200 text-sm font-semibold transition-colors cursor-pointer
-                ${ refluxType === 1 ? SELECTED_STYLE : UNSELECTED_STYLE }`}>SOUTIRAGE</button>
-
-                <button id="parameter-reflux-cycle-button" onClick={() => ChangeRefluxType(2)} autoFocus={refluxType === 2}  
+                ${ refluxType === 1 ? SELECTED_STYLE : UNSELECTED_STYLE }`}>CYCLE</button>
+                
+                <button id="parameter-reflux-soutirage-button" onClick={() => ChangeRefluxType(2)} autoFocus={refluxType === 2}  
                 className={`flex-1 py-2 rounded-lg hover:bg-gray-500 hover:text-gray-200 text-sm font-semibold transition-colors cursor-pointer
-                ${ refluxType === 2? SELECTED_STYLE : UNSELECTED_STYLE }`}>CYCLE</button>
+                ${ refluxType === 2 ? SELECTED_STYLE : UNSELECTED_STYLE }`}>SOUTIRAGE</button>
             </div>
         </div>
       </div>

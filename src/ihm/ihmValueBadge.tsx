@@ -4,6 +4,13 @@ function IhmValueBadge({ value, w, h, isRound }: { value: string | number | bool
   const isBoolean = typeof value === "boolean";
   const wValue = w ?? 1;
   const hValue = h ?? 1;
+
+  // utils/format.js
+ const formatValue = (value: string | number | boolean, maxDigits = 5) =>  
+  typeof value === 'number'
+    ? new Intl.NumberFormat('fr-FR', { maximumFractionDigits: maxDigits }).format(value)
+    : value;
+
     return (
     <div className="
       flex flex-col items-center gap-1
@@ -25,7 +32,7 @@ function IhmValueBadge({ value, w, h, isRound }: { value: string | number | bool
         />
       ) : (
         <span className="text-black text-xs font-bold leading-tight">
-          {value}
+          {formatValue(value)}
         </span>
       )}
     </div>

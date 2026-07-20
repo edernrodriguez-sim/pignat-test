@@ -43,12 +43,11 @@ function MachineStateLine({ machineStateLineDto } : { machineStateLineDto: Machi
                         <label {...hoverProps(param.key)} htmlFor={param.key}> {param.label}</label>
                     </>
                 );
-            case "value":
-                return <label>{param.label} : {param.value}</label>;
             case "unit":
                 return <label>{param.label} : {GetValue(param.value.toString())} {param.unitType}</label>;
+            case "value":
             default:
-                return <label>Mode : {param.value}</label>;
+                return <label>{param.label} : {param.value}</label>;
         }
     };
 

@@ -55,4 +55,6 @@ export class ProjectConstants {
     /** URL du backend Express WebSocket (mode bridge) */
     static readonly BRIDGE_WS_URL: string =
         import.meta.env.VITE_BRIDGE_WS_URL ?? "ws://localhost:3001/ws";
+        
+    static readonly MQTT_ID_TAGNAME = "N_SERIE";
 }

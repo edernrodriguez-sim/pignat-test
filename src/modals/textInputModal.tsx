@@ -9,10 +9,7 @@ function TextInputModal({textInputModalDto} : { readonly textInputModalDto: Text
     }
 
     const onValidateClick = () => {
-        // if (inputValue.length > 0)
-        // {
-            textInputModalDto.onModalValidate(inputValue);
-        // }
+        textInputModalDto.onModalValidate(inputValue);
     }
 
     function onInputChange(event: ChangeEvent<HTMLInputElement>){

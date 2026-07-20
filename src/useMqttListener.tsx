@@ -14,28 +14,28 @@ interface MqttState {
 }
 
 const BROKER_URL = ProjectConstants.BROKER_WS_URL;
-// const TOPIC = "Tags";
+const TOPIC = "Tags";
 // const TOPIC = "machine/data"
 /**
  * Topic de base auquel on ajoute l'identifiant de la machine
  */
-const BASE_TOPIC = "Tags"
-let TOPIC = "";
+// const BASE_TOPIC = "Tags"
+// let TOPIC = "";
 
 /**
  * Lance l'écoute du mqtt pour récupérer les données de la machine dont l'id est passé en paramètre
  * @param machineIdentifier Identifiant de la machine
  * @returns données des enregistrements reçus par le broker
  */
-export function useMqttListener(machineIdentifier: string) {
+export function useMqttListener(machineIdentifier: number) {
   const [state, setState] = useState<MqttState>({
     records: [],
     timestamp: null,
     isConnected: false,
   });
   // Ajout de l'identifiant de la machine pour créer le topic complet  
-  TOPIC = BASE_TOPIC + machineIdentifier;
-  TOPIC = BASE_TOPIC;
+  // TOPIC = BASE_TOPIC + machineIdentifier;
+  // TOPIC = BASE_TOPIC;
   
   // Keep latest records accessible without re-subscribing
   const recordsRef = useRef<MqttRecord[]>([]);
@@ -64,16 +64,16 @@ export function useMqttListener(machineIdentifier: string) {
     client.on("message", (_topic, payload) => {
       try {
         const data = JSON.parse(payload.toString());
-        console.log("DONNEES RECUES DU BROKER :")
-        console.log (data);
         const records: MqttRecord[] = data.Records ?? [];
-        recordsRef.current = records;
-        setState((prev) => ({
-          ...prev,
-          records,
-          timestamp: new Date().toISOString(),
-        }));
-        // console.log("📩 MQTT recieved : ", data);
+        // Test pour savoir si les données reçues correspondent à la machine en cours
+        if (canUseCurrentMqttDatas(records, machineIdentifier)){
+          recordsRef.current = records;
+          setState((prev) => ({
+            ...prev,
+            records,
+            timestamp: new Date().toISOString(),
+          }));
+        }
       } catch (err) {
         console.error("❌ Payload invalide:", err);
       }
@@ -106,4 +106,21 @@ export function useMqttListener(machineIdentifier: string) {
     isConnected: state.isConnected,
     getTagValue, // accès direct à un tag par TagName
   };
+}
+
+/**
+ * Récupère la valeur du Tag N_SERIE pour détecter si les données correspondent à l'identifiant machine utilisé
+ * @param records Les données reçues du broker
+ * @param machineIdentifier Identifiant de la machine actuel
+ * @returns True si on peut utiliser les données, False si non
+ */
+function canUseCurrentMqttDatas(records: MqttRecord[], machineIdentifier: number) : boolean {
+  const serialTags = records.find(r => r.TagName === ProjectConstants.MQTT_ID_TAGNAME);
+  if (serialTags && serialTags.Value == machineIdentifier){
+    return true;
+  }
+  else {
+    return false;
+  }
+  return true;
 }

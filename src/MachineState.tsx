@@ -9,14 +9,7 @@ export function MachineState({machineStateDto} : { machineStateDto: MachineState
     return (
         <>
         <div id="machineStateTitle"  onClick={onReadOnlyBtnClick}  className="titleDiv">
-            <b>État de la machine</b>
-            {
-                machineStateDto.isReadOnly ? 
-                (<button id="readOnlyBtnOn" className="readOnlyBtn">Lecture seule</button>)
-                :
-                (<button id="readOnlyBtnOff" className="readOnlyBtn">Modifiable</button>)
-            }
-            
+            <b>État de la machine</b>            
         </div>
         <div  className="contentDiv">
         {
