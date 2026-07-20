@@ -8,7 +8,7 @@ import Logo from './assets/Logo.jpg'
 import TextInputModal from './modals/textInputModal';
 import ExerciceChoice from './exercices/exerciceChoice';
 
-let machineId = "";
+let machineId = 0;
 const token = "public_wfVLwtMF9Rg0rp_k";
 
 function Home() {
@@ -20,7 +20,11 @@ function Home() {
     const idcamera = params.get("idcamera");
 
     function onInputModalValidated(machineIdInput: string){
-        machineId = machineIdInput;
+        if (typeof(machineIdInput) === "number"){
+            machineId = Number(machineIdInput);
+        }else {
+            console.log("Impossible de parser le code inséré : " + machineIdInput);
+        }
         setAppMode(ProjectConstants.APP_MODE_MAINTENANCE);
     }
 
@@ -32,7 +36,7 @@ function Home() {
         return <ExerciceChoice />;
     }
     else if (appMode === ProjectConstants.APP_MODE_ANIMCONTINUE || appMode === ProjectConstants.APP_MODE_ANIMDISCONTINUE) {
-        return <App appModeInput={appMode} sessionIdV={null} machineId={""}/>;
+        return <App appModeInput={appMode} sessionIdV={null} machineId={0}/>;
     }
     else if (idsession != undefined) {
         if (idclient != undefined)
