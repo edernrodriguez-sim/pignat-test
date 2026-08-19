@@ -94,19 +94,19 @@
 
     },
     {
-        "name": "Notification : Bidon V15 plein",
+        "name": "Notification : Recette distillat pleine",
         "rule":"isFalse",
         "tagName":"LSH02",
         "sessionType": ["all"],
-        "errorMessage": "Bidon de 1L au dessus de V15 plein",
+        "errorMessage": "",
         "isBlockingForStart": false
     },
     {
-        "name": "Notification : Bidon V12 plein",
+        "name": "Notification : Recette résidu pleine",
         "rule":"isFalse",
         "tagName":"LSH01",
         "sessionType": ["all"],
-        "errorMessage": "Bidon de 1L au dessus de V12 plein",
+        "errorMessage": "",
         "isBlockingForStart": false
     },
     {

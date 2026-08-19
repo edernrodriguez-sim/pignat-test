@@ -6,6 +6,7 @@ export default function ResetMachine(animationEntities: AnimationEntities | null
     console.log(animationEntities);
     if (!animationEntities)
         return;
+    AnimationHelper.launchAnim(animationEntities.bac_de_retention_out);
     AnimationHelper.launchAnim(animationEntities.v2_out);
     AnimationHelper.launchAnim(animationEntities.v3_out);
     AnimationHelper.launchAnim(animationEntities.v4_out);

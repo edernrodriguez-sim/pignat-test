@@ -4,8 +4,8 @@ import ExerciceCanvas from "./exerciceCanvas";
 import type { Exercise } from "./exercice";
 import getExercise1 from "./exercice1";
 import getExercise2 from "./exercice2";
-import getExercise3 from "./exercice3";
 import getExercise4 from "./exercice4";
+import getExercise5 from "./exercice5";
 
 
 const scene_id = "05b63dcd-ce5c-4e8f-b363-89a38118462c";
@@ -21,9 +21,11 @@ export default function AppExercice({ exerciseCode } : { exerciseCode : string }
   else if (exerciseCode === "2")
     myExercise = getExercise2();
   else if (exerciseCode === "3")
-    myExercise = getExercise3();
-  else if (exerciseCode === "4")
     myExercise = getExercise4();
+  else if (exerciseCode === "4")
+  {
+    myExercise = getExercise5();
+  }
 
   if (myExercise == null)
     return ("");

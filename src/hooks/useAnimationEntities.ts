@@ -18,7 +18,7 @@ const euid_to_identifier: { [key: UUID]: keyof AnimationEntities } = {
     "c8470577-4e01-4bf0-94f7-ba91adaab138": "fill_bidon_1L_V15",
     "3d87a251-88a8-49eb-bb72-2f954a6cb25e": "empty_bidon_1L_V15",
 // Bidon de 1L au dessus de la vanne V12
-    "b1c9b15f-cb14-4e4e-828c-dbe997a6b816": "fill_bidon_1L_V12",
+    "b1c9b15f-cb14-4e4e-828c-dbe997a6b816": "Remplissage_Recette_Residu",
     "16e1555e-18be-4788-a48e-132d6ade31ff": "empty_bidon_1L_V12",
 // Bidon de 20L
     "3a019097-bda9-4d6c-87bc-a73f78fd6306": "bidon_20L_out",
@@ -57,6 +57,16 @@ const euid_to_identifier: { [key: UUID]: keyof AnimationEntities } = {
      "0669da0d-ee4c-43aa-b0d1-a78811b5a12c": "prechauffeur_horizontal_entry_fill",
     // Tuyau horizontal en haut du préchauffeur
      "2b1f5b6a-dd6e-4184-94be-3a2d4da9ad41": "prechauffeur_fill_horizon_top",
+    // Tuyaux Post Préchauffeur
+    "eddb8e19-1267-4d05-b5cf-64328b5fd3fb": "tuyau_post_prechauffage_2",
+    "ad1df0d5-419d-4b97-a3b7-6f4b9ceb14a6": "tuyau_post_prechauffage_3",
+    "bb6d754d-6332-4f8d-96fc-627e061c9750": "vidage_tuyau_post_prechauffage_3",
+    // Tuyau prechauffage plateau
+    "f26a04a5-8867-479d-8ded-0dc085bf68c1": "tuyau_prechauffage_plateau_3",
+    "09918f80-4efb-4cff-b0f5-7043103b60cf": "tuyau_prechauffage_plateau_2_1",
+    "d66baaf2-1fb4-4541-a455-e3881b417217": "tuyau_prechauffage_plateau_2",
+    "e9c4497b-5e5e-4de6-8b1b-18f6890f3b2f": "tuyau_prechauffage_plateau_1",
+    "265ed146-5a04-44ae-a407-b672c9e6b9e3": "vidage_tuyau_prechauffage_plateau_1",
     // Vanne V2
      "2089b454-c72a-4d8b-acfc-8716553613da": "v2_in",
      "f04997e6-57aa-4e3c-b864-696319b7011d": "v2_out",
@@ -117,8 +127,6 @@ const euid_to_identifier: { [key: UUID]: keyof AnimationEntities } = {
      "05583fb6-3180-42ca-9d3b-3dfb7c13c903": "matterGoingDown",
      "cf152fca-b15c-40fe-b530-4c41fbe9c2e4": "stopMatterGoingDown",
      "98dabe7f-367f-487d-afa8-095e22ddcb9c": "postPrechauffeurTube1_fill",
-     "f26a04a5-8867-479d-8ded-0dc085bf68c1": "postPrechauffeurTube1_V2",
-
      "9b67bb27-1672-488a-a851-1549bbfb174a": "complete_water_flow",
      "cdaad75e-f04f-4607-adf0-9ba2e47c234b": "vapeur_on",
      "dc423dd6-e543-4510-a1ff-2f0afa6d8201": "liquide_falling_bidon_1L_V15_in",

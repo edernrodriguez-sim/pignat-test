@@ -15,7 +15,7 @@ type AnimResolver = (
 export const ANIM_MAP: Record<string, AnimResolver> = {
   // Cas spéciaux (launchAnim/closeAnim différents)
   ZS01: (e, v) => AnimationHelper.launchAnim(v ? e.bac_de_retention_in : e.bac_de_retention_out),
-  LSH01: (e, v) => AnimationHelper.closeAnim(v ? e.empty_bidon_1L_V12 : e.fill_bidon_1L_V12),
+  LSH01: (e, v) => AnimationHelper.closeAnim(v ? e.empty_bidon_1L_V12 : e.Remplissage_Recette_Residu),
   LSH02: (e, v) => AnimationHelper.closeAnim(v ? e.empty_bidon_1L_V15 : e.fill_bidon_1L_V15),
   ARU: (e, v) => AnimationHelper.launchAnim(v ? e.aru_in : e.aru_out),
   LSL01: (e, v) => AnimationHelper.launchAnim(v ? e.boilerEmptying : e.fill_bouilleur_continu),

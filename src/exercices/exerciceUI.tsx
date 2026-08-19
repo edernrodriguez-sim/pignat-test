@@ -2,9 +2,18 @@ import { useState } from "react";
 import type { ExerciseState, ExerciseStep, InputChangeAction } from "./exercice";
 import { ExercisePanel } from "./exercicePanel";
 import { WaitStepDisplay } from "./exerciceWaitStepDisplay";
+import { SortStepDisplay } from "./exerciceSort";
+import { QuizStepDisplay } from "./quizStepDisplay";
+import { Table } from "./informationsInTable";
 
-export default function ExerciceUI({state, reset, completeCurrentStep, currentStep , handleCustomAnswer}
-  : { state: ExerciseState, reset: () => void, completeCurrentStep: () => void, currentStep: ExerciseStep, handleCustomAnswer: (key: string, value: string) => void}
+export default function ExerciceUI({state, reset, completeCurrentStep, currentStep , handleCustomAnswer, onSortSubmit, onTrueFalseSubmit, onQuizSubmit}
+  : { state: ExerciseState, reset: () => void,
+    completeCurrentStep: () => void,
+    currentStep: ExerciseStep,
+    handleCustomAnswer: (key: string, value: string) => void,
+    onSortSubmit: (orderedIds: string[]) => Promise<void>,
+    onTrueFalseSubmit: (answer: boolean) => Promise<void>,
+    onQuizSubmit: (selectedIds: string[]) => void}
 ) {
   const [answerValue, setAnswerValue] = useState("");
   function handleSubmit(){
@@ -47,7 +56,7 @@ export default function ExerciceUI({state, reset, completeCurrentStep, currentSt
               <form onSubmit={(e) => {e.preventDefault();
                 handleSubmit();
               }}>
-
+ 
             <div
               style={{
                 background: "#d9d9d9",
@@ -90,7 +99,84 @@ export default function ExerciceUI({state, reset, completeCurrentStep, currentSt
               type="submit">Valider</button>
             </div>
               </form>
-          )}
+        )}
+
+        {currentStep?.action.type === "sort" && !state.isCompleted && (
+          <div
+              style={{
+                background: "linear-gradient(135deg, #c6c6c6 0%, #ffffff 100%)",
+                border: "1px solid #9c9c9f",
+                boxShadow: "0 24px 48px rgba(0, 0, 0, 0.5)",
+                borderRadius: 12,
+                padding: 16,
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                position: "absolute",
+                right:"40%",
+                bottom:"25%",
+                zIndex: 100
+              }}>
+          <SortStepDisplay
+            action={currentStep.action}
+            stepName={currentStep.name}
+            stepDescription={currentStep.description}
+            onSubmit={onSortSubmit}
+          />
+            
+          </div>
+        )}
+
+        {currentStep?.action.type === "trueFalse" && !state.isCompleted &&
+          currentStep.action.isDirectAnswer && (
+ 
+            <div
+              style={{
+                background: "#d9d9d9",
+                border: "1px solid #9c9c9f",
+                boxShadow: "0 24px 48px rgba(0, 0, 0, 0.5)",
+                borderRadius: 12,
+                padding: 16,
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                position: "absolute",
+                right:"45%",
+                bottom:"25%",
+                zIndex: 100
+              }}
+            >
+              <label
+                htmlFor="true-false-answer"
+                style={{ color: "#37383a", fontSize: 12, fontWeight: 600 }}
+              >
+                { currentStep.action.modalTitle ? currentStep.action.modalTitle : "Débit (l/H)"}
+              </label>
+              <button id="customAnswerModalButton" className="rounded-md text-gray-200"
+              onClick={() => onTrueFalseSubmit(true)}>True</button>
+
+              <button id="customAnswerModalButton" className="rounded-md text-gray-200"
+             onClick={() => onTrueFalseSubmit(false)}>False</button>
+            </div>
+        )}
+
+        {currentStep?.action.type === "quiz" && (
+          <QuizStepDisplay
+            action={currentStep.action}
+            stepName={currentStep.name}
+            stepDescription={currentStep.description}
+            onSubmit={onQuizSubmit}
+          />
+        )}
+      
+        { currentStep.tableToShow && currentStep.tableToShow.rows.length > 0 &&
+        (
+          <Table
+            headers={currentStep.tableToShow.headers}
+            rows={currentStep.tableToShow.rows}
+          />
+        )
+        }
 
 
           {

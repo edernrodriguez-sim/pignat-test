@@ -23,7 +23,7 @@ function TextInputModal({textInputModalDto} : { readonly textInputModalDto: Text
             </div>
             <div id="text-input-modal">
                 <p>{textInputModalDto.text}</p>
-                <input onChange={(e) => onInputChange(e)} type="text" value={inputValue} />
+                <input autoFocus onChange={(e) => onInputChange(e)} type="text" value={inputValue} />
                 <div id="text-input-modal-buttons">
                     <button id="validation-button" className="basicBtn" onClick={onValidateClick}>VALIDER</button>
                     <button id="cancel-button" className="basicBtn" onClick={onCancelClick}>ANNULER</button>

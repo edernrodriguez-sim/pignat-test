@@ -13,6 +13,10 @@ export class ProjectConstants {
      */
     static readonly MACHINE_PARAM_UNIT_DETECTION_TEMPERATURE = "TT";
     
+    /** Clés des éléments de la machine */
+    static readonly MACHINE_PARAM_N_SERIE_KEY = "N_SERIE";
+    static readonly MACHINE_PARAM_LSL03 = "LSL03";
+    static readonly MACHINE_PARAM_LSL04 = "LSL04";
     /** Bouton de la modale de paramètre générale */
     static readonly IHM_KEYS_PARAM_CONFIRM_BUTTON_ID = "parameterEditModalConfirmBtn";
     /** Boutons de la modale de régulation */

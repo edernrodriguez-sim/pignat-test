@@ -39,42 +39,42 @@
     {
         "Key":"TT01",
         "Label":"Temp TT01",
-        "Value":99,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
     {
         "Key":"TT02",
         "Label":"Temp TT02",
-        "Value":96,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
     {
         "Key":"TT03",
         "Label":"Temp TT03",
-        "Value":93,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
     {
         "Key":"TT04",
         "Label":"Temp TT04",
-        "Value":92,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
     {
         "Key":"TT05",
         "Label":"Temp TT05",
-        "Value":89.5,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
     {
         "Key":"TT06",
         "Label":"Temp TT06",
-        "Value":70,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
@@ -88,7 +88,7 @@
     {
         "Key":"TT08",
         "Label":"Temp TT08",
-        "Value":40,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
@@ -96,28 +96,28 @@
     {
         "Key":"TTC06_PV",
         "Label":"TTC06 PV",
-        "Value":40,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
     {
         "Key":"TTC06_SP",
         "Label":"TTC06 SP",
-        "Value":40,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
     {
         "Key":"TTC06_OP",
         "Label":"TTC06 OP",
-        "Value":40,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
     {
         "Key":"TTC06_OP_MAN",
         "Label":"TTC06 OP Man",
-        "Value":40,
+        "Value":20,
         "UnitType": "°C",
         "Type":"unit"
     },
@@ -158,19 +158,19 @@
     {
         "Key":"V2",
         "Label":"V2",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
         "Key":"V3",
         "Label":"V3",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
         "Key":"V4",
         "Label":"V4",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
@@ -194,25 +194,25 @@
     {
         "Key":"V8",
         "Label":"V8",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
         "Key":"V9",
         "Label":"V9",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
         "Key":"V11",
         "Label":"V11",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
         "Key":"V12",
         "Label":"V12",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
@@ -230,7 +230,7 @@
     {
         "Key":"V16",
         "Label":"V16",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
@@ -244,7 +244,7 @@
     {
         "Key":"LSL02",
         "Label":"LSL02",
-        "Value":false,
+        "Value":true,
         "satisfyingValue": false,
         "UnitType": "",
         "Type":"unit"
@@ -289,21 +289,21 @@
     {
         "Key":"EV_MODE",
         "Label": "EV_MODE",
-        "Value":1,
+        "Value":0,
         "Type":"unit",
         "showInIHM": false
     },
     {
         "Key":"EV_VALUE",
         "Label": "EV_VALUE",
-        "Value":1,
+        "Value":100,
         "Type":"unit",
         "showInIHM": false
     },
     {
         "Key":"FIC02",
         "Label": "FIC02",
-        "Value":20,
+        "Value":0,
         "UnitType": "L/h",
         "Type":"unit",
         "showInIHM": true
@@ -311,7 +311,7 @@
     {
         "Key":"FIC02_PV",
         "Label": "FIC02_PV",
-        "Value":20,
+        "Value":0,
         "UnitType": "L/h",
         "Type":"unit",
         "showInIHM": true
@@ -319,7 +319,7 @@
     {
         "Key":"FIC02_SP",
         "Label": "FIC02_SP",
-        "Value":20,
+        "Value":0,
         "UnitType": "L/h",
         "Type":"unit",
         "showInIHM": true
@@ -327,7 +327,7 @@
     {
         "Key":"FIC02_OP",
         "Label": "FIC02_OP",
-        "Value":20,
+        "Value":0,
         "UnitType": "L/h",
         "Type":"unit",
         "showInIHM": true
@@ -335,7 +335,7 @@
     {
         "Key":"FIC02_OP_MAN",
         "Label": "FIC02_OP_MAN",
-        "Value":20,
+        "Value":0,
         "UnitType": "L/h",
         "Type":"unit",
         "showInIHM": true
@@ -386,14 +386,14 @@
     {
         "Key":"DPIC01_PV",
         "Label": "DPIC01_PV",
-        "Value": 27,
+        "Value": 0,
         "UnitType": "mBar",
         "Type": "unit"
     },
     {
         "Key":"DPIC01_SP",
         "Label": "DPIC01_SP",
-        "Value": 27,
+        "Value": 0,
         "UnitType": "mBar",
         "Type": "unit"
     },
@@ -436,6 +436,27 @@
         "Key":"DPIC01_AUTO",
         "Label": "DPIC01_AUTO",
         "Value": false,
+        "UnitType": "",
+        "Type": "bool"
+    },
+    {
+        "Key":"DPT01",
+        "Label": "DPT01",
+        "Value": 0.0,
+        "UnitType": "",
+        "Type": "unit"
+    },
+    {
+        "Key":"VR01",
+        "Label": "VR01",
+        "Value": 100.0,
+        "UnitType": "",
+        "Type": "unit"
+    },
+    {
+        "Key":"TH01",
+        "Label": "TH01",
+        "Value": true,
         "UnitType": "",
         "Type": "bool"
     }

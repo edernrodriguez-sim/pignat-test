@@ -28,7 +28,6 @@ function BaseInfoPanel({xPos, yPos, zPos, label, machineParam, anchor, width, he
     let colorFontClass = "infoPanelBaseColor";
     let valueToShow = "";
     let displayLabelOnly: boolean | undefined;
-    
     function setData(){
         if (!machineParam || machineParam.value == undefined)
             return;
@@ -122,7 +121,6 @@ function BaseInfoPanel({xPos, yPos, zPos, label, machineParam, anchor, width, he
             !displayLabelOnly &&
             (<div  className="valueFont">{valueToShow}</div>)
         }
-            
     </DOM3DDiv>
     )
 }

@@ -2,6 +2,8 @@ import { DOM3DOverlay } from "@3dverse/livelink-react";
 import BaseInfoPanel from "./BaseInfoPanel";
 import type { MachineParameter } from "../models/machineParameter";
 
+
+
 /**
  * Affichage des éléments d'UI affichant des infos de la machine
  * @param machineParams Infos de la machine
@@ -71,7 +73,7 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               <BaseInfoPanel
               label="TT01"
               machineParam={getMachineParamDataFromKey("TT01")}
-              xPos={-0.2} yPos={0.8} zPos={0.045}
+              xPos={0.05} yPos={0.7} zPos={0.045}
               anchor="top-right"
               />
 
@@ -91,20 +93,20 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               anchor="bottom-right"
               />
 
-              {/*DPIC01_SP*/}    
+              {/*DPIC01_PV*/}    
               <BaseInfoPanel 
-              label="DPIC01_SP" 
-              machineParam={getMachineParamDataFromKey("DPIC01_SP")}
+              label="DPIC01_PV" 
+              machineParam={getMachineParamDataFromKey("DPIC01_PV")}
               xPos={0.3}  yPos={2.4} zPos={0}
               width={0.3}
               baseColor="blue"
               anchor="bottom-left"
               />
 
-              {/*FIC02_SP*/}    
+              {/*FIC02_PV*/}    
               <BaseInfoPanel 
-              label="FIC02_SP" 
-              machineParam={getMachineParamDataFromKey("FIC02_SP")}
+              label="FIC02_PV" 
+              machineParam={getMachineParamDataFromKey("FIC02_PV")}
               xPos={0.45}  yPos={1.2} zPos={0.1}
               width={0.28}
               baseColor="blue"
@@ -131,6 +133,33 @@ function InfoPanels({ machineParams } : { machineParams: MachineParameter[]}){
               anchor="bottom-right"
               _displayLabelOnly={true}
               />
+
+              
+              {/*LSL03*/}    
+              <BaseInfoPanel 
+              label="LSL03" 
+              machineParam={getMachineParamDataFromKey("LSL03")}
+              xPos={0.15}  yPos={0.43} zPos={-0.08}
+              height={0.09}
+              width={0.13}
+              anchor="bottom-right"
+              _displayLabelOnly={true}
+              />
+
+              
+              {/*LSL04*/}    
+              <BaseInfoPanel 
+              label="LSL04" 
+              machineParam={getMachineParamDataFromKey("LSL04")}
+              xPos={0.52}  yPos={0.43} zPos={-0.08}
+              height={0.09}
+              width={0.13}
+              anchor="bottom-right"
+              _displayLabelOnly={true}
+              />
+
+
+
               </DOM3DOverlay>
     )
 }

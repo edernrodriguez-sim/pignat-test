@@ -19,7 +19,7 @@ export interface AnimationEntities {
     fill_bidon_1L_V15: Entity | null
     empty_bidon_1L_V15: Entity | null
     // Bidon de 1L au dessus de la Vanne V12
-    fill_bidon_1L_V12: Entity | null
+    Remplissage_Recette_Residu: Entity | null
     empty_bidon_1L_V12: Entity | null
     liquide_falling_bidon_1L_V15_in: Entity | null
     liquide_falling_bidon_1L_V15_out: Entity | null
@@ -63,7 +63,17 @@ export interface AnimationEntities {
     prechauffeur_fill_horizon_top: Entity | null
     // Tuyau vertical à la sortie de la pompe juste avant le préchauffeur
     postPrechauffeurTube1_fill: Entity | null
-    postPrechauffeurTube1_V2: Entity | null
+    // Tuyau post Prechauffage
+    tuyau_post_prechauffage_2: Entity | null
+    tuyau_post_prechauffage_3: Entity | null
+    vidage_tuyau_post_prechauffage_3: Entity | null
+    // Tuyau post Prechauffage Plateau
+    tuyau_prechauffage_plateau_3: Entity | null
+    tuyau_prechauffage_plateau_2_1: Entity | null
+    tuyau_prechauffage_plateau_2: Entity | null
+    tuyau_prechauffage_plateau_1: Entity | null
+    vidage_tuyau_prechauffage_plateau_1: Entity | null
+
     // TUBES
     // Tube du bidon de 20L vers la pompe
     tube_bidon20L_to_P1: Entity | null

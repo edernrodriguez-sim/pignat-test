@@ -134,7 +134,7 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
     const isValid = step.action.expectedFields.every((f) => {
       if (!submittedMap.has(f.key)) return false;           // champ manquant → invalide
       
-      return String(submittedMap.get(f.key)) === String(f.value); // valeur incorrecte → invalide
+      return cleanString(String(submittedMap.get(f.key))) === cleanString(String(f.value)); // valeur incorrecte → invalide
     });
 
     if (!isValid) return;
@@ -147,6 +147,52 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
     completeCurrentStep();
   }, [completeCurrentStep]);
 
+  /**
+   * Validation de l'étape en cours dans le cas d'une réponse de type Sorting
+   */
+  const onSortSubmit = useCallback(async (orderedIds: string[]) => {
+    const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
+    if (isCompleted) return;
+    const step = ex.steps[currentStepIndex];
+    if (step.action.type !== "sort") return;
+
+    const isValid = step.action.expectedOrder.every(
+      (id, i) => id === orderedIds[i]
+    );
+    if (!isValid) return;
+    completeCurrentStep();
+  }, [completeCurrentStep]);
+
+
+  const onQuizSubmit = useCallback(async (selectedIds: string[]) => {
+    const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
+    if (isCompleted) return;
+    const step = ex.steps[currentStepIndex];
+    if (step.action.type !== "quiz") return;
+
+    const correct = step.action.correctIds;
+    const isValid =
+      selectedIds.length === correct.length &&
+      correct.every((id) => selectedIds.includes(id));
+
+    if (!isValid) return;
+    completeCurrentStep();
+  }, [completeCurrentStep]);
+
+  /**
+   * Validation de l'étape en cours dans le cas d'une réponse de type TrueFalse
+   */
+  const onTrueFalseSubmit = useCallback(async (answer: boolean) => {
+    const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
+    if (isCompleted) return;
+    const step = ex.steps[currentStepIndex];
+    if (step.action.type !== "trueFalse") return;
+
+    if (step.action.expectedAnswer != answer) return;
+    completeCurrentStep();
+
+
+  }, [completeCurrentStep]);
   // ── Reset ─────────────────────────────────────────────────────────────────
 
   const reset = useCallback(() => {
@@ -162,5 +208,15 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
 
   const currentStep = state.exercise.steps[state.currentStepIndex] ?? null;
 
-  return { state, currentStep, onEntityClicked, onInputChange, completeCurrentStep, reset };
+  return { state, currentStep, onEntityClicked, onInputChange, onSortSubmit, onTrueFalseSubmit, completeCurrentStep, reset, onQuizSubmit };
+}
+
+
+/**
+ * Nettoie la chaine de caractère donnée pour supprimer les espaces et les underscores
+ * @param input 
+ * @returns 
+ */
+function cleanString(input: string){
+  return input.toLocaleUpperCase().replace(/ /g, '').replace(/_/g,"")
 }

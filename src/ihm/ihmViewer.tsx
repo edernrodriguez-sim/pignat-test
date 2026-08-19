@@ -2,6 +2,7 @@ import Dalle from '../assets/Synoptique Dalle.jpg'
 import type { MachineParameter } from '../models/machineParameter';
 import IhmActionButton from './ihmActionButton';
 import IhmValueBadge from './ihmValueBadge';
+import { IhmVannes } from './vannes/ihmVannes';
 
 export interface SchemaValue {
   type: "value";
@@ -446,6 +447,8 @@ export function IhmViewer({ datas, callClose }: { datas:MachineParameter[],  cal
               y:0
             }} />
         </div>
+
+        <IhmVannes datas={datas} />
     </div>
 
     

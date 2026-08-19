@@ -21,7 +21,7 @@ export default function ParameterFieldBasicInput({ parameter, onChange }: FieldP
           <div>P1_SP_REEL</div>
         </div>
         <div className="flex">
-            <input id="parameter_modal_basic_input_id" className="bg-white" value={Number(paramValue)} max={100} type="number" onChange={(e) => OnInputChange(Number(e.target.value))} />
+            <input id="parameter_modal_basic_input_id" className="bg-white" value={Number(paramValue)} max={100} type="number" onChange={(e) => OnInputChange(Number(e.target.value))} /> %
         </div>
 
       </div>

@@ -18,14 +18,21 @@ function Home() {
     const idsession = params.get("idsession");
     const idclient = params.get("idclient");
     const idcamera = params.get("idcamera");
+    const [username, setUsername] = useState("");
 
     function onInputModalValidated(machineIdInput: string){
-        if (typeof(machineIdInput) === "number"){
+        try {
             machineId = Number(machineIdInput);
-        }else {
+        } catch (error) {
             console.log("Impossible de parser le code inséré : " + machineIdInput);
+            console.log(error);
         }
+        
         setAppMode(ProjectConstants.APP_MODE_MAINTENANCE);
+    }
+
+    function backToHome(){
+        setAppMode(0);
     }
 
     // Si un mode est sélectionné, afficher App
@@ -33,12 +40,14 @@ function Home() {
         return <App appModeInput={appMode} sessionIdV={idsession} machineId={machineId} />;
     }
     else if (appMode === ProjectConstants.APP_MODE_EXERCICE) {
-        return <ExerciceChoice />;
+        return <ExerciceChoice backToHome={backToHome}  />;
     }
     else if (appMode === ProjectConstants.APP_MODE_ANIMCONTINUE || appMode === ProjectConstants.APP_MODE_ANIMDISCONTINUE) {
         return <App appModeInput={appMode} sessionIdV={null} machineId={0}/>;
     }
+    // S'il y a un idsession c'est qu'on est invité
     else if (idsession != undefined) {
+        // S'il y a un idclient alors on est un spectateur passif
         if (idclient != undefined)
         {
             return (
@@ -47,8 +56,25 @@ function Home() {
                 </Livelink>
             )
         }
+        // Sinon on est un spectateur actif
         else {
-            return <App appModeInput={appMode} sessionIdV={idsession} machineId={machineId} />;
+            if (username.trim().length <= 0)
+            {
+                // On récupère un nom d'utilisateur pour différencier les icônes pour les partages 
+                return (
+                    <TextInputModal 
+                        textInputModalDto={{
+                        onModalCancel:() => {},
+                        onModalValidate: (value) => {setUsername(value)},
+                        text: "Entrez votre nom :",
+                    }}
+                    />
+                )
+            }
+            else {
+
+                return <App appModeInput={appMode} sessionIdV={idsession} machineId={machineId} username={username}  />;
+            }
         }
     }
     // Sinon, afficher les boutons

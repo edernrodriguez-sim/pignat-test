@@ -68,7 +68,14 @@ export const MQTT_TAG_MAPPING: Record<string, string> = {
   // VR01, TH01, DPT01 :
   //   pas de clé MachineParameter directe — à ajouter si nécessaire
   ARU: "ARU",
-  N_SERIE: "N_SERIE"
+  N_SERIE: "N_SERIE",
+  TTC06_OP: "TTC06_OP",
+  TTC06_SP: "TTC06_SP",
+  EV_MODE: "EV_MODE",
+  P01_SP_REEL: "P01_SP_REEL",
+  DPT01: "DPT01",
+  VR01: "VR01",
+  TH01: "TH01",
 };
 
 /** Résultat du mapping : clé MachineParameter + nouvelle valeur */

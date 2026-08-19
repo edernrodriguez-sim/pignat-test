@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Logo from '../assets/Logo.jpg'
 import AppExercice from './app.example';
 
-function ExerciceChoice() {
+function ExerciceChoice({ backToHome } : { backToHome: () => void }) {
     const [exerciceIndex, setExerciceIndex] = useState<number>(0);
 
     if (exerciceIndex === 1) {
@@ -16,6 +16,9 @@ function ExerciceChoice() {
     }
     else if (exerciceIndex === 4) {
         return <AppExercice exerciseCode='4' />;
+    }
+    else if (exerciceIndex === 5) {
+        return <AppExercice exerciseCode='5' />;
     }
     
     
@@ -31,12 +34,15 @@ function ExerciceChoice() {
                     Exercice B
                 </button>
                 <button onClick={() => setExerciceIndex(3)}>
-                    Exercice C
-                </button>
-                <button onClick={() => setExerciceIndex(4)}>
                     Exercice D
                 </button>
+                <button onClick={() => setExerciceIndex(4)}>
+                    Exercice E
+                </button>
             </div>
+            <button className="mainMenuHomeButton" onClick={() => backToHome()}>
+                Retour
+            </button>
         </div>        
         </>
     );

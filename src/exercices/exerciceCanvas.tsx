@@ -78,27 +78,50 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
       instance.startSimulation();
       
       const entities = await fetchAnimationEntities(instance);
+      
+
+
+
       setTimeout(() => {
         setAnimationEntities(entities);
         ResetMachine(entities);
+        
       }, (1000));
     };
     init();
   }, [instance]);
 
   
-  
   useBehaviourOnAnimationTrigger(instance, cameraControllerRef, {
-    dropParent,
-    bac_de_retention_IN: animationEntities?.bac_de_retention_in ?? null,
-    prechauffeur_FILL: animationEntities?.prechauffeur_fill ?? null,
-    postPrechauffeurTube1_fill: animationEntities?.postPrechauffeurTube1_fill ?? null,
-    goutte_drop: animationEntities?.goutte_drop ?? null,
-    soutirage_on: animationEntities?.soutirage_on ?? null,
-    soutirage_off: animationEntities?.soutirage_off ?? null,
-    V15_1L_fill: animationEntities?.fill_bidon_1L_V15 ?? null,
-    soutirage_anim: animationEntities?.goutte_soutirage ?? null,
-  });
+      dropParent,
+      bac_de_retention_IN: animationEntities?.bac_de_retention_in ?? null,
+      prechauffeur_FILL: animationEntities?.prechauffeur_fill ?? null,
+      bouilleur_fill_continu: animationEntities?.fill_bouilleur_continu ?? null,
+      postPrechauffeurTube1_fill: animationEntities?.postPrechauffeurTube1_fill ?? null,
+      goutte_drop: animationEntities?.goutte_drop ?? null,
+      soutirage_on: animationEntities?.soutirage_on ?? null,
+      soutirage_off: animationEntities?.soutirage_off ?? null,
+      V12_1L_fill: animationEntities?.Remplissage_Recette_Residu ?? null,
+      V12_1L_emptying: animationEntities?.empty_bidon_1L_V12 ?? null,
+      V15_1L_fill: animationEntities?.fill_bidon_1L_V15 ?? null,
+      V15_1L_emptying: animationEntities?.empty_bidon_1L_V15 ?? null,
+      soutirage_anim: animationEntities?.goutte_soutirage ?? null,
+      show_bells_bulles_one_by_one: animationEntities?.show_bells_bulles_one_by_one ?? null,
+    },
+    updateMachineParam
+  );
+
+
+  function updateMachineParam(key : string, value: string | number | boolean) {
+    setMachineParams((prev) => {          // ← prev toujours à jour
+      let result = prev;
+      result = result.map((p) =>
+        p.key === key ? { ...p, value: value } as MachineParameter : p
+      );
+      return result;
+    });
+  }
+
 
   /** Permet le lancement d'une simulation de temperature si besoin dans l'exercice */
   const { startTransitions, completeAll } = UseTemperatureSimulation({
@@ -136,7 +159,7 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
 
   // ── Hook exercice ─────────────────────────────────────────────────────────
   // instance est passé en param — plus de useContext dans le hook
-  const { state, currentStep, onEntityClicked, onInputChange, completeCurrentStep, reset } =
+  const { state, currentStep, onEntityClicked, onInputChange, onSortSubmit, onTrueFalseSubmit, completeCurrentStep, reset,onQuizSubmit } =
     useExercise(
       exercise,
       {
@@ -167,12 +190,10 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
       return;
     }
 
-
     const tags: string[] = pickedEntity.entity.tags?.value ?? [];
 
     if (tags.length > 0) {
       // Priorité au premier tag (ex: "testTag", "Couvercle"…)
-      console.log("[pick] tag →", tags[0]);
       onEntityClicked(tags[0]);
     } else {
       // Fallback sur le nom de l'entité
@@ -181,10 +202,11 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
         (pickedEntity.entity as any).getName?.() ??
         "";
       if (name) {
-        console.log("[pick] name →", name);
         onEntityClicked(name);
       }
     }
+    // Reset du pickedEntity pour éviter des multi détection
+    setPickedEntity(null);
   }, [pickedEntity, onEntityClicked]);
 
   useEffect(() => {
@@ -307,6 +329,7 @@ useEffect(() => {
         cameraEntity={cameraEntity}
         setPickedEntity={setPickedEntity}
       >
+        {renderUX()}
         <CameraController ref={bindCameraController} />
         <ExerciceUI
           state={state}
@@ -314,8 +337,10 @@ useEffect(() => {
           reset={reset}
           completeCurrentStep={completeCurrentStep}
           handleCustomAnswer={handleCustomAnswer}
+          onSortSubmit = {onSortSubmit}
+          onTrueFalseSubmit={onTrueFalseSubmit}
+          onQuizSubmit={onQuizSubmit}
         />
-        {renderUX()}
         {/* ── Le Provider entoure TOUT ce qui a besoin des données ───────────────
         Il reçoit :
           - parameters     : le tableau de données actuel

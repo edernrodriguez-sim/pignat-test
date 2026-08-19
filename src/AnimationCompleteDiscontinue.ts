@@ -1,5 +1,6 @@
 import { AnimationHelper } from "./animationHelper";
 import type { AnimDiscontinuDto } from "./models/animations/animDiscontinuDto";
+import type { IHMDto } from "./models/IHMDto";
 import { ProjectConstants } from "./projectConstants";
 
 export function LaunchAnimationCompleteDiscontinue({ input } : { input : AnimDiscontinuDto }){
@@ -10,11 +11,14 @@ export function LaunchAnimationCompleteDiscontinue({ input } : { input : AnimDis
     AnimationHelper.launchAnim(input.animationEntities.soutirage_off);
     AnimationHelper.closeAnim(input.animationEntities.fill_bouilleur_continu);
     AnimationHelper.closeAnim(input.animationEntities.complete_water_flow);
+    AnimationHelper.closeAnim(input.animationEntities.v8_out);
+    AnimationHelper.closeAnim(input.animationEntities.v4_out);
+    AnimationHelper.closeAnim(input.animationEntities.v3_out);
+    AnimationHelper.closeAnim(input.animationEntities.v2_out);
     // 1°) Start position facing bac de retention
     input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
     // 2°) Launching bac placement animation
     setTimeout(() => launchBacInAnimation(),2500);
-    //moveToDropsAndLaunchAnim();
 
 async function launchBacInAnimation(){
     AnimationHelper.launchAnim(input.animationEntities.bac_de_retention_in);
@@ -26,7 +30,28 @@ async function launchBidonV12Animation(){
 }
 async function launchBidonV15Animation(){
     AnimationHelper.launchAnim(input.animationEntities.bidon_10L_V15_in);
-    setTimeout(() => moveCameraToV16(),1000);
+    setTimeout(() => moveCameraAndCloseV2(),1000);
+}
+
+async function moveCameraAndCloseV2(){
+    input.cameraControllerRef.current?.setLookAt(-0.8,1.7,0.15,-0.35,1.7,0,true)
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v2_out),1500);
+    setTimeout(() => moveCameraAndCloseV3(),4000);
+}
+async function moveCameraAndCloseV3(){
+    input.cameraControllerRef.current?.setLookAt(-0.35,1.5,0.6,-0.35,1.5,0,true)
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v3_out),1500);
+    setTimeout(() => moveCameraAndCloseV4(),4000);
+}
+async function moveCameraAndCloseV4(){
+    input.cameraControllerRef.current?.setLookAt(-0.4,1.4,0.6,-0.4,1.4,0,true)
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v4_out),1500);
+    setTimeout(() => moveCameraAndCloseV8(),4000);
+}
+async function moveCameraAndCloseV8(){
+    input.cameraControllerRef.current?.setLookAt(0.2,0.4,0.6,-0.1,0.4,0,true)
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v8_out),1500);
+    setTimeout(() => moveCameraToV16(),4000);
 }
 
 async function moveCameraToV16(){
@@ -51,7 +76,20 @@ async function showIHMAndSetWaterLevel(){
     setTimeout(() => changeInput (ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID,"150", input ),5000);
     setTimeout(() => validateParameterEditModal(input), 6000);
     setTimeout(() => input.setIsIHMModalVisible(false),8000);
-    setTimeout(() => moveToFirstWaterPositionAndLaunchAnim(),8500);
+    setTimeout(() => showRisingWaterLevelSimulation(),8000);
+}
+async function showRisingWaterLevelSimulation(){
+    input.cameraControllerRef.current?.setLookAt(0.35,1.5,1,0.65,1.5,0,true);
+    input.updateIhmDto("FIC02_PV",12);
+    setTimeout(() => input.updateIhmDto("FIC02_PV",22.6) ,500);
+    setTimeout(() => input.updateIhmDto("FIC02_PV",37.1) ,1000);
+    setTimeout(() => input.updateIhmDto("FIC02_PV",53) ,1500);
+    setTimeout(() => input.updateIhmDto("FIC02_PV",77) ,2000);
+    setTimeout(() => input.updateIhmDto("FIC02_PV",96.7) ,2500);
+    setTimeout(() => input.updateIhmDto("FIC02_PV",121.2) ,3000);
+    setTimeout(() => input.updateIhmDto("FIC02_PV",144.9) ,3500);
+    setTimeout(() => input.updateIhmDto("FIC02_PV",150) ,4000);
+    setTimeout(() => moveToFirstWaterPositionAndLaunchAnim(),5000);
 }
 
 // Affichage du circuit d'eau
@@ -72,8 +110,9 @@ async function moveToCapAndLaunchAnim(){
     input.cameraControllerRef.current?.setLookAt(-0.15,1,0.6,-0.15,1,0,true);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.bouchon_in), 1000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bouilleur_discontinu), 3000);
+    setTimeout(() => input.updateIhmDto("LSL01",false),4000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.bouchon_out), 7500);
-    setTimeout(() => setRefluxValues(),9000);
+    setTimeout(() => setRefluxValues(),11000);
 }
 
 async function setRefluxValues(){
@@ -141,41 +180,39 @@ async function moveToDropsAndLaunchAnim(){
 }
 
 async function moveToBellPosition1AndLaunchAnim(){
+    setTimeout(() => showIHMAndUpdateTT(),1000);
     input.cameraControllerRef.current?.setLookAt(-0.1,1.25,0.5,-0.1,1.25,0,true);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.show_bells_bulles_one_by_one),1000);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(0.45,2.4,1.1,0.45,2.4,0,true),8000);
     setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.1,1.6,0.5,-0.1,1.6,0,true),12000);
-    setTimeout(() => showIHMAndUpdateTT(),15000);
+    setTimeout(() => SetDpic(),15000);
 }
+
+
 async function showIHMAndUpdateTT(){
-    setTimeout(() => input.setIsIHMModalVisible(true),1000);
-    setTimeout(() => input.updateIhmDto("highlighted","TT") ,1500);
-    setTimeout(() => input.updateIhmDto("TT1Value",84) ,3000);
-    setTimeout(() => input.updateIhmDto("TT2Value",50) ,3000);
-    setTimeout(() => input.updateIhmDto("TT3Value",50) ,3000);
-    setTimeout(() => input.updateIhmDto("TT4Value",50) ,3000);
-    setTimeout(() => input.updateIhmDto("TT5Value",50) ,3000);
-    
-    setTimeout(() => input.updateIhmDto("TT2Value",75.3) ,3500);
-    setTimeout(() => input.updateIhmDto("TT3Value",71) ,3500);
-    setTimeout(() => input.updateIhmDto("TT4Value",67.1) ,3500);
-    setTimeout(() => input.updateIhmDto("TT5Value",61.4) ,3500);
-    
-    setTimeout(() => input.updateIhmDto("TT2Value",78.6) ,4000);
-    setTimeout(() => input.updateIhmDto("TT3Value",75.1) ,4000);
-    setTimeout(() => input.updateIhmDto("TT4Value",71.2) ,4000);
-    setTimeout(() => input.updateIhmDto("TT5Value",70) ,4000);
-
-    setTimeout(() => input.updateIhmDto("TT2Value",80.6) ,4500);
-    setTimeout(() => input.updateIhmDto("TT3Value",77) ,4500);
-    setTimeout(() => input.updateIhmDto("TT4Value",76.2) ,4500);
-    setTimeout(() => input.updateIhmDto("TT5Value",74.6) ,4500);
-
-    setTimeout(() => input.updateIhmDto("TT2Value",81.3) ,5000);
-    setTimeout(() => input.updateIhmDto("TT3Value",78) ,5000);
-    setTimeout(() => input.updateIhmDto("TT4Value",77.4) ,5000);
-    setTimeout(() => input.updateIhmDto("TT5Value",77.2) ,5000);
-    setTimeout(() => SetDpic(), 7500);
+    updateTempWithTiming("TT02",3,20,83.4);
+    updateTempWithTiming("TT03",13,20,80);
+    updateTempWithTiming("TT04",21,20,77.5);
+    updateTempWithTiming("TT05",29,20,77.2);
 }
+
+async function updateTempWithTiming(key: keyof IHMDto, duration: number, baseValue: number, targetValue : number){
+ let totalSteps = duration;
+ let valueStep = (targetValue - baseValue) / totalSteps;
+ let currentValue = baseValue;
+
+ let intervalId = setInterval(() => {
+    totalSteps = totalSteps - 1; 
+    currentValue = currentValue + valueStep;
+    input.updateIhmDto(key,currentValue);
+
+
+    if(totalSteps <= 0){
+        clearInterval(intervalId);
+    }
+ } , 1000)
+}
+
 
 async function SetDpic(){
     input.setIsIHMModalVisible(true)
@@ -193,8 +230,8 @@ async function setRefluxValues33(){
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_EV_MODE_BUTTON_ID, input),2500);
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REFLUX_BUTTON_CYCLE_ID, input),4000);
     setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID, input),5000);
-    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"3", input),6000);
-    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"33", input),6500);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"6", input),6000);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"66", input),6500);
     setTimeout(() => validateParameterEditModal(input),8000);
     
     setTimeout(() => input.setIsIHMModalVisible(false),9000);
@@ -211,16 +248,16 @@ async function moveToSoutiragePositions(){
     input.cameraControllerRef.current?.setLookAt(0.1,2,0.5,0.1,2,0,true);
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.1,1.7,0.5,0.1,1.7,0,true), 3000);
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.1,1.3,0.5,0.1,1.3,0,true), 6000);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bidon_1L_V15), 8000);
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.3,0.9,0.5,0.3,0.9,0,true), 9000);
-    setTimeout(() =>  moveToBidonV15(), 10000);
+    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.3,0.5,0.6,0.3,0.5,0,true), 11000);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bidon_1L_V15), 12000);
+    setTimeout(() =>  moveToBidonV15(), 16000);
 }
 async function moveToBidonV15(){
     setTimeout(() => moveAndOpenV15(),2000);
 }
 
 async function moveAndOpenV15(){
-    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.3,0.5,0.6,0.3,0.5,0,true),1000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v15_in),2000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.liquide_falling_bidon_1L_V15_in),2500)
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.empty_bidon_1L_V15),4000);

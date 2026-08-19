@@ -17,25 +17,18 @@ import {
   useMemo,
   useRef,
   useState,
-  type SetStateAction,
 } from "react";
 import { type Entity} from "@3dverse/livelink";
 import { LoadingOverlay } from "@3dverse/livelink-react-ui";
 import "./styles/App.css";
 import data from "./assets/machineState.json";
-import exercises from "./assets/exercise1.json";
 import rulesData from "./assets/rules.json";
 import machinePartsJson from "./assets/machineLabelIdMapping.json";
 import { RulesSystem, type Rule, type RuleResult } from "./rules/RulesSystem";
 import { MachineState } from "./MachineState";
-// import { getVannesValues } from "./vanneManager";
 import { AnimationHelper, AnimationTypes } from "./animationHelper";
-import { Exercise } from "./models/exercices/exercice";
-import { Step } from "./models/exercices/step";
 import { MachineParameter } from "./models/machineParameter";
 import { MachineMapping } from "./machineMapping";
-import { ExerciseManager } from "./models/exercices/exerciseManager";
-import BasicTextModal from "./modals/basicTextModal";
 import type { IHMDto } from "./models/IHMDto";
 import type { MachineStateDto } from "./models/machineStateDto";
 import { useBehaviourOnAnimationTrigger } from "./hooks/useBehaviourOnAnimationTrigger";
@@ -60,7 +53,7 @@ import type { SavedField } from "./exercices/exercice";
 const scene_id = "05b63dcd-ce5c-4e8f-b363-89a38118462c";
 const token = "public_wfVLwtMF9Rg0rp_k";
 const main_trigger_map_id = "75aa01b4-d1a0-482f-bf95-c16e4feb969b";
-let QR_URL = "https://votre-url-ici.com";
+let QR_URL = "https://mon-url-ici.com";
 // Lecture du json de donnée distante
 const keysFromJson: MachineParameter[] = data.map(
   (data) =>
@@ -75,30 +68,12 @@ const keysFromJson: MachineParameter[] = data.map(
       data.satisfyingValue
     ),
 );
-const datasForIHM: MachineParameter[] = data
-  .filter((d) => d.showInIHM === true)
-  .map(
-    (data) =>
-      new MachineParameter(
-        data.Key,
-        data.Label,
-        data.Value,
-        data.Description,
-        data.Type,
-        data.UnitType,
-        data.showInIHM,
-        data.satisfyingValue
-      ),
-  );
 let isSetMachineStateLaunched: boolean = false;
 // let isSoutirageOn = false;
 let isProjectReadOnly: boolean = false;
 //let testUseEffect: boolean = false;
 const allMachineAnimations: { [key: string]: MachineAnimation } = {};
 const AnimationIdvanneIdMapping: { [key: string]: string } = {};
-let exercise: Exercise;
-let exerciseManager: ExerciseManager;
-let isHintModalVisible: boolean;
 let machineLabelIdMapping: MachineMapping;
 let appMode: number;
 /**
@@ -109,36 +84,31 @@ let machineIdentifier: number = 0;
 export default function App({
   appModeInput,
   sessionIdV,
-  machineId
+  machineId,
+  username
 }: {
   readonly appModeInput: number;
   readonly sessionIdV: string | null;
   readonly machineId: number;
+  readonly username?: string;
 }) {
   appMode = appModeInput;
   machineIdentifier = machineId;
-  console.log(`Machine id : ${machineId}`)
   
   if (appMode == ProjectConstants.APP_MODE_EXERCICE) isProjectReadOnly = false;
   // Récupération du mapping des labels et des ids
   machineLabelIdMapping = new MachineMapping(machinePartsJson.machineParts);
-  exerciseManager = new ExerciseManager();
-  // Mapping des exercices
-  exercise = exercises.exercises.map(
-    (e) =>
-      new Exercise(
-        e.description,
-        e.steps.map((s) => Object.assign(new Step(), s)),
-      ),
-  )[0];
+  SetDefaultN_Serie(machineId);
+
 if (sessionIdV != null){
+
   return (
     <Livelink
       sessionId={sessionIdV}
       token={token}
       LoadingPanel={LoadingOverlay}
     >
-      <SceneViewer />
+      <SceneViewer username={username} />
     </Livelink>
   );
 }
@@ -157,12 +127,21 @@ else {
 }
 }
 
-function SceneViewer() {
+function SetDefaultN_Serie(defaultN_Serie: number){
+  let nSerieKey = keysFromJson.find(k => k.key === ProjectConstants.MACHINE_PARAM_N_SERIE_KEY);
+  if (nSerieKey){
+    keysFromJson.filter(k => k.key === ProjectConstants.MACHINE_PARAM_N_SERIE_KEY)[0].value = defaultN_Serie;
+  }
+}
+
+function SceneViewer({username} : {username?: string}) {
   const [canStartMqtt, setCanStartMqt] = useState(false);
   const cameraControllerRef = useRef<DefaultCameraController>(null);
-  const { cameraEntity } = useCameraEntity();
-  const [isOpen, setIsOpen] = useState(false);
   const { instance } = useContext(LivelinkContext);
+  // Ajout de l'identifiant utilisateur sur camera pour identifier les users dans la scène
+  const customUserName = username ?? "_MainUser";
+  const { cameraEntity } = useCameraEntity({name:instance?.session.client_id!+"_"+customUserName});
+  const [isOpen, setIsOpen] = useState(false);
   const [pickedEntity, setPickedEntity] = useState<{ entity: Entity } | null>(
     null,
   );
@@ -180,14 +159,34 @@ function SceneViewer() {
     dropParent,
     bac_de_retention_IN: animationEntities?.bac_de_retention_in ?? null,
     prechauffeur_FILL: animationEntities?.prechauffeur_fill ?? null,
+    bouilleur_fill_continu: animationEntities?.fill_bouilleur_continu ?? null,
     postPrechauffeurTube1_fill: animationEntities?.postPrechauffeurTube1_fill ?? null,
     goutte_drop: animationEntities?.goutte_drop ?? null,
     soutirage_on: animationEntities?.soutirage_on ?? null,
     soutirage_off: animationEntities?.soutirage_off ?? null,
+    V12_1L_fill: animationEntities?.Remplissage_Recette_Residu ?? null,
+    V12_1L_emptying: animationEntities?.empty_bidon_1L_V12 ?? null,
     V15_1L_fill: animationEntities?.fill_bidon_1L_V15 ?? null,
+    V15_1L_emptying: animationEntities?.empty_bidon_1L_V15 ?? null,
     soutirage_anim: animationEntities?.goutte_soutirage ?? null,
-  });
+    show_bells_bulles_one_by_one: animationEntities?.show_bells_bulles_one_by_one ?? null,
+    },
+  updateMachineParam
+  );
 
+
+   function updateMachineParam(key : string, value: string | number | boolean) {
+    console.log("updateMachineParam");
+    setMachineParams((prev) => {          // ← prev toujours à jour
+      let result = prev;
+      result = result.map((p) =>
+        p.key === key ? { ...p, value: value } as MachineParameter : p
+      );
+      return result;
+    });
+    console.log("machineParams");
+    console.log(machineParams);
+  }
   // Ferme toutes les vannes en lançant leur animation de fermeture
   const closeAllVannes = useCallback(async () => {
     if(!animationEntities){
@@ -228,12 +227,8 @@ function SceneViewer() {
     const init = async () => {
       console.log("!!!!!! SceneViewer - init");
 
-      instance.startSimulation();
       
-    //   await Promise.all([
-    //     fetchAnimations(instance),
-    //     fetchVannesAnimations(instance)
-    //   ]);
+      instance.startSimulation();
 
       const entities = await fetchAnimationEntities(instance);
       setAnimationEntities(entities);
@@ -264,36 +259,7 @@ function SceneViewer() {
     
   }, [machineParams])
 
-  const [isExerciseOnGoing, setIsExerciseOnGoing] = useState(false);
   const [isIHMModalVisible, setIsIHMModalVisible] = useState(false);
-  const [refluxType] = useState("");
-  const [isBouilleurOn, setIsBouilleurOn] = useState(true);
-  const [ihmDto, setIhmDto] = useState<IHMDto>({
-    waterLevel: 0,
-    isP1On: false,
-    isH1On: false,
-    p1Value: 0,
-    isLSL1ok: false,
-    LSL01: false,
-    LSL02: false,
-    refluxType: "",
-    refluxRate: 0,
-    isBouilleurOn: false,
-    bouilleurRate: 0,
-    highlighted: "",
-    TT1Value: 0,
-    TT2Value: 0,
-    TT3Value: 0,
-    TT4Value: 0,
-    TT5Value: 0,
-    FIC02_SP: 0,
-    prechauffeValue: 0,
-    dpic: 0,
-    input: datasForIHM,
-    onClose: closeIHMModal,
-    onValueChange: onIHMInputChange,
-    FIC02_OP_MAN: ""
-  });
   
   const machineStateDto = useMemo<MachineStateDto>(
     () => ({
@@ -306,8 +272,6 @@ function SceneViewer() {
     [machineParams],
   );
 
-  let lastLabelClicked = "";
-
   const updateIhmDto = (
     key: keyof IHMDto,
     value: number | string | boolean,
@@ -316,7 +280,6 @@ function SceneViewer() {
     setMachineParams((prev) => prev.map(
       (p) => p.key === key ? {...p, value: value} as MachineParameter : p
     ));
-    setIhmDto((prev) => ({ ...prev, [key]: value }));
 
   };
 
@@ -394,9 +357,6 @@ function SceneViewer() {
         AnimationHelper.launchAnim(animationEntities?.v2_out);
       }
     }
-    if (labelFromId != undefined) {
-      lastLabelClicked = labelFromId;
-    }
 
      if (
       pickedEntity!.entity.id === "5dc3121e-6264-45b5-ba2b-29b20470ef7d"
@@ -426,10 +386,6 @@ function SceneViewer() {
 
     if (appMode === ProjectConstants.APP_MODE_MAINTENANCE) {
       setMachineStateDatas();
-    }
-
-    if (isExerciseOnGoing) {
-      onClickWhileExerciseOnGoing();
     }
   }, [pickedEntity]);
 
@@ -507,10 +463,6 @@ function SceneViewer() {
 
   //#endregion
 
-  function closeIHMModal() {
-    setIsIHMModalVisible(false);
-  }
-
   function toggleIsReadOnly() {
     isProjectReadOnly = !isProjectReadOnly;
   }
@@ -524,7 +476,7 @@ function SceneViewer() {
 
     await closeAllVannes();
 
-    AnimationHelper.closeAnim(animationEntities.fill_bidon_1L_V12);
+    AnimationHelper.closeAnim(animationEntities.Remplissage_Recette_Residu);
     AnimationHelper.closeAnim(animationEntities.fill_bidon_1L_V15);
     AnimationHelper.closeAnim(animationEntities.fill_bidon_10L_V12);
     AnimationHelper.closeAnim(animationEntities.fill_bidon_10L_V15);
@@ -551,7 +503,6 @@ function SceneViewer() {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     setTimeout(() => updateIhmDto("isLSL1ok", false),5000);
-    setIsBouilleurOn(false);
   }, [animationEntities, updateIhmDto, closeAllVannes]);
 
   const LaunchAnimationCompleteContinueFromButton = useCallback(async () => {
@@ -592,147 +543,6 @@ function SceneViewer() {
     });
   }, [animationEntities, cameraControllerRef, setIsIHMModalVisible, updateIhmDto, resetMachineToStart]);
 
-  //#region Exercices
-
-  async function startExercise() {
-    await resetMachineToStart();
-    setIsExerciseOnGoing(true);
-    exerciseManager.startExercise(exercise);
-    isProjectReadOnly = false;
-    glowExerciseItems();
-  }
-
-  function showStepHint() {
-    isHintModalVisible = true;
-  }
-  function hideStepHint() {
-    isHintModalVisible = false;
-  }
-  function glowExerciseItems() {
-    exerciseManager.currentStep?.itemsLabelToGlow.forEach((key) => {
-      AnimationHelper.launchAnim(
-        allMachineAnimations[
-          AnimationHelper.getAnimationName(key, AnimationTypes.glow)
-        ].animationController,
-      );
-    });
-  }
-
-  function stopGlowExerciseItems() {
-    console.log("stopGlowExerciseItems");
-    exerciseManager.currentStep?.itemsLabelToGlow.forEach((key) => {
-      AnimationHelper.closeAnim(
-        allMachineAnimations[
-          AnimationHelper.getAnimationName(key, AnimationTypes.glow)
-        ].animationController,
-      );
-      if (
-        allMachineAnimations[
-          AnimationHelper.getAnimationName(key, AnimationTypes.stopGlow)
-        ] != undefined
-      ) {
-        AnimationHelper.launchAnim(
-          allMachineAnimations[
-            AnimationHelper.getAnimationName(key, AnimationTypes.stopGlow)
-          ].animationController,
-        );
-      }
-    });
-  }
-
-  function onClickWhileExerciseOnGoing() {
-    if (isStepValidated()) {
-      onStepValidated();
-    }
-  }
-
-  function isStepValidated(): boolean {
-    let isValidated = true;
-
-    exerciseManager.currentStep?.stepValidationPoints.forEach((s) => {
-      if (s.expectedValue === "click") {
-        if (lastLabelClicked != s.label) {
-          isValidated = false;
-        }
-      } else if (s.isIHM) {
-        isValidated = isValidatedFromIHM(s.label, s.expectedValue);
-      } else {
-        console.log(keysFromJson);
-        const currentValue = keysFromJson.find((k) => k.key === s.label)?.value;
-        if (currentValue != s.expectedValue) isValidated = false;
-      }
-    });
-
-    return isValidated;
-  }
-
-  function isValidatedFromIHM(
-    label: string,
-    expectedValue: string | boolean | number,
-  ): boolean {
-    switch (label) {
-      case "waterlevel":
-        return ihmDto.waterLevel == expectedValue;
-      case "isP1On":
-        return ihmDto.isP1On == expectedValue;
-      case "refluxType":
-        return refluxType == expectedValue;
-      case "refluxRate":
-        return ihmDto.refluxRate == expectedValue;
-      case "isBouilleurOn":
-        return isBouilleurOn == expectedValue;
-      case "bouilleurRate":
-        return ihmDto.bouilleurRate == expectedValue;
-      case "dpic":
-        return ihmDto.dpic == expectedValue;
-    }
-    return false;
-  }
-
-  function onStepValidated() {
-    if (exerciseManager.currentStep?.action != undefined) {
-      if (exerciseManager.currentStep?.action === "move") {
-        AnimationHelper.launchAnim(
-          allMachineAnimations[
-            AnimationHelper.getAnimationName(
-              exerciseManager.currentStep?.itemsLabelToGlow[0],
-              AnimationTypes.move,
-            )
-          ].animationController,
-        );
-      } else if (exerciseManager.currentStep?.action === "animation") {
-        exerciseManager.currentStep?.animationNames.forEach((a) => {
-          AnimationHelper.launchAnim(
-            allMachineAnimations[a].animationController,
-          );
-        });
-      }
-    }
-    stopGlowExerciseItems();
-
-    const isExerciseOnGoing = exerciseManager.nextStep();
-    if (isExerciseOnGoing) {
-      glowExerciseItems();
-    } else {
-      setIsExerciseOnGoing(false);
-    }
-  }
-
-  function onIHMInputChange(
-    label: string,
-    value:
-      | SetStateAction<number>
-      | SetStateAction<boolean>
-      | SetStateAction<string>,
-  ) {
-    console.log(label);
-    console.log(value);
-    if (isExerciseOnGoing) {
-      onClickWhileExerciseOnGoing();
-    }
-  }
-
-  //#endregion
   
   function shareSessionQRCode(shareSessionType: string) {
     // Création de l'url de base utilisable pour un spectateur actif
@@ -808,7 +618,7 @@ function SceneViewer() {
         {
           appMode === ProjectConstants.APP_MODE_EXERCICE || appMode === ProjectConstants.APP_MODE_MAINTENANCE && (
               
-            <div className={`absolute top-[2vh] left-[2vh]`}>
+            <div className={`absolute top-[10vh] left-[2vh]`}>
               <MachineState machineStateDto={machineStateDto} />
             </div>
           )
@@ -819,40 +629,7 @@ function SceneViewer() {
           currentRules={rulesData.filter(r => !r.isBlockingForStart) as Rule[]}
           machineDto={machineStateDto} />
 
-        {isHintModalVisible ? (
-          <div className={`absolute bottom-[40vh] right-[92vh]`}>
-            <BasicTextModal
-              basicTextModalDto={{
-                text: exerciseManager.getCurrentStepHint(),
-                onBasicModalClose: hideStepHint,
-              }}
-            />
-          </div>
-        ) : (
-          ""
-        )}
-        {appMode === ProjectConstants.APP_MODE_EXERCICE &&
-          (isExerciseOnGoing ? (
-            <div
-              id="exercise-UI"
-              className={`absolute bottom-[10vh] right-[92vh]`}
-            >
-              <p>{exerciseManager.currentExercise?.description}</p>
-              <p>
-                Étape : {exerciseManager.getCurrentStepIndex()} /{" "}
-                {exerciseManager.getStepCount()}
-              </p>
-              <button className="basicBtn" onClick={showStepHint}>
-                Indice
-              </button>
-            </div>
-          ) : (
-            <div className={`absolute bottom-[10vh] right-[98vh]`}>
-              <button id="exerciseBtn" onClick={startExercise}>
-                LANCER EXERCICE
-              </button>
-            </div>
-          ))}
+        
         {
             /* Affichage des boutons toujours présents */
             <div className={`absolute yop-[10vh] right-[28vh] top-[3vh]`}>
@@ -954,80 +731,6 @@ function setMachineStateDatas() {
       }
     });
   }
-  //testRules();
 }
 
 
-// Quand on clique sur n’importe quel objet, on lance l’animation
-// if (pickedEntity/* && animationEntity*/) {
-//     console.log("🎯 Objet cliqué :", pickedEntity);
-//     //console.log("🎯 complete_flow cliqué :", complete_anim_flow_script);
-//     //console.log("🎬 Entité d'animation :", animationEntityUUID);
-
-//     const capId = "643bf086-ac9f-4c98-a896-3abb0888aa80";
-//     if (pickedEntity.id === capId)
-//     {
-//         console.log("Clicked on right bonbonne");
-//         instance.scene.fireEvent({
-//             event_map_id: main_trigger_map_id,
-//             event_name: "cap_clicked"
-//         });
-//     }
-
-//     // Click sur V4
-//     if (pickedEntity.id === "31a02337-5eff-49c7-a6fa-87b6d0ec8472"){
-
-//         console.log("Clicked on V4");
-//         if (V2_status === true){
-//             const controller = (v4Anim_open as any).animation_sequence_controller;
-//             controller.playState = 1;
-//             V2_status = false;
-//         }
-//         else {
-//             const controller = (v4Anim_close as any).animation_sequence_controller;
-//             controller.playState = 1;
-//             V2_status = true;
-//         }
-//         // instance.scene.fireEvent({
-//         //     event_map_id: main_trigger_map_id,
-//         //     event_name: "cap_clicked"
-//         // });
-//     }
-
-//     /*const controller = (animationEntity as any).animation_sequence_controller;
-
-//     if (controller) {
-//         controller.playState = 1; // 1 = Play, 0 = Pause
-//         console.log("✅ Animation lancée !");
-//     } else {
-//         console.warn("⚠️ L'entité d'animation n'a pas de animation_sequence_controller !");
-//     }*/
-// }
-
-// let keysIntersect: MachineParameter[];
-// keysIntersect = [];
-// // Pour chaque clé locale
-// allMachineKeys.forEach(k => {
-//     // Si lien trouvé on l'affiche
-//     if (keysFromJson.filter(j => j.key === k).length > 0){
-//         keysIntersect.push(keysFromJson.filter(j => j.key === k)[0])
-//     }
-// })
-
-// ]);
-// const boilerLabelUUID = "edc9c2c0-5c7a-4216-9b3e-b963568521b4";
-// // 👉 UUID de l'entité qui contient le contrôleur d'animation
-// const animationEntityUUID = "7ea767d9-408c-41a2-b31a-7f259e8135c8";
-
-//  const { entity: labelEntity } = useEntity({
-//     euid: boilerLabelUUID,
-// });
-
-// // On récupère cette entité via useEntity
-// const { entity: animationEntity } = useEntity({
-//     euid: animationEntityUUID,
-// });
-
-// const { entity: complete_anim_flow_script } = useEntity({
-//     euid: "86e63a74-e492-4ca0-b264-71f003c64d53"
-// });

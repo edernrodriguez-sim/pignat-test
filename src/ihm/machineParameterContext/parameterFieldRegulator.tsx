@@ -65,6 +65,10 @@ export default function ParameterFieldRegulator({ regulatorPrefix, parameter,  o
         if (!autoMode && key === "OP_MAN"){
             onCustomChange("OP",newValue);
         }
+        // S'il y a un changement de SP et qu'on est en mode AUTO PV prend la même valeur
+        if (autoMode && key === "SP"){
+            onCustomChange("PV",newValue);
+        }
 
 
         setDrafts((prev) => 
@@ -102,7 +106,8 @@ export default function ParameterFieldRegulator({ regulatorPrefix, parameter,  o
             ${autoMode ? "bg-gray-900 text-gray-200" : "regulator-auto-btn-off" }`}
             onClick={() => autoButtonToggle(!autoMode)}
             >
-            AUTO
+            {autoMode ? "AUTO" : "MANU" }
+            
             </button>
         </div>
         <div className="modal-regulator-content flex gap-1">

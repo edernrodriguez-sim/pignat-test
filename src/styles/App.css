@@ -244,8 +244,27 @@ canvas {
     border-radius: 10px;
     padding: 2vh;
     margin: 2vh;
+    transition: all linear 200ms;
+  }
+  button:hover {
+    background-color: rgb(255, 255, 255);
+    transition: all linear 200ms;
+  }
+  .mainMenuHomeButton {
+    background-color: rgb(182, 182, 182);
+    box-shadow: 0px 3px 11px 1px rgb(196, 196, 196);
+    border-radius: 10px;
+    padding: 1vh 2vh;
+    margin: 2vh;
+    transition: all linear 200ms;
+  }
+  .mainMenuHomeButton:hover {
+    background-color: rgb(205, 205, 205);
+    padding: 1.1vh 2.1vh;
+    transition: all linear 200ms;
   }
 }
+
 
 .fontPad {
   border-radius: 2px;

@@ -3,7 +3,7 @@ import { DOM3DEntityAnchor } from "@3dverse/livelink-react";
 import { useState, useEffect } from "react";
 import AvatarIcon from "./avatarIcon";
 
-const Avatar3D = ({ client }: { client: Client }) => {
+const Avatar3D = ({ client, username_input }: { client: Client, username_input: string }) => {
     const [clientCameraEntity, setClientCameraEntity] = useState<Entity | null>(
         null,
     );
@@ -24,7 +24,7 @@ const Avatar3D = ({ client }: { client: Client }) => {
             scaleFactor={0.0025}
             entity={clientCameraEntity}
         >
-            <AvatarIcon client={client} />
+            <AvatarIcon client={client} username={username_input} />
         </DOM3DEntityAnchor>
     );
 };
