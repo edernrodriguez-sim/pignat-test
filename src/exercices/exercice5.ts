@@ -219,10 +219,16 @@ const myExercise: Exercise = {
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V14, label: "Cliquez sur la vanne V14 dans la scène 3D" },
       onActionAnimation: [
         { animationName: "sample_v14", entityId: "5046e472-12e9-4a46-a91c-18f7a5296fe2" }
-      ]
+      ],
+      tableToShow: {
+        headers: ["R","D (kg/h)","ωD"],
+        rows: [["2","1.34","91.7%"],
+               ["1","","%"],
+               ["","","%"]]
+      }
     },
     {
-      id: "step-wait22354",
+      id: "step-wait223546",
       
       name: "Attendre 1 min",
       description: "Temps d'attente acceléré.",
@@ -286,7 +292,13 @@ const myExercise: Exercise = {
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V14, label: "Cliquez sur la vanne V14 dans la scène 3D" },
       onActionAnimation: [
         { animationName: "sample_v14", entityId: "5046e472-12e9-4a46-a91c-18f7a5296fe2" }
-      ]
+      ],
+      tableToShow: {
+        headers: ["R","D (kg/h)","ωD"],
+        rows: [["2","1.34","91.7%"],
+               ["1","2","90%"],
+               ["0.5","",""]]
+      }
     },
     {
       id: "step-wait22354",
