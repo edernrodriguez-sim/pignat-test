@@ -144,7 +144,13 @@ const myExercise: Exercise = {
       label: "" },
       onActionAnimation: [
         { animationName: "soutirage_cycle", entityId: "cae5c9eb-5985-4c6b-b576-484092fba126"}
-      ]
+      ],
+      tableToShow: {
+        headers: ["R","D (kg/h)","ωD"],
+        rows: [["2","","%"],
+               ["","","%"],
+               ["","","%"]]
+      }
     },
     {
       id: "step-2137",  name: "Prélever un échantillon de distillat",
