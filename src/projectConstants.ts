@@ -44,6 +44,7 @@ export class ProjectConstants {
     static readonly IHM_KEYS_DPIC01_BUTTON_ID = "DPIC01";
     static readonly IHM_KEYS_P1_SP_REEL_BUTTON_ID = "P1_SP_REEL";
 
+    static readonly PRESSURE_BY_BELL = 0.9333333333333333;
     /**
      * Mode de connexion MQTT (lu depuis la variable d'environnement Vite) :
      *  - "mqtt"   → WebSocket direct vers le broker  (npm run dev:mqtt)

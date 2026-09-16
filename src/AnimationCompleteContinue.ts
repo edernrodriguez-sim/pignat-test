@@ -14,6 +14,7 @@ export function LaunchAnimationCompleteContinue({ input } : { input : AnimDiscon
     input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
     // // 2°) Launching bac placement animation
     setTimeout(() => launchBacInAnimation(),1500);
+    
 
 async function launchBacInAnimation(){
     AnimationHelper.launchAnim(input.animationEntities.bac_de_retention_in);
@@ -208,7 +209,6 @@ async function showBullageBouilleur(){
     setTimeout(() => input.updateIhmDto("TT01",80.5) ,7000);
     setTimeout(() => input.updateIhmDto("TT01",82.1) ,7500);
     setTimeout(() => input.updateIhmDto("TT01",84.2) ,8000);
-    AnimationHelper.launchAnim(input.animationEntities.vapeur_on)
     setTimeout(() => moveCameraAndOpenV3(),10000);
 }
 
@@ -225,7 +225,16 @@ async function moveCameraAndCloseV4(){
     input.cameraControllerRef.current?.setLookAt(-0.4,1.4,0.6,-0.4,1.4,0,true)
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v4_out),1500);
     setTimeout(() => AnimationHelper.closeAnim(input.animationEntities.tuyau_prechauffage_plateau_1),3000);
-    setTimeout(() => showIHMAndReduceSP_REEL(),4000);
+    setTimeout(() => moveToV8(),4000);
+}
+
+
+async function moveToV8(){
+    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.2,0.5,0.8,-0.1,0.6,0,true),500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.tuyau_inf_bouilleur_V8),1500);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v8_in),3000);
+    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.tuyau_inf_V8_bidon_V12),3500);
+    setTimeout(() => showIHMAndReduceSP_REEL(),6500);
 }
 
 async function showIHMAndReduceSP_REEL(){
@@ -249,7 +258,13 @@ async function setDPICValues(){
     setTimeout(() => validateParameterEditModal(input),6500);
     
     setTimeout(() => input.setIsIHMModalVisible(false),7000);
-    setTimeout(() => moveToBellPosition1AndLaunchAnim(),7500);
+    setTimeout(() => showSmoke(),7500);
+}
+
+async function showSmoke(){
+    AnimationHelper.launchAnim(input.animationEntities.vapeur_on);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.1,2.2,0.5,-0.1,2.2,0,true), 2000);
+    setTimeout(() => moveToBellPosition1AndLaunchAnim(),4000);
 }
 
 
@@ -268,7 +283,7 @@ async function moveToDropsAndLaunchAnim(){
     input.cameraControllerRef.current?.setLookAt(-0.2,2.25,0.4,-0.1,2.25,0,true);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.soutirage_off), 100);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.goutte_drop_cycle_on),2000);
-    setTimeout(() => moveToV8(),5000);
+    setTimeout(() => showIHMAndSetP1ON_2(),5000);
 }
 
 async function showIHMAndUpdateTT(){
@@ -276,6 +291,7 @@ async function showIHMAndUpdateTT(){
     updateTempWithTiming("TT03",13,20,80);
     updateTempWithTiming("TT04",21,20,77.5);
     updateTempWithTiming("TT05",29,20,77.2);
+    updateTempWithTiming("TT08",29,20,22);
 }
 
 async function updateTempWithTiming(key: keyof IHMDto, duration: number, baseValue: number, targetValue : number){
@@ -286,7 +302,7 @@ async function updateTempWithTiming(key: keyof IHMDto, duration: number, baseVal
  let intervalId = setInterval(() => {
     totalSteps = totalSteps - 1; 
     currentValue = currentValue + valueStep;
-    input.updateIhmDto(key,currentValue);
+    input.updateIhmDto(key,currentValue.toFixed(2));
 
 
     if(totalSteps <= 0){
@@ -296,32 +312,14 @@ async function updateTempWithTiming(key: keyof IHMDto, duration: number, baseVal
 }
 
 
-async function moveToV8(){
-    setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.2,0.5,0.8,-0.1,0.6,0,true),500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.tuyau_inf_bouilleur_V8),1500);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v8_in),3000);
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.tuyau_inf_V8_bidon_V12),3500);
-    setTimeout(() => showIHMAndSetP1ON_2(),6500);
-}
-
-
 async function showIHMAndSetP1ON_2(){
 
     input.setIsIHMModalVisible(true);
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_P1_BUTTON_ID, input) ,2000);
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_BOOL_BUTTON_ON_ID, input) ,4000);
     setTimeout(() =>  validateParameterEditModal(input) ,5000);
-    setTimeout(() => SetH1_ON(),6000);
-}
-
-async function SetH1_ON(){
-    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_H1_BUTTON_ID, input) ,1000);
-    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_BOOL_BUTTON_ON_ID, input) ,2000);
-    setTimeout(() =>  validateParameterEditModal(input) ,4000);
     setTimeout(() => SetTT06_AutoAndValue(),6000);
 }
-
-
 
 async function SetTT06_AutoAndValue(){
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_TTC06_BUTTON_ID, input) ,1000);
@@ -329,8 +327,17 @@ async function SetTT06_AutoAndValue(){
     setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, input) ,3000);
     setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "77.4", input) ,5000);
     setTimeout(() =>  validateParameterEditModal(input) ,8000);
-    setTimeout(() =>  setDPICValues2() ,9500);
+    setTimeout(() =>  SetH1_ON() ,9500);
 }
+
+async function SetH1_ON(){
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_H1_BUTTON_ID, input) ,1000);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_BOOL_BUTTON_ON_ID, input) ,2000);
+    setTimeout(() =>  validateParameterEditModal(input) ,4000);
+    setTimeout(() => setDPICValues2(),6000);
+}
+
+
 
 async function setDPICValues2(){
     input.setIsIHMModalVisible(true);

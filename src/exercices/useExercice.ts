@@ -1,11 +1,12 @@
 import { useState, useCallback, useRef, useContext } from "react";
-import type {
-  Exercise,
-  ExerciseStep,
-  ExerciseState,
-  StepStatus,
-  AnimationTrigger,
-  SavedField,
+import {
+  type Exercise,
+  type ExerciseStep,
+  type ExerciseState,
+  type StepStatus,
+  type AnimationTrigger,
+  type SavedField,
+  type TableDatas,
 } from "./exercice";
 import { AnimationHelper } from "../animationHelper";
 import type { Livelink } from "@3dverse/livelink";
@@ -42,9 +43,10 @@ interface UseExerciseOptions {
 
 export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}, ) {
   const { onStepComplete, onExerciseComplete } = options;
-    const { instance } = useContext(LivelinkContext);
-    entityLivelink = instance;
-    
+  const { instance } = useContext(LivelinkContext);
+  entityLivelink = instance;
+  const [tableDatas, setTableDatas] = useState<TableDatas>();
+
   const initialStatuses = Object.fromEntries(
     exercise.steps.map((s, i) => [s.id, i === 0 ? "active" : "pending"])
   ) as Record<string, StepStatus>;
@@ -84,7 +86,17 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
       const nextIndex = isLast ? prev.currentStepIndex : currentStepIndex + 1;
       const newStatuses = { ...prev.stepStatuses };
       newStatuses[currentStep.id] = "completed";
-      if (!isLast) newStatuses[ex.steps[nextIndex].id] = "active";
+      if (!isLast){
+        newStatuses[ex.steps[nextIndex].id] = "active"
+        const nextStep = ex.steps[nextIndex];
+        if (nextStep.shouldHideTable){
+          setTableDatas(undefined);
+        }
+        else if (ex.steps[nextIndex].tableToShow)
+        {
+          setTableDatas(ex.steps[nextIndex].tableToShow);
+        }
+      };
       return { ...prev, currentStepIndex: nextIndex, stepStatuses: newStatuses, isCompleted: isLast };
     });
 
@@ -208,7 +220,7 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
 
   const currentStep = state.exercise.steps[state.currentStepIndex] ?? null;
 
-  return { state, currentStep, onEntityClicked, onInputChange, onSortSubmit, onTrueFalseSubmit, completeCurrentStep, reset, onQuizSubmit };
+  return { state, currentStep, onEntityClicked, onInputChange, onSortSubmit, onTrueFalseSubmit, completeCurrentStep, reset, onQuizSubmit, tableDatas };
 }
 
 

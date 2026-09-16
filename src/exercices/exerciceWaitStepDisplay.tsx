@@ -34,7 +34,7 @@ export function WaitStepDisplay({ action, stepDescription }: WaitStepDisplayProp
   const strokeDashoffset = circumference * (1 - progress);
 
   return ( 
-    <div id="wait-display" className={`absolute bottom-[20vh] right-[10vh] flex flex-col items-center gap-4`}>
+    <div id="wait-display" className={`absolute bottom-[35vh] right-[40vh] flex flex-col items-center gap-4`}>
         <div id="wait-display-header">
             <p className="text-white font-semibold text-sm">Chronomètre</p>
             <p className="text-gray-400 text-xs">{stepDescription}</p>

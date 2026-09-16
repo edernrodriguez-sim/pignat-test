@@ -28,6 +28,7 @@ export interface IHMDto {
     TT04: number;
     TT5Value: number;
     TT05: number;
+    TT08: number;
     FIC02_SP: number;
     FIC02_PV: number;
     prechauffeValue: number;

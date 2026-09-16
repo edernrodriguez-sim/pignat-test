@@ -2,8 +2,11 @@ import type { Entity, Livelink } from "@3dverse/livelink";
 import type { DefaultCameraController } from "@3dverse/livelink-react";
 import { useEffect, useRef } from "react";
 import { AnimationHelper } from "../animationHelper";
+import { ProjectConstants } from "../projectConstants";
 
 var bellCounter = 0;
+var lastBellFill = 0;
+const timeBetweenFill = 1000;
 
 /**
  * 
@@ -505,10 +508,16 @@ export function useBehaviourOnAnimationTrigger(
         const event_name_emptying = "new_bell_boiling";
 
         const onEmptyingReceived = () => {
-            bellCounter = bellCounter + 1;
-            updateMachineParam("DPIC01_PV", 0.9 * bellCounter);
-            console.log("Counter");
-            console.log(bellCounter);
+            // Ajout d'un détecteur pour limiter les doublons
+            const currentDate = new Date().getTime();
+            const canFill = (currentDate - lastBellFill > timeBetweenFill) || lastBellFill === 0;
+            if (canFill)
+            {
+                bellCounter = bellCounter + 1;
+                updateMachineParam("DPIC01_PV", ProjectConstants.PRESSURE_BY_BELL * bellCounter);
+                lastBellFill = new Date().getTime();
+                
+            }
         };
         anim.addScriptEventListener({ 
             event_map_id, 

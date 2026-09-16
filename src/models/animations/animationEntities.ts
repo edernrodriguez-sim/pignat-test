@@ -141,7 +141,11 @@ export interface AnimationEntities {
     complete_water_flow: Entity | null
     // vapeur
     vapeur_on: Entity | null
+    hide_vapeur: Entity | null
     //ARU button
     aru_in: Entity | null
     aru_out: Entity | null
+    // Echantillons
+    sample_v11: Entity | null
+    sample_v14: Entity | null
 }

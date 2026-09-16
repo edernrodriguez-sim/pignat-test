@@ -27,7 +27,8 @@ export default function ParameterFieldReflux({ parameter, onChange }: FieldProps
         <div className="flex gap-5">
             <div id="modal-reflux-left-side" className="flex flex-col gap-3">
                 <div>REFLUX (%)</div>
-                <div><input id="parameter-reflux-input" className="bg-white" value={refluxValue} max={100} type="number" step={0.01}  onChange={(e) => onChangeRefluxValue(Number(e.target.value))} /></div>
+                <div><input id="parameter-reflux-input" className="bg-white" value={refluxValue} 
+                max={100} type="number" step={0.01}  onChange={(e) => onChangeRefluxValue(Number(e.target.value))} /></div>
             </div>
 
             <div className="reflux-button-container flex flex-col gap-2">

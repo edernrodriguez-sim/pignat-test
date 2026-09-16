@@ -7,7 +7,7 @@ const myExercise: Exercise = {
   description: "Etudier les différents bilans de matière mis en jeu lors de la distillation",
   steps: [
     {
-      id: "step-0", number: 15, name: "Ordonner les températures par ordre croissant",
+      id: "step-0", name: "Ordonner les températures par ordre croissant",
       description: "",
       action: {
         type: "sort",

@@ -17,7 +17,7 @@ export function Table({ headers, rows, className = "" }: TableProps) {
         gap: 8,
         position: "absolute",
         right:"3%",
-        bottom:"25%",
+        bottom:"15%",
         minWidth:"10vw",
         zIndex: 100
         }}

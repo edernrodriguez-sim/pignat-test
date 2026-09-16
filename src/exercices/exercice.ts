@@ -87,7 +87,6 @@ export interface AnimationTrigger {
 
 export interface ExerciseStep {
   id: string;
-  number: number;
   name: string;
   description: string;
   action: StepAction;
@@ -102,6 +101,7 @@ export interface ExerciseStep {
   /** Texte à afficher si besoin pour donner des infos sur l'exercice en cours (ex: des valeurs de mesures) */
   informationsToShow?: string[];
   tableToShow? : TableDatas;
+  shouldHideTable? : boolean
 }
 
 // ─── Exercise ─────────────────────────────────────────────────────────────────

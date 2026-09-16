@@ -159,7 +159,7 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
 
   // ── Hook exercice ─────────────────────────────────────────────────────────
   // instance est passé en param — plus de useContext dans le hook
-  const { state, currentStep, onEntityClicked, onInputChange, onSortSubmit, onTrueFalseSubmit, completeCurrentStep, reset,onQuizSubmit } =
+  const { state, currentStep, onEntityClicked, onInputChange, onSortSubmit, onTrueFalseSubmit, completeCurrentStep, reset,onQuizSubmit, tableDatas } =
     useExercise(
       exercise,
       {
@@ -340,6 +340,7 @@ useEffect(() => {
           onSortSubmit = {onSortSubmit}
           onTrueFalseSubmit={onTrueFalseSubmit}
           onQuizSubmit={onQuizSubmit}
+          tableDatas={tableDatas}
         />
         {/* ── Le Provider entoure TOUT ce qui a besoin des données ───────────────
         Il reçoit :

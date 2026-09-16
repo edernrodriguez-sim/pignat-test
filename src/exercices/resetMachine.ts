@@ -15,9 +15,7 @@ export default function ResetMachine(animationEntities: AnimationEntities | null
     AnimationHelper.launchAnim(animationEntities.v7_out);
     AnimationHelper.launchAnim(animationEntities.v8_out);
     AnimationHelper.launchAnim(animationEntities.v9_out);
-    AnimationHelper.launchAnim(animationEntities.v11_out);
     AnimationHelper.launchAnim(animationEntities.v12_in);
-    AnimationHelper.launchAnim(animationEntities.v14_out);
     AnimationHelper.launchAnim(animationEntities.v15_in);
     AnimationHelper.launchAnim(animationEntities.v16_out);
     AnimationHelper.launchAnim(animationEntities.hide_bells_bulles);

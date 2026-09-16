@@ -108,7 +108,7 @@ export function ExercisePanel({
 
       {/* Steps list */}
       <ol className="ep-steps" aria-label="Étapes">
-        {exercise.steps.map((step) => {
+        {exercise.steps.map((step, index) => {
           const status = stepStatuses[step.id];
           const isActive = status === "active";
 
@@ -119,7 +119,7 @@ export function ExercisePanel({
               aria-current={isActive ? "step" : undefined}
             >
               <div className="ep-step__header">
-                <StepIcon status={status} number={step.number} />
+                <StepIcon status={status} number={index + 1} />
                 <span className="ep-step__name">{step.name}</span>
               </div>
 

@@ -20,6 +20,8 @@ export function LaunchAnimationCompleteDiscontinue({ input } : { input : AnimDis
     // 2°) Launching bac placement animation
     setTimeout(() => launchBacInAnimation(),2500);
 
+    
+
 async function launchBacInAnimation(){
     AnimationHelper.launchAnim(input.animationEntities.bac_de_retention_in);
     setTimeout(() => launchBidonV12Animation(),1000);
@@ -125,13 +127,6 @@ async function setRefluxValues(){
     setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"10", input),6500);
     setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"100", input),7000);
     setTimeout(() => validateParameterEditModal(input),8500);
-
-    // setTimeout(() => input.updateIhmDto("highlighted","refluxType"),1000);
-    // setTimeout(() => input.updateIhmDto("refluxType","MANU"),2500);
-    // setTimeout(() => input.updateIhmDto("refluxRate",1),4000);
-    // setTimeout(() => input.updateIhmDto("refluxRate",10),4500);
-    // setTimeout(() => input.updateIhmDto("refluxRate",100),5000);
-    // setTimeout(() => input.updateIhmDto("refluxRate",100),5000);
     setTimeout(() => input.setIsIHMModalVisible(false),9500);
     setTimeout(() => moveCameraToBobine(),10500);
 }
@@ -140,40 +135,43 @@ async function setRefluxValues(){
 async function moveCameraToBobine(){
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.soutirage_off), 100);
     input.cameraControllerRef.current?.setLookAt(-0.1,2.2,0.5,-0.1,2.2,0,true);
-    setTimeout(() => setP1StatusAndBoiler(), 3000);
-}
-
-async function setP1StatusAndBoiler(){
-    input.cameraControllerRef.current?.setLookAt(-0.15,1,0.6,-0.15,1,0,true);
-    setTimeout(() => input.setIsIHMModalVisible(true),1000);
-
-    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_H2_BUTTON_ID, input) ,2000);
-    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_BOOL_BUTTON_ON_ID, input) ,3000);
-    setTimeout(() => validateParameterEditModal(input) ,5000);
-    setTimeout(() => setDPICValues(),6000);
+    setTimeout(() => setDPICValues(), 3000);
 }
 
 async function setDPICValues(){
+    input.setIsIHMModalVisible(true);
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_DPIC01_BUTTON_ID, input),1000);
     setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REGULATOR_OP_MAN_INPUT_ID, input),2500);
     setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_OP_MAN_INPUT_ID, "7", input),4000);
     setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_OP_MAN_INPUT_ID, "70", input),4500);
     setTimeout(() => validateParameterEditModal(input),6500);
-    setTimeout(() => input.setIsIHMModalVisible(false),7500);
-    setTimeout(() => showBullageBouilleur(),8500);
+    setTimeout(() => setP1StatusAndBoiler(),8500);
+}
+
+async function setP1StatusAndBoiler(){
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_H2_BUTTON_ID, input) ,2000);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_BOOL_BUTTON_ON_ID, input) ,3000);
+    setTimeout(() => validateParameterEditModal(input) ,5000);
+    setTimeout(() => input.setIsIHMModalVisible(false),6000);
+    setTimeout(() => showBullageBouilleur(),6500);
 }
 
 async function showBullageBouilleur(){
-    AnimationHelper.launchAnim(input.animationEntities.vapeur_on)
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.heat_boiler),1000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.bouilleur_bullage),1000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.show_bulles_bouilleur),2500);
     setTimeout(() => input.cameraControllerRef.current?.setLookAt(0.05,1.1,0.5,-0.15,1,0,true),3500);
-    setTimeout(() => moveToDropsAndLaunchAnim(),5500);
+    setTimeout(() => showSmoke(),5500);
+}
+
+async function showSmoke(){
+    AnimationHelper.launchAnim(input.animationEntities.vapeur_on);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.2,2.25,0.4,-0.1,2.25,0,true), 2000);
+    setTimeout(() => moveToDropsAndLaunchAnim(),4000);
 }
 
 async function moveToDropsAndLaunchAnim(){
-    input.cameraControllerRef.current?.setLookAt(-0.2,2.25,0.4,-0.1,2.25,0,true);
+    
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.soutirage_off), 100);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.goutte_drop_cycle_on),1000);
     setTimeout(() => moveToBellPosition1AndLaunchAnim(),5000);
@@ -194,6 +192,7 @@ async function showIHMAndUpdateTT(){
     updateTempWithTiming("TT03",13,20,80);
     updateTempWithTiming("TT04",21,20,77.5);
     updateTempWithTiming("TT05",29,20,77.2);
+    updateTempWithTiming("TT08",29,20,22);
 }
 
 async function updateTempWithTiming(key: keyof IHMDto, duration: number, baseValue: number, targetValue : number){

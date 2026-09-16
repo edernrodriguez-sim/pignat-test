@@ -129,6 +129,7 @@ const euid_to_identifier: { [key: UUID]: keyof AnimationEntities } = {
      "98dabe7f-367f-487d-afa8-095e22ddcb9c": "postPrechauffeurTube1_fill",
      "9b67bb27-1672-488a-a851-1549bbfb174a": "complete_water_flow",
      "cdaad75e-f04f-4607-adf0-9ba2e47c234b": "vapeur_on",
+     "e670759c-6d11-471a-a9fb-4403a808b99d": "hide_vapeur",
      "dc423dd6-e543-4510-a1ff-2f0afa6d8201": "liquide_falling_bidon_1L_V15_in",
      "4caeb794-371f-4560-817b-88376869a72c": "liquide_falling_bidon_1L_V15_out",
      "7cc70a9b-1f98-4bcd-891e-e34ed5068245": "liquide_falling_bidon_1L_V12_in",
@@ -136,7 +137,11 @@ const euid_to_identifier: { [key: UUID]: keyof AnimationEntities } = {
 
      // ARU Button
      "193c4b4d-362a-47c5-b8ec-e7e209a68c6e": "aru_in",
-     "49aeadfe-546b-4545-8505-3ed4fdfe6394": "aru_out"
+     "49aeadfe-546b-4545-8505-3ed4fdfe6394": "aru_out",
+
+     // Echantillons
+     "fa4ce010-c199-4318-a62c-cafd3c042b6d": "sample_v11",
+     "5046e472-12e9-4a46-a91c-18f7a5296fe2": "sample_v14",
 
 
 };

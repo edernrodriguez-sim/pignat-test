@@ -1,21 +1,24 @@
 import { useState } from "react";
-import type { ExerciseState, ExerciseStep, InputChangeAction } from "./exercice";
+import { type ExerciseState, type ExerciseStep, type InputChangeAction, type TableDatas } from "./exercice";
 import { ExercisePanel } from "./exercicePanel";
 import { WaitStepDisplay } from "./exerciceWaitStepDisplay";
 import { SortStepDisplay } from "./exerciceSort";
 import { QuizStepDisplay } from "./quizStepDisplay";
 import { Table } from "./informationsInTable";
 
-export default function ExerciceUI({state, reset, completeCurrentStep, currentStep , handleCustomAnswer, onSortSubmit, onTrueFalseSubmit, onQuizSubmit}
+export default function ExerciceUI({state, reset, completeCurrentStep, currentStep , handleCustomAnswer, onSortSubmit, onTrueFalseSubmit, onQuizSubmit, tableDatas}
   : { state: ExerciseState, reset: () => void,
     completeCurrentStep: () => void,
     currentStep: ExerciseStep,
     handleCustomAnswer: (key: string, value: string) => void,
     onSortSubmit: (orderedIds: string[]) => Promise<void>,
     onTrueFalseSubmit: (answer: boolean) => Promise<void>,
-    onQuizSubmit: (selectedIds: string[]) => void}
+    onQuizSubmit: (selectedIds: string[]) => void,
+    tableDatas: TableDatas | undefined
+  }
 ) {
   const [answerValue, setAnswerValue] = useState("");
+
   function handleSubmit(){
     const action = currentStep.action as InputChangeAction;
     handleCustomAnswer(action.expectedFields[0].key, answerValue);
@@ -168,12 +171,12 @@ export default function ExerciceUI({state, reset, completeCurrentStep, currentSt
             onSubmit={onQuizSubmit}
           />
         )}
-      
-        { currentStep.tableToShow && currentStep.tableToShow.rows.length > 0 &&
+
+        { tableDatas && (currentStep.shouldHideTable == null || !currentStep.shouldHideTable) &&
         (
           <Table
-            headers={currentStep.tableToShow.headers}
-            rows={currentStep.tableToShow.rows}
+            headers={tableDatas.headers}
+            rows={tableDatas.rows}
           />
         )
         }
@@ -194,7 +197,7 @@ export default function ExerciceUI({state, reset, completeCurrentStep, currentSt
                 gap: 8,
                 position: "absolute",
                 right:"3%",
-                bottom:"25%",
+                bottom:"40%",
                 minWidth:"10vw",
                 zIndex: 100
               }}

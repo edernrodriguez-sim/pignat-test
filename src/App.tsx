@@ -176,7 +176,6 @@ function SceneViewer({username} : {username?: string}) {
 
 
    function updateMachineParam(key : string, value: string | number | boolean) {
-    console.log("updateMachineParam");
     setMachineParams((prev) => {          // ← prev toujours à jour
       let result = prev;
       result = result.map((p) =>
@@ -184,8 +183,6 @@ function SceneViewer({username} : {username?: string}) {
       );
       return result;
     });
-    console.log("machineParams");
-    console.log(machineParams);
   }
   // Ferme toutes les vannes en lançant leur animation de fermeture
   const closeAllVannes = useCallback(async () => {
@@ -200,9 +197,7 @@ function SceneViewer({username} : {username?: string}) {
     AnimationHelper.launchAnim(animationEntities.v7_out);
     AnimationHelper.launchAnim(animationEntities.v8_out);
     AnimationHelper.launchAnim(animationEntities.v9_out);
-    AnimationHelper.launchAnim(animationEntities.v11_out);
     AnimationHelper.launchAnim(animationEntities.v12_out);
-    AnimationHelper.launchAnim(animationEntities.v14_out);
     AnimationHelper.launchAnim(animationEntities.v15_out);
     AnimationHelper.launchAnim(animationEntities.v16_out);
 
@@ -216,6 +211,7 @@ function SceneViewer({username} : {username?: string}) {
       return;
     }
     closeAllVannes();
+    AnimationHelper.launchAnim(animationEntities.hide_vapeur);
   }, [animationEntities, closeAllVannes]);
 
   // Initialisation de la scene, lancement des animations et récupération des infos de la scene
@@ -232,6 +228,7 @@ function SceneViewer({username} : {username?: string}) {
 
       const entities = await fetchAnimationEntities(instance);
       setAnimationEntities(entities);
+
       console.log("!!!!!! SceneViewer - init done");
       setCanStartMqt(true);
       setTimeout(() => {
