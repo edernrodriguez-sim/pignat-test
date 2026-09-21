@@ -165,7 +165,19 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
       {
         onStepComplete:    (step, i) => console.log(`✅ Étape ${i + 1} :`, step.name),
         onExerciseComplete: (ex)    => console.log(`🎉 Terminé :`, ex.name),
-        launchTemperatureSimulation: onLaunchTemperatureSimulation
+        launchTemperatureSimulation: onLaunchTemperatureSimulation,
+        onParametersChange: (updated) => {
+          setMachineParams((prev) => {          // ← prev toujours à jour
+            let result = prev;
+            updated.forEach((u) => {
+              result = result.map((p) =>
+                p.key === u.key ? { ...p, value: u.value } : p
+              );
+            });
+            return result;
+          });
+        }
+
       }
     );
 

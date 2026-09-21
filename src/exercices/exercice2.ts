@@ -7,7 +7,7 @@ const TI2Value = 83.4;
 const TI3Value = 80;
 const TI4Value = 77.4;
 const TI5Value = 77.2;
-const TI6Value = 77.1;
+const TI6Value = 80;
 const TI7Value = 20;
 const TI8Value = 22;
 
@@ -43,7 +43,7 @@ const myExercise: Exercise = {
       id: "step-3",  name: "Ouvrir vanne V16",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V16, label: "Cliquez sur la vanne dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b" }],
+      onActionAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b", vanneKey:"V16", newVanneStatus:true }],
       //informationsToShow: ["Volume relevé : 5L"]
     },
     {
@@ -63,7 +63,7 @@ const myExercise: Exercise = {
       id: "step-7",  name: "Ouvrir vanne V4",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V4, label: "Cliquez sur la vanne V4 dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v4_in", entityId: "6786201f-a452-43f8-951a-be102de62210" }],
+      onActionAnimation: [{ animationName: "v4_in", entityId: "6786201f-a452-43f8-951a-be102de62210", vanneKey:"V4", newVanneStatus:true }],
     },
     {
       id: "step-8",  name: "Démarrer la pompe",

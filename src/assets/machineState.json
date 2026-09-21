@@ -158,19 +158,19 @@
     {
         "Key":"V2",
         "Label":"V2",
-        "Value":true,
+        "Value":false,
         "Type":"vanne"
     },
     {
         "Key":"V3",
         "Label":"V3",
-        "Value":true,
+        "Value":false,
         "Type":"vanne"
     },
     {
         "Key":"V4",
         "Label":"V4",
-        "Value":true,
+        "Value":false,
         "Type":"vanne"
     },
     {
@@ -194,19 +194,19 @@
     {
         "Key":"V8",
         "Label":"V8",
-        "Value":true,
+        "Value":false,
         "Type":"vanne"
     },
     {
         "Key":"V9",
         "Label":"V9",
-        "Value":true,
+        "Value":false,
         "Type":"vanne"
     },
     {
         "Key":"V11",
         "Label":"V11",
-        "Value":true,
+        "Value":false,
         "Type":"vanne"
     },
     {
@@ -224,13 +224,13 @@
     {
         "Key":"V15",
         "Label":"V15",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
         "Key":"V16",
         "Label":"V16",
-        "Value":true,
+        "Value":false,
         "Type":"vanne"
     },
     {

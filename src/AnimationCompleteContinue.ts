@@ -272,11 +272,22 @@ async function moveToBellPosition1AndLaunchAnim(){
     setTimeout(() => showIHMAndUpdateTT(),1000);
     input.cameraControllerRef.current?.setLookAt(-0.1,1.25,0.5,-0.1,1.25,0,true);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.show_bells_bulles_one_by_one),1000);
-    setTimeout(() => input.cameraControllerRef.current?.setLookAt(0.45,2.4,1.1,0.45,2.4,0,true),8000);
-    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.1,1.6,0.5,-0.1,1.6,0,true),12000);
-    setTimeout(() => moveToDropsAndLaunchAnim(),14000);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.1,1.6,0.5,-0.1,1.6,0,true),14000);
+    setTimeout(() => setDPICValues2(),17000);
 }
 
+async function setDPICValues2(){
+    input.setIsIHMModalVisible(true);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_DPIC01_BUTTON_ID, input),1000);
+    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REGULATOR_AUTO_BUTTON_ID, input),2500);
+    setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, input),2500);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "1", input),4000);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "14", input),4500);
+    setTimeout(() =>  validateParameterEditModal(input) ,6000);
+    setTimeout(() =>  input.setIsIHMModalVisible(false) ,8000);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(0.45,2.4,1.1,0.45,2.4,0,true),9000);
+    setTimeout(() => moveToDropsAndLaunchAnim(),15000);
+}
 
 
 async function moveToDropsAndLaunchAnim(){
@@ -291,6 +302,7 @@ async function showIHMAndUpdateTT(){
     updateTempWithTiming("TT03",13,20,80);
     updateTempWithTiming("TT04",21,20,77.5);
     updateTempWithTiming("TT05",29,20,77.2);
+    updateTempWithTiming("TT06",29,20,77.4);
     updateTempWithTiming("TT08",29,20,22);
 }
 
@@ -334,22 +346,11 @@ async function SetH1_ON(){
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_H1_BUTTON_ID, input) ,1000);
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_BOOL_BUTTON_ON_ID, input) ,2000);
     setTimeout(() =>  validateParameterEditModal(input) ,4000);
-    setTimeout(() => setDPICValues2(),6000);
+    setTimeout(() => setRefluxValues2(),6000);
 }
 
 
 
-async function setDPICValues2(){
-    input.setIsIHMModalVisible(true);
-    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_DPIC01_BUTTON_ID, input),1000);
-    setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REGULATOR_AUTO_BUTTON_ID, input),2500);
-    setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, input),2500);
-    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "1", input),4000);
-    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "14", input),4500);
-    setTimeout(() =>  validateParameterEditModal(input) ,6000);
-    
-    setTimeout(() => setRefluxValues2(),4000);
-}
 async function setRefluxValues2(){
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_EV_MODE_BUTTON_ID, input),2500);
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REFLUX_BUTTON_CYCLE_ID, input),4000);

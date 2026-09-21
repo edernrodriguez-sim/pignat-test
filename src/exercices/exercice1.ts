@@ -7,7 +7,6 @@ const TI2Value = 82.6;
 const TI3Value = 78.5;
 const TI4Value = 77.7;
 const TI5Value = 77.4;
-const TI6Value = 77.1;
 const TI7Value = 24;
 const TI8Value = 26;
 
@@ -48,7 +47,7 @@ const myExercise: Exercise = {
       id: "step-4",  name: "Ouvrir vanne V16",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V16, label: "Cliquez sur la vanne dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b" }],
+      onActionAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b", vanneKey:"V16", newVanneStatus:true }],
   
     },
     {
@@ -78,7 +77,6 @@ const myExercise: Exercise = {
       { key: "TT03", value: TI3Value, time: 30 },
       { key: "TT04", value: TI4Value, time: 30 }, 
       { key: "TT05", value: TI5Value, time: 30 }, 
-      { key: "TT06", value: TI6Value, time: 30 }, 
       { key: "TT07", value: TI7Value, time: 30 }, 
       { key: "TT08", value: TI8Value, time: 30 }, 
     ]

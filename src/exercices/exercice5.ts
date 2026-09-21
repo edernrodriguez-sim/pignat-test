@@ -37,7 +37,7 @@ const myExercise: Exercise = {
       id: "step-3",  name: "Ouvrir vanne V16",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V16, label: "Cliquez sur la vanne dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b" }]
+      onActionAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b", vanneKey:"V16", newVanneStatus:true }]
     },
     {
       id: "step-5",  name: "Réglage du débit d'eau",
@@ -56,9 +56,8 @@ const myExercise: Exercise = {
       id: "step-137",  name: "Ouvrir vanne V4",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V4, label: "Cliquez sur la vanne V4 dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v4_in", entityId: "6786201f-a452-43f8-951a-be102de62210" }],
+      onActionAnimation: [{ animationName: "v4_in", entityId: "6786201f-a452-43f8-951a-be102de62210", vanneKey: "V4", newVanneStatus: true }],
     },
-    
     {
       id: "step-1338",  name: "Démarrer la pompe",
       description: "Démarrer la pompe en appuyant sur le bouton P1 sur la dalle tactile et enclencher le bouton.",
@@ -72,8 +71,6 @@ const myExercise: Exercise = {
       action: { type: "inputChange", expectedFields:[{key: "TTC06_SP", value: 80}],
       label: "Entrez 80 dans le champ SP" },
     },
-
-
     {
       id: "step-1605",  name: "Démarrer la préchauffe",
       description: "Ouvrir l'IHM et ouvrir la fenêtre H1 et cliquer sur le bouton ON.",
@@ -99,8 +96,8 @@ const myExercise: Exercise = {
       { key: "TT03", value: 78, time: 30 },
       { key: "TT04", value: 77.4, time: 30 }, 
       { key: "TT05", value: 77.2, time: 30 }, 
-      { key: "TT06", value: 77.1, time: 30 }, 
-      { key: "TT07", value: 23.9, time: 30 }, 
+      { key: "TT06", value: 80, time: 30 }, 
+      { key: "TT07", value: 24, time: 30 }, 
       { key: "TT08", value: 26, time: 30 }, 
     ]
     },
@@ -108,7 +105,7 @@ const myExercise: Exercise = {
       id: "step-1325345334",  name: "Ouvrir vanne V3",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V3, label: "Cliquez sur la vanne V3 dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v3_in", entityId: "a2664f3b-c99a-46cd-b4d6-9ce77d5f6cbd" },
+      onActionAnimation: [{ animationName: "v3_in", entityId: "a2664f3b-c99a-46cd-b4d6-9ce77d5f6cbd" , vanneKey:"V3", newVanneStatus:true },
         { animationName: "tuyau_prechauffage_plateau_2_1", entityId: "09918f80-4efb-4cff-b0f5-7043103b60cf" },
         { animationName: "tuyau_prechauffage_plateau_2", entityId: "d66baaf2-1fb4-4541-a455-e3881b417217" }
       ],
@@ -117,7 +114,7 @@ const myExercise: Exercise = {
       id: "step-132456456",  name: "Fermer vanne V4",
       description: "Cliquez sur la vanne pour la fermer.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V4, label: "Cliquez sur la vanne V4 dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v4_out", entityId: "10ec4acc-9df7-4a88-8ff6-0c39288e0c7e" },
+      onActionAnimation: [{ animationName: "v4_out", entityId: "10ec4acc-9df7-4a88-8ff6-0c39288e0c7e", vanneKey:"V4", newVanneStatus:false },
         { animationName: "vidage_tuyau_post_prechauffage_3", entityId: "bb6d754d-6332-4f8d-96fc-627e061c9750" },
         { animationName: "vidage_tuyau_prechauffage_plateau_1", entityId: "265ed146-5a04-44ae-a407-b672c9e6b9e3" }
       ],
@@ -126,7 +123,7 @@ const myExercise: Exercise = {
       id: "step-1325345348",  name: "Ouvrir vanne V8",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V8, label: "Cliquez sur la vanne V8 dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v8_in", entityId: "d62102a3-9a75-46f1-ae67-a8e70f6509a6" },
+      onActionAnimation: [{ animationName: "v8_in", entityId: "d62102a3-9a75-46f1-ae67-a8e70f6509a6", vanneKey:"V8", newVanneStatus:true },
         { animationName: "tuyau_inf_bouilleur_V8", entityId: "a47e5f0d-7742-4ec0-b858-f842b4272c5f" },
         { animationName: "tuyau_inf_V8_bidon_V12", entityId: "f22bd9ed-9103-45a0-b127-524ee1f8de7f" }
       ],
@@ -172,7 +169,7 @@ const myExercise: Exercise = {
       description: "Cliquer sur la vanne V15.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V15, label: "Cliquez sur la vanne V15 dans la scène 3D" },
       onCompleteAnimation: [
-        { animationName: "v15_out", entityId: "a7c4ab57-8777-4905-b48a-136d321d438a" },
+        { animationName: "v15_out", entityId: "a7c4ab57-8777-4905-b48a-136d321d438a", vanneKey:"V15", newVanneStatus:false },
         { animationName: "fill_bidon_1L_V15", entityId: "c8470577-4e01-4bf0-94f7-ba91adaab138" }
       ],
       tableToShow: {
@@ -187,14 +184,14 @@ const myExercise: Exercise = {
       
       name: "Attendre 5 min",
       description: "Temps d'attente acceléré.",
-      action: { type: "wait", realDuration: 10, displayDuration: 300 },
+      action: { type: "wait", realDuration: 10, displayDuration: 240 },
     },
     {
       id: "step-24320",  name: "Ouvrir la vanne de vidange du distillat",
       description: "Cliquer sur la vanne V15.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V15, label: "Cliquez sur la vanne V15 dans la scène 3D" },
       onCompleteAnimation: [
-        { animationName: "v15_in", entityId: "0d756bb1-2280-4cd9-9dc0-599759a0205a" },
+        { animationName: "v15_in", entityId: "0d756bb1-2280-4cd9-9dc0-599759a0205a", vanneKey:"V15", newVanneStatus:true },
         { animationName: "empty_bidon_1L_V15", entityId: "3d87a251-88a8-49eb-bb72-2f954a6cb25e" },
         { animationName: "fill_bidon_10L_V15", entityId: "82e192d7-266e-4b5c-9cb4-aa377eda4f2d" }
       ],
@@ -245,7 +242,7 @@ const myExercise: Exercise = {
       description: "Cliquer sur la vanne V15.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V15, label: "Cliquez sur la vanne V15 dans la scène 3D" },
       onCompleteAnimation: [
-        { animationName: "v15_out", entityId: "a7c4ab57-8777-4905-b48a-136d321d438a" },
+        { animationName: "v15_out", entityId: "a7c4ab57-8777-4905-b48a-136d321d438a", vanneKey:"V15", newVanneStatus:false },
         { animationName: "fill_bidon_1L_V15", entityId: "c8470577-4e01-4bf0-94f7-ba91adaab138" }
       ],
       tableToShow: {
@@ -260,14 +257,14 @@ const myExercise: Exercise = {
       
       name: "Attendre 5 min",
       description: "Temps d'attente acceléré.",
-      action: { type: "wait", realDuration: 10, displayDuration: 300 },
+      action: { type: "wait", realDuration: 10, displayDuration: 240 },
     },
     {
       id: "step-27",  name: "Ouvrir la vanne de vidange du distillat",
       description: "Cliquer sur la vanne V15.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V15, label: "Cliquez sur la vanne V15 dans la scène 3D" },
       onCompleteAnimation: [
-        { animationName: "v15_in", entityId: "0d756bb1-2280-4cd9-9dc0-599759a0205a" },
+        { animationName: "v15_in", entityId: "0d756bb1-2280-4cd9-9dc0-599759a0205a", vanneKey:"V15", newVanneStatus:true },
         { animationName: "empty_bidon_1L_V15", entityId: "3d87a251-88a8-49eb-bb72-2f954a6cb25e" },
         { animationName: "fill_bidon_10L_V15", entityId: "82e192d7-266e-4b5c-9cb4-aa377eda4f2d" }
       ],
@@ -318,7 +315,7 @@ const myExercise: Exercise = {
       description: "Cliquer sur la vanne V15.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V15, label: "Cliquez sur la vanne V15 dans la scène 3D" },
       onCompleteAnimation: [
-        { animationName: "v15_out", entityId: "a7c4ab57-8777-4905-b48a-136d321d438a" },
+        { animationName: "v15_out", entityId: "a7c4ab57-8777-4905-b48a-136d321d438a", vanneKey:"V15", newVanneStatus:false },
         { animationName: "fill_bidon_1L_V15", entityId: "c8470577-4e01-4bf0-94f7-ba91adaab138" }
       ],
       tableToShow: {
@@ -333,14 +330,14 @@ const myExercise: Exercise = {
       
       name: "Attendre 5 min",
       description: "Temps d'attente acceléré.",
-      action: { type: "wait", realDuration: 10, displayDuration: 300 },
+      action: { type: "wait", realDuration: 10, displayDuration: 240 },
     },
     {
       id: "step-24323",  name: "Ouvrir la vanne de vidange du distillat",
       description: "Cliquer sur la vanne V15.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V15, label: "Cliquez sur la vanne V15 dans la scène 3D" },
       onCompleteAnimation: [
-        { animationName: "v15_in", entityId: "0d756bb1-2280-4cd9-9dc0-599759a0205a" },
+        { animationName: "v15_in", entityId: "0d756bb1-2280-4cd9-9dc0-599759a0205a", vanneKey:"V15", newVanneStatus:true },
         { animationName: "empty_bidon_1L_V15", entityId: "3d87a251-88a8-49eb-bb72-2f954a6cb25e" },
         { animationName: "fill_bidon_10L_V15", entityId: "82e192d7-266e-4b5c-9cb4-aa377eda4f2d" }
       ],

@@ -12,6 +12,7 @@ import { AnimationHelper } from "../animationHelper";
 import type { Livelink } from "@3dverse/livelink";
 import { LivelinkContext } from "@3dverse/livelink-react";
 import type { TempTarget } from "../temperatureRandomizer/temperatureSimulator";
+import type { MachineParameterUpdate } from "../models/exercices/machineParameterUpdate";
 
 // ─── 3DVerse API shim ─────────────────────────────────────────────────────────
 // Adaptez selon votre version de l'API 3DVerse
@@ -22,6 +23,7 @@ declare const SDK: {
 
 let entityLivelink: Livelink | null;
 
+
 async function playAnimation(trigger: AnimationTrigger) {
   try {
     
@@ -29,7 +31,6 @@ async function playAnimation(trigger: AnimationTrigger) {
       
       const root_animations = await entityLivelink.scene.findEntity({ entity_uuid: trigger.entityId, });
     AnimationHelper.launchAnim(root_animations);
-    
   } catch (e) {
     console.warn("[Exercise] Impossible de jouer l'animation :", e);
   }
@@ -39,10 +40,11 @@ interface UseExerciseOptions {
   onStepComplete?: (step: ExerciseStep, stepIndex: number) => void;
   onExerciseComplete?: (exercise: Exercise) => void;
   launchTemperatureSimulation?: (t:TempTarget[]) => void;
+  onParametersChange?: (updated: MachineParameterUpdate[]) => void;
 }
 
 export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}, ) {
-  const { onStepComplete, onExerciseComplete } = options;
+  const { onStepComplete, onExerciseComplete, onParametersChange } = options;
   const { instance } = useContext(LivelinkContext);
   entityLivelink = instance;
   const [tableDatas, setTableDatas] = useState<TableDatas>();
@@ -63,6 +65,11 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
 
   // ── Validation interne ────────────────────────────────────────────────────
 
+  const onAnimation = (input: AnimationTrigger) => {
+    if (input.vanneKey != null && input.newVanneStatus != null && input.vanneKey.length > 0 )
+      onParametersChange?.([{key:input.vanneKey, value: input.newVanneStatus}]) 
+  }
+
   const completeCurrentStep = useCallback(async () => {
     const { currentStepIndex, exercise: ex, isCompleted } = stateRef.current;
     if (isCompleted) return;
@@ -72,8 +79,10 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
 
     if (currentStep.onCompleteAnimation && currentStep.onCompleteAnimation.length > 0) {
       currentStep.onCompleteAnimation.forEach(async (anim) => {
-      await playAnimation(anim);
-      });
+        await playAnimation(anim);
+        onAnimation(anim);
+      }
+    );
     }
 
     if (currentStep.startTemperatureOnComplete 
@@ -120,6 +129,7 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
     if (step.onActionAnimation && step.onActionAnimation.length > 0){
       step.onActionAnimation.forEach(async (anim) => {
         await playAnimation(anim);
+        onAnimation(anim);
       })
     }
 
@@ -144,9 +154,20 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
     // Pour chaque champ nécessaire à l'exercice, on check s'il y a une valeur équivalente existante et qui a la bonne valeur
     // Tous les champs attendus doivent être présents ET avoir la bonne valeur
     const isValid = step.action.expectedFields.every((f) => {
-      if (!submittedMap.has(f.key)) return false;           // champ manquant → invalide
-      
-      return cleanString(String(submittedMap.get(f.key))) === cleanString(String(f.value)); // valeur incorrecte → invalide
+      const submitted = submittedMap.get(f.key);
+      if (submitted === undefined) return false;
+
+      // Priorité à la fourchette si définie
+      if (f.min !== undefined || f.max !== undefined) {
+        const num = Number(submitted);
+        if (isNaN(num)) return false;
+        if (f.min !== undefined && num < f.min) return false;
+        if (f.max !== undefined && num > f.max) return false;
+        return true;
+      }
+
+      // Sinon valeur exacte
+      return f.value === undefined || String(submitted) === String(f.value);
     });
 
     if (!isValid) return;
@@ -221,14 +242,4 @@ export function useExercise(exercise: Exercise, options: UseExerciseOptions = {}
   const currentStep = state.exercise.steps[state.currentStepIndex] ?? null;
 
   return { state, currentStep, onEntityClicked, onInputChange, onSortSubmit, onTrueFalseSubmit, completeCurrentStep, reset, onQuizSubmit, tableDatas };
-}
-
-
-/**
- * Nettoie la chaine de caractère donnée pour supprimer les espaces et les underscores
- * @param input 
- * @returns 
- */
-function cleanString(input: string){
-  return input.toLocaleUpperCase().replace(/ /g, '').replace(/_/g,"")
 }

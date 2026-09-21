@@ -69,7 +69,9 @@ export interface TableDatas {
 
 export interface SavedField {
   key: string;
-  value: string | number | boolean;
+  value?: string | number | boolean;  // valeur exacte (optionnel si range défini)
+  min?: number;                        // borne basse
+  max?: number;  
 }
 
 export type StepAction = Click3DAction | InputChangeAction | WaitAction | SortAction | TrueFalseAction | QuizAction;
@@ -81,6 +83,8 @@ export interface AnimationTrigger {
   animationName: string;
   /** Sur quelle id d'entité jouer l'animation */
   entityId?: string;
+  vanneKey?: string;
+  newVanneStatus?: boolean;
 }
 
 // ─── Step ────────────────────────────────────────────────────────────────────
