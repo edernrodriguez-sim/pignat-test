@@ -110,6 +110,8 @@ export function useBehaviourOnAnimationTrigger(
         const event_name = "soutirage_on";
 
         const onAnimEnd = () => {
+            
+            updateMachineParam("EV01", true);
             isSoutirageOn.current = true;
         };
         soutirage_on.addScriptEventListener({ 
@@ -135,6 +137,7 @@ export function useBehaviourOnAnimationTrigger(
         const event_name = "soutirage_off";
 
         const onAnimEnd = () => {
+            updateMachineParam("EV01", false);
             isSoutirageOn.current = false;
         };
 

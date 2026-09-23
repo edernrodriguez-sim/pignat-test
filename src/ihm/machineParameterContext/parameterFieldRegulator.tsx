@@ -66,9 +66,9 @@ export default function ParameterFieldRegulator({ regulatorPrefix, parameter,  o
             onCustomChange("OP",newValue);
         }
         // S'il y a un changement de SP et qu'on est en mode AUTO PV prend la même valeur
-        if (autoMode && key === "SP"){
-            onCustomChange("PV",newValue);
-        }
+        // if (autoMode && key === "SP"){
+        //     onCustomChange("PV",newValue);
+        // }
 
 
         setDrafts((prev) => 

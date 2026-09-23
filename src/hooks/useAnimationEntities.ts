@@ -114,6 +114,8 @@ const euid_to_identifier: { [key: UUID]: keyof AnimationEntities } = {
      "84126552-9ba1-44dc-810c-e5763a90cd88": "tube_bidon20L_to_P1",
     // Tube de la pompe P1 vers prechauffeur
      "4b183b2e-9cb8-46c6-a48e-a89eab69c242": "tube_P1_to_prechauffe",
+    // Prechauffage complet avec tubes
+    "4980de47-8ac0-41b7-9edf-8e63a4331411": "complete_fill_from_tubes_to_V4",
     // Bobine de soutirage
      "4d51a2b8-7ba6-434f-8725-9d47c38108a3": "soutirage_on",
      "8bcca0bb-7b80-4175-b935-1a50e78c38f6": "soutirage_off",

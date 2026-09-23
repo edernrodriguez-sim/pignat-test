@@ -79,6 +79,7 @@ export interface AnimationEntities {
     tube_bidon20L_to_P1: Entity | null
     // Tube de la pompe P1 vers prechauffeur
     tube_P1_to_prechauffe: Entity | null
+    complete_fill_from_tubes_to_V4: Entity | null
     // Autre
     tubes: Entity | null
     matterGoingDown: Entity | null

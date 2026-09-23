@@ -43,7 +43,7 @@ const myExercise: Exercise = {
       id: "step-3",  name: "Ouvrir vanne V16",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V16, label: "Cliquez sur la vanne dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b", vanneKey:"V16", newVanneStatus:true }],
+      onCompleteAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b", vanneKey:"V16", newVanneStatus:true }],
       //informationsToShow: ["Volume relevé : 5L"]
     },
     {
@@ -51,7 +51,11 @@ const myExercise: Exercise = {
       description: "Entrez la valeur de débit sur 200 l/H",
       action: { type: "inputChange", expectedFields:[{key: "FIC02_SP", value: "200"}],
       label: "Entrez 200 dans le champ de débit" },
-      onCompleteAnimation: [{ animationName: "complete_water_flow", entityId: "9b67bb27-1672-488a-a851-1549bbfb174a" }]
+      onCompleteAnimation: [{ animationName: "complete_water_flow", entityId: "9b67bb27-1672-488a-a851-1549bbfb174a" }],
+      startTemperatureOnComplete: true,
+      targetTemperatures: [
+      { key: "FIC02_PV", value: 200, time: 5 },
+    ]
     },
     {
       id: "step-6",  name: "Régler le pourcentage de course du piston",
@@ -63,14 +67,15 @@ const myExercise: Exercise = {
       id: "step-7",  name: "Ouvrir vanne V4",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V4, label: "Cliquez sur la vanne V4 dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v4_in", entityId: "6786201f-a452-43f8-951a-be102de62210", vanneKey:"V4", newVanneStatus:true }],
+      onCompleteAnimation: [{ animationName: "v4_in", entityId: "6786201f-a452-43f8-951a-be102de62210", vanneKey:"V4", newVanneStatus:true }],
     },
     {
       id: "step-8",  name: "Démarrer la pompe",
       description: "Démarrer la pompe en appuyant sur le bouton P1 sur la dalle tactile et enclencher le bouton.",
       action: { type: "inputChange", expectedFields:[{key: "P1", value: true}],
       label: "Entrez 200 dans le champ de débit" },
-      onCompleteAnimation: [{ animationName: "complete_fill_from_V4", entityId: "4b8d6998-d98c-4f75-8c63-0e6066e0bec4" }],
+      onCompleteAnimation: [{ animationName: "complete_fill_from_tubes_to_V4", entityId: "4980de47-8ac0-41b7-9edf-8e63a4331411" }
+      ],
     },
     {
       id: "step-9",  name: "Mettre la température de préchauffe à 80°c",
@@ -83,6 +88,10 @@ const myExercise: Exercise = {
       description: "Démarrer la préchauffe en appuyant sur le bouton H1 sur la dalle tactile et enclencher le bouton.",
       action: { type: "inputChange", expectedFields:[{key: "H1", value: true}],
       label: "Cocher la case de H1" },
+      startTemperatureOnComplete: true,
+       targetTemperatures: [
+      { key: "TT06", value: TI6Value, time: 10 },
+    ]
     },
 
     {
@@ -104,10 +113,36 @@ const myExercise: Exercise = {
       { key: "TT03", value: TI3Value, time: 30 },
       { key: "TT04", value: TI4Value, time: 30 }, 
       { key: "TT05", value: TI5Value, time: 30 }, 
-      { key: "TT06", value: TI6Value, time: 30 }, 
       { key: "TT07", value: TI7Value, time: 30 }, 
       { key: "TT08", value: TI8Value, time: 30 }, 
     ]
+    },
+    {
+      id: "step-132534534",  name: "Ouvrir vanne V3",
+      description: "Cliquez sur la vanne pour l'ouvrir.",
+      action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V3, label: "Cliquez sur la vanne V3 dans la scène 3D" },
+      onCompleteAnimation: [{ animationName: "v3_in", entityId: "a2664f3b-c99a-46cd-b4d6-9ce77d5f6cbd", vanneKey:"V3", newVanneStatus:true },
+        { animationName: "tuyau_prechauffage_plateau_2_1", entityId: "09918f80-4efb-4cff-b0f5-7043103b60cf" },
+        { animationName: "tuyau_prechauffage_plateau_2", entityId: "d66baaf2-1fb4-4541-a455-e3881b417217" }
+      ],
+    },
+    {
+      id: "step-132456456",  name: "Fermer vanne V4",
+      description: "Cliquez sur la vanne pour la fermer.",
+      action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V4, label: "Cliquez sur la vanne V4 dans la scène 3D" },
+      onCompleteAnimation: [{ animationName: "v4_out", entityId: "10ec4acc-9df7-4a88-8ff6-0c39288e0c7e", vanneKey:"V4", newVanneStatus:false },
+        { animationName: "vidage_tuyau_post_prechauffage_3", entityId: "bb6d754d-6332-4f8d-96fc-627e061c9750" },
+        { animationName: "vidage_tuyau_prechauffage_plateau_1", entityId: "265ed146-5a04-44ae-a407-b672c9e6b9e3" }
+      ],
+    },
+    {
+      id: "step-1325345348",  name: "Ouvrir vanne V8",
+      description: "Cliquez sur la vanne pour l'ouvrir.",
+      action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V8, label: "Cliquez sur la vanne V8 dans la scène 3D" },
+      onCompleteAnimation: [{ animationName: "v8_in", entityId: "d62102a3-9a75-46f1-ae67-a8e70f6509a6", vanneKey:"V8", newVanneStatus:true },
+        { animationName: "tuyau_inf_bouilleur_V8", entityId: "a47e5f0d-7742-4ec0-b858-f842b4272c5f" },
+        { animationName: "tuyau_inf_V8_bidon_V12", entityId: "f22bd9ed-9103-45a0-b127-524ee1f8de7f" }
+      ],
     },
     {
       id: "step-198",  name: "Fixer l'OUTPUT de TI5 sur 66.6%",

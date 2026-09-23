@@ -36,5 +36,9 @@ export interface IHMDto {
     dpic: number;
     input:MachineParameter[];
     FIC02_OP_MAN: string;
+    V16: boolean;
+    V8: boolean;
+    V4: boolean;
+    V3: boolean;
     onClose: () => void;
 }

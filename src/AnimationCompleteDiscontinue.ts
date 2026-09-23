@@ -161,7 +161,9 @@ async function showBullageBouilleur(){
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.bouilleur_bullage),1000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.show_bulles_bouilleur),2500);
     setTimeout(() => input.cameraControllerRef.current?.setLookAt(0.05,1.1,0.5,-0.15,1,0,true),3500);
-    setTimeout(() => showSmoke(),5500);
+    setTimeout(() => input.cameraControllerRef.current?.setLookAt(-0.1,0.7,1,-0.1,0.7,0,true),5000);
+    setTimeout(() => updateTempWithTiming("TT01",18,20,84.2) ,6000);
+    setTimeout(() => showSmoke(),7500);
 }
 
 async function showSmoke(){

@@ -84,6 +84,7 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
 
       setTimeout(() => {
         setAnimationEntities(entities);
+        console.log(entities);
         ResetMachine(entities);
         
       }, (1000));
@@ -277,7 +278,7 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
         }
         {canShowForceTemperature && 
           <div onClick={forceEndTemperatureSimulation} className={`absolute right-[40vw] bottom-[3vh] bg-gray-100 rounded-lg shadow-2xl p-4 place-content-center`}>
-            <button>Terminer la simulation des températures</button>
+            <button>Terminer la simulation de valeur</button>
           </div>
         }
         {isQRCodeModalOpen && <QRModal url={QR_URL} onClose={() => setIsQRCodeModalOpen(false)} />}

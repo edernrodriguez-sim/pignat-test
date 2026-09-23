@@ -47,7 +47,7 @@ const myExercise: Exercise = {
       id: "step-4",  name: "Ouvrir vanne V16",
       description: "Cliquez sur la vanne pour l'ouvrir.",
       action: { type: "click3D", entityTag: ENTITY_TAG_LIST.V16, label: "Cliquez sur la vanne dans la scène 3D" },
-      onActionAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b", vanneKey:"V16", newVanneStatus:true }],
+      onCompleteAnimation: [{ animationName: "v16_in", entityId: "2708134b-9fc3-4354-aca2-2900f5c8443b", vanneKey:"V16", newVanneStatus:true }],
   
     },
     {
@@ -55,7 +55,11 @@ const myExercise: Exercise = {
       description: "Entrez la valeur de débit sur 200 l/H",
       action: { type: "inputChange", expectedFields:[{key: "FIC02_SP", value: "200"}],
       label: "Entrez 200 dans le champ de débit" },
-      onCompleteAnimation: [{ animationName: "complete_water_flow", entityId: "9b67bb27-1672-488a-a851-1549bbfb174a" }]
+      onCompleteAnimation: [{ animationName: "complete_water_flow", entityId: "9b67bb27-1672-488a-a851-1549bbfb174a" }],
+      startTemperatureOnComplete: true,
+      targetTemperatures: [
+      { key: "FIC02_PV", value: 200, time: 5 },
+    ]
     },
     
     {

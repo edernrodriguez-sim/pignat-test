@@ -111,7 +111,7 @@ export function IhmViewer({ datas, callClose }: { datas:MachineParameter[],  cal
 
       {/* TTC06_PV */}
         <div
-          key="TTC06_PV"
+          key="TT06"
           className="absolute"
           style={{
             left: `16.9%`,
@@ -119,7 +119,7 @@ export function IhmViewer({ datas, callClose }: { datas:MachineParameter[],  cal
             transform: "translate(-50%, -50%)",
           }}
         >
-            <IhmValueBadge value={datas.filter(k => k.key === "TTC06_PV")[0].value} w={undefined} h={undefined} isRound={false} />
+            <IhmValueBadge value={datas.filter(k => k.key === "TT06")[0].value} w={undefined} h={undefined} isRound={false} />
         </div>
 
       {/* TTC06_SP */}
