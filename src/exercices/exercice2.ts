@@ -155,12 +155,10 @@ const myExercise: Exercise = {
       description: "Ouvrir l'IHM et ouvrir la fenêtre EV01 et cliquer sur Cycle .",
       action: { type: "inputChange", expectedFields:[{key: "EV_MODE", value: 1}],
       label: "" },
+      onCompleteAnimation: [
+        { animationName: "soutirage_cycle", entityId: "cae5c9eb-5985-4c6b-b576-484092fba126"}
+      ]
     },
-
-
-
-
-    
     {
       id: "step-916",  name: "Relevé de température TT01",
       description: "Indiquer la valeur de température du bouilleur",

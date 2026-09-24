@@ -15,6 +15,7 @@ export function LaunchAnimationCompleteContinue({ input } : { input : AnimDiscon
     // // 2°) Launching bac placement animation
     setTimeout(() => launchBacInAnimation(),1500);
     
+    
 
 async function launchBacInAnimation(){
     AnimationHelper.launchAnim(input.animationEntities.bac_de_retention_in);
@@ -96,6 +97,7 @@ async function moveToSecondWaterPosition(){
 async function moveToV4AndOpen(){
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(-0.4,1.4,0.6,-0.4,1.4,0,true),500);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v4_in),1500);
+    setTimeout(() => input.updateIhmDto("V4",true),1500);
     setTimeout(() => moveCameraToIHMAndChangeP1(),4000);
 }
 
@@ -381,11 +383,13 @@ async function moveToSoutiragePositions(){
 
 async function moveAndOpenV15(){
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v15_in),2000);
+    setTimeout(() => input.updateIhmDto("V15",true),1500);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.liquide_falling_bidon_1L_V15_in),2500)
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.empty_bidon_1L_V15),4000);
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.3,0.5,0.6,0.3,0.4,0,true),7000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bidon_10L_V15),7000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v15_out),9000);
+    setTimeout(() => input.updateIhmDto("V15",false),1500);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.liquide_falling_bidon_1L_V15_out),9100);
     setTimeout(() => moveAndOpenV12(),11000);
 }
@@ -393,11 +397,13 @@ async function moveAndOpenV15(){
 async function moveAndOpenV12(){
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.2,0.5,0.6,0.3,0.5,0,true),1000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v12_in),2000);
+    setTimeout(() => input.updateIhmDto("V12",true),1500);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.liquide_falling_bidon_1L_V12_in),2500)
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.empty_bidon_1L_V12),4000);
     setTimeout(() =>  input.cameraControllerRef.current?.setLookAt(0.2,0.5,0.6,0.3,0.4,0,true),7000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.fill_bidon_10L_V12),7000);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.v12_out),9000);
+    setTimeout(() => input.updateIhmDto("V12",false),1500);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.liquide_falling_bidon_1L_V12_out),9100);
 }
 }

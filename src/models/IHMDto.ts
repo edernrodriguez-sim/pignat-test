@@ -37,8 +37,11 @@ export interface IHMDto {
     input:MachineParameter[];
     FIC02_OP_MAN: string;
     V16: boolean;
+    V15: boolean;
+    V12: boolean;
     V8: boolean;
     V4: boolean;
     V3: boolean;
+    V2: boolean;
     onClose: () => void;
 }
