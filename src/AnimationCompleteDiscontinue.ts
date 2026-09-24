@@ -179,7 +179,6 @@ async function showSmoke(){
 
 async function moveToDropsAndLaunchAnim(){
     
-    setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.soutirage_off), 100);
     setTimeout(() => AnimationHelper.launchAnim(input.animationEntities.goutte_drop_cycle_on),1000);
     setTimeout(() => moveToBellPosition1AndLaunchAnim(),5000);
 }
