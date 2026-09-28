@@ -237,8 +237,7 @@ async function setRefluxValues33(){
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_EV_MODE_BUTTON_ID, input),2500);
     setTimeout(() => pressIHMButton(ProjectConstants.IHM_KEYS_REFLUX_BUTTON_CYCLE_ID, input),4000);
     setTimeout(() => focusOnInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID, input),5000);
-    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"6", input),6000);
-    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"66", input),6500);
+    setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REFLUX_INPUT_ID,"66.6", input),6000);
     setTimeout(() => validateParameterEditModal(input),8000);
     
     setTimeout(() => input.setIsIHMModalVisible(false),9000);
