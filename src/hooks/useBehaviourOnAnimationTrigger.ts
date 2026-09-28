@@ -52,7 +52,7 @@ export function useBehaviourOnAnimationTrigger(
         const onAnimEnd = () => {
             
             updateMachineParam("LSL02", false);
-            AnimationHelper.launchAnim(postPrechauffeurTube1_fill);
+            // AnimationHelper.launchAnim(postPrechauffeurTube1_fill);
         };
 
         
