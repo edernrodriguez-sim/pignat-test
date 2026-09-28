@@ -8,6 +8,9 @@ export function LaunchAnimationCompleteContinue({ input } : { input : AnimDiscon
     AnimationHelper.launchAnim(input.animationEntities.bidon_20L_flexible_out);
     AnimationHelper.launchAnim(input.animationEntities.hide_bells_bulles);
     AnimationHelper.launchAnim(input.animationEntities.soutirage_off);
+    AnimationHelper.launchAnim(input.animationEntities.v12_out);
+    AnimationHelper.launchAnim(input.animationEntities.v15_out);
+    AnimationHelper.launchAnim(input.animationEntities.soutirage_off);
     AnimationHelper.closeAnim(input.animationEntities.fill_bouilleur_continu);
     AnimationHelper.closeAnim(input.animationEntities.complete_water_flow);
     // // 1°) Start position facing bac de retention

@@ -212,7 +212,7 @@
     {
         "Key":"V12",
         "Label":"V12",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {
@@ -224,7 +224,7 @@
     {
         "Key":"V15",
         "Label":"V15",
-        "Value":false,
+        "Value":true,
         "Type":"vanne"
     },
     {

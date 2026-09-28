@@ -15,6 +15,8 @@ export function LaunchAnimationCompleteDiscontinue({ input } : { input : AnimDis
     AnimationHelper.closeAnim(input.animationEntities.v4_out);
     AnimationHelper.closeAnim(input.animationEntities.v3_out);
     AnimationHelper.closeAnim(input.animationEntities.v2_out);
+    AnimationHelper.launchAnim(input.animationEntities.v12_out);
+    AnimationHelper.launchAnim(input.animationEntities.v15_out);
     // 1°) Start position facing bac de retention
     input.cameraControllerRef.current?.setLookAt(0.3,1.1,1.3,0.3,0,0,true);
     // 2°) Launching bac placement animation
@@ -227,7 +229,7 @@ async function SetDpic(){
     setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "1", input),4000);
     setTimeout(() => changeInput(ProjectConstants.IHM_KEYS_REGULATOR_SP_INPUT_ID, "14", input),4500);
     setTimeout(() =>  validateParameterEditModal(input) ,6000);
-    setTimeout(() => setRefluxValues33(),3000);
+    setTimeout(() => setRefluxValues33(),6500);
 }
 
 async function setRefluxValues33(){
