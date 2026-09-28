@@ -11,9 +11,9 @@ export class AnimationHelper {
     public static launchAnim(animToLaunch: Entity | undefined | null){
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
-            controller.playbackSpeed = 1;
-            controller.seekOffset = 0;
-            controller.playState = 0;
+            // controller.playbackSpeed = 1;
+            // controller.seekOffset = 0;
+            // controller.playState = 0;
             controller.playState = 1;
         }
     }
