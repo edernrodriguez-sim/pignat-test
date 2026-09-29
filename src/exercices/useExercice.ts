@@ -29,7 +29,9 @@ async function playAnimation(trigger: AnimationTrigger) {
     
     if (!entityLivelink || !trigger.entityId) return;
       
-      const root_animations = await entityLivelink.scene.findEntity({ entity_uuid: trigger.entityId, });
+    const root_animations = await entityLivelink.scene.findEntity({ entity_uuid: trigger.entityId, });
+    console.log("playAnimation");
+    console.log(performance.now());
     AnimationHelper.launchAnim(root_animations);
   } catch (e) {
     console.warn("[Exercise] Impossible de jouer l'animation :", e);

@@ -87,7 +87,7 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
         console.log(entities);
         ResetMachine(entities);
         
-      }, (1000));
+      }, (500));
     };
     init();
   }, [instance]);

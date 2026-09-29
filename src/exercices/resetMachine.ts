@@ -2,8 +2,6 @@ import { AnimationHelper } from "../animationHelper";
 import type { AnimationEntities } from "../models/animations/animationEntities";
 
 export default function ResetMachine(animationEntities: AnimationEntities | null){
-    console.log("ResetMachine");
-    console.log(animationEntities);
     if (!animationEntities)
         return;
     AnimationHelper.launchAnim(animationEntities.bac_de_retention_out);

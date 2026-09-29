@@ -74,7 +74,7 @@ const myExercise: Exercise = {
       description: "Démarrer la pompe en appuyant sur le bouton P1 sur la dalle tactile et enclencher le bouton.",
       action: { type: "inputChange", expectedFields:[{key: "P1", value: true}],
       label: "Entrez 200 dans le champ de débit" },
-      onCompleteAnimation: [{ animationName: "complete_fill_from_V4", entityId: "4b8d6998-d98c-4f75-8c63-0e6066e0bec4" }
+      onCompleteAnimation: [{ animationName: "complete_fill_from_tubes_to_V4", entityId: "4980de47-8ac0-41b7-9edf-8e63a4331411" }
       ],
     },
     {
