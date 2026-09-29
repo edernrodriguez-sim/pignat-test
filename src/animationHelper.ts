@@ -12,8 +12,8 @@ export class AnimationHelper {
         if (animToLaunch !== undefined && animToLaunch !== null){
             const controller = animToLaunch.animation_sequence_controller!;
             // controller.playbackSpeed = 1;
-            // controller.seekOffset = 0;
-            // controller.playState = 0;
+            controller.seekOffset = 0;
+            controller.playState = 0;
             controller.playState = 1;
         }
     }
