@@ -98,6 +98,7 @@ export default function ExerciceCanvas({ exercise }: ExerciceCanvasProps) {
       bac_de_retention_IN: animationEntities?.bac_de_retention_in ?? null,
       prechauffeur_FILL: animationEntities?.prechauffeur_fill ?? null,
       bouilleur_fill_continu: animationEntities?.fill_bouilleur_continu ?? null,
+      bouilleur_fill_discontinu: animationEntities?.fill_bouilleur_discontinu ?? null,
       postPrechauffeurTube1_fill: animationEntities?.postPrechauffeurTube1_fill ?? null,
       goutte_drop: animationEntities?.goutte_drop ?? null,
       soutirage_on: animationEntities?.soutirage_on ?? null,

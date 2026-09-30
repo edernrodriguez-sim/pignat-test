@@ -22,6 +22,7 @@ export function useBehaviourOnAnimationTrigger(
         bac_de_retention_IN: Entity | null;
         prechauffeur_FILL: Entity | null;
         bouilleur_fill_continu: Entity | null;
+        bouilleur_fill_discontinu: Entity | null;
         postPrechauffeurTube1_fill: Entity | null;
         tubes?: Entity | null;
         boilerEmptying?: Entity | null;
@@ -39,7 +40,8 @@ export function useBehaviourOnAnimationTrigger(
     },
     updateMachineParam: (key : string,value : string | number | boolean) => void
 ) {
-    const { dropParent, prechauffeur_FILL, postPrechauffeurTube1_fill, goutte_drop, soutirage_on, soutirage_off,V15_1L_fill,V15_1L_emptying,V12_1L_fill,V12_1L_emptying,soutirage_anim, show_bells_bulles_one_by_one, bouilleur_fill_continu} = entities; 
+    const { dropParent, prechauffeur_FILL, postPrechauffeurTube1_fill, goutte_drop, soutirage_on, soutirage_off,V15_1L_fill,V15_1L_emptying,V12_1L_fill,V12_1L_emptying,soutirage_anim, show_bells_bulles_one_by_one
+        ,bouilleur_fill_continu, bouilleur_fill_discontinu} = entities; 
     const  isSoutirageOn = useRef(false);
     
     // DETECTION DES TRIGGERS POUR L'ANIM DU REMPLISSAGE DU PRECHAUFFEUR
@@ -73,7 +75,7 @@ export function useBehaviourOnAnimationTrigger(
             
     }, [postPrechauffeurTube1_fill, prechauffeur_FILL, cameraControllerRef]);
 
-    // DETECTION DES TRIGGERS POUR L'ANIM DU REMPLISSAGE DU BOUILLEUR
+    // DETECTION DES TRIGGERS POUR L'ANIM DU REMPLISSAGE DU BOUILLEUR CONTINU
     useEffect(() => {
         if (!bouilleur_fill_continu) return;
 
@@ -94,6 +96,35 @@ export function useBehaviourOnAnimationTrigger(
 
         return () => {
             bouilleur_fill_continu.removeScriptEventListener({ 
+            event_map_id, 
+            event_name, 
+            onReceived: onAnimEnd, 
+        });
+        }
+            
+    }, [bouilleur_fill_continu, cameraControllerRef]);
+
+        // DETECTION DES TRIGGERS POUR L'ANIM DU REMPLISSAGE DU BOUILLEUR DISCONTINU
+    useEffect(() => {
+        if (!bouilleur_fill_discontinu) return;
+
+        const event_map_id = "3b4ec3a6-28fd-4fdb-8569-d45a272c2624";
+        const event_name = "LSL01_ok";
+
+        const onAnimEnd = () => {
+            updateMachineParam("LSL01", false);
+        };
+
+        
+
+        bouilleur_fill_discontinu.addScriptEventListener({ 
+            event_map_id, 
+            event_name, 
+            onReceived: onAnimEnd, 
+        });
+
+        return () => {
+            bouilleur_fill_discontinu.removeScriptEventListener({ 
             event_map_id, 
             event_name, 
             onReceived: onAnimEnd, 
