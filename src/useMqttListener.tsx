@@ -45,8 +45,8 @@ export function useMqttListener(machineIdentifier: number) {
     if (ProjectConstants.CONNECTION_MODE !== "mqtt") return;
     console.log(`BROKER_URL : ${BROKER_URL}`)
     const client = mqtt.connect(BROKER_URL, { 
-      username: 'Edern',
-      password: 'guFVmVlVm4V4oQ',
+      username: 'rockwell-pignat-client',
+      password: 'hnnBUPiLRh1nmw',
       clientId: `react_${Math.random().toString(16).slice(2)}`,
       clean: true,
       reconnectPeriod: 1000,
