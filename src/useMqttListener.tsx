@@ -41,8 +41,6 @@ export function useMqttListener(machineIdentifier: number) {
   const recordsRef = useRef<MqttRecord[]>([]);
 
   useEffect(() => {
-    // Ne pas se connecter si le mode actif est "bridge"
-    if (ProjectConstants.CONNECTION_MODE !== "mqtt") return;
     console.log(`BROKER_URL : ${BROKER_URL}`)
     const client = mqtt.connect(BROKER_URL, { 
       username: 'rockwell-pignat-client',

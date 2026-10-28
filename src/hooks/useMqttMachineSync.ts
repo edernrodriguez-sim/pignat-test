@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import { useMqttConnection } from "../useMqttConnection";
 import { mapMqttRecordsToUpdates, MQTT_TAG_MAPPING } from "../mqttTagMapping";
 import type { MachineParameter } from "../models/machineParameter";
+import { useMqttListener } from "../useMqttListener";
 
 export interface VanneUpdate {
   /** Clé de la vanne, ex: "V2", "V3", ... */
@@ -33,7 +33,7 @@ export function useMqttMachineSync(
   machineIdentifier: number
 ) {
   
-  const { records, isConnected, timestamp } = useMqttConnection(machineIdentifier);
+  const { records, isConnected, timestamp } = useMqttListener(machineIdentifier);
   const [vanneUpdates] = useState<VanneUpdate[]>([]);
   const [machineUpdates, setMachineUpdates] = useState<MachineUpdate[]>([]);
   // Mémorise le dernier état connu de chaque vanne pour éviter de rejouer
